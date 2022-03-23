@@ -4,6 +4,7 @@
 
 
 import discord
+import logging
 
 from discord.ext import commands
 
@@ -15,6 +16,8 @@ class InfoCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         status_channel = self.bot.get_channel(int("590312300695650305"))
+
+        await self.bot.get_guild(590309936538451972).me.edit(nick="Adman")
 
         await status_channel.send(
             f"Admin Bot version {self.bot.version} just restarted."
