@@ -69,3 +69,7 @@ stop:
 # "production"
 prod:
 	docker-compose -f docker-compose-prod.yml up -d
+
+# Development stuff
+dev:
+	docker-compose -f docker-compose-prod.yml up
