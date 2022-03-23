@@ -93,7 +93,7 @@ jobs:
       - name: Get a docker ready tag
         run: |
           echo "${{ steps.branch-name.outputs.current_branch }}"
-          echo "CUSTOM_TAG=$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g')" >> $GITHUB_ENV
+          echo "CUSTOM_TAG=$(echo   "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g'" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
