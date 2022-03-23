@@ -22,6 +22,6 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      BOT_TOKEN: "NTg4Nzc2MTUyNDcxMDQ0MTA2.XQKChQ.2UJD8_5-3WLxyeVWJTHbIQvWBKY"
+      BOT_TOKEN: "top.secret.token"
     restart: "no"
     command: "true"
