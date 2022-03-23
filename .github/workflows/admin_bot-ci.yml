@@ -93,6 +93,7 @@ jobs:
       - name: Get a docker ready tag
         run: |
           echo "${{ steps.branch-name.outputs.current_branch }}"
+          echo "${{ steps.meta.outputs.tags }}"
           echo "CUSTOM_TAG=frc-1721/adminbot:$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
 
       - name: Build and push Docker image
