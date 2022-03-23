@@ -86,10 +86,14 @@ jobs:
         run: |
           echo BUILD_HASH=$(git describe --abbrev=2 --always --tags --dirty) >> $GITHUB_ENV
 
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5.2
+
       - name: Get a docker ready tag
         run: |
-          echo "CUSTOM_TAG=$( ${{ env.GITHUB_HEAD_REF }} | sed 's/[^a-zA-Z0-9]/-/g')" >> $GITHUB_ENV
-          echo "${{ env.GITHUB_HEAD_REF }}"
+          echo "${{ steps.branch-name.outputs.current_branch }}"
+          echo "CUSTOM_TAG=$( ${{ steps.branch-name.outputs.current_branch }}| sed 's/[^a-zA-Z0-9]/-/g')" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
