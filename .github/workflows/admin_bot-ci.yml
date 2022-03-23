@@ -84,7 +84,7 @@ jobs:
       - name: Extract Version information for admin_bot
         id: extract_hash
         run: |
-          echo BUILD_HASH=$(git describe --abbrev=2 --always --tags --dirty) >> $GITHUB_ENV
+          echo BUILD_HASH=$(git describe --abbrev=8 --always --tags --dirty) >> $GITHUB_ENV
 
       - name: Get branch name
         id: branch-name
