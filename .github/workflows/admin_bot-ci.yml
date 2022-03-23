@@ -88,7 +88,8 @@ jobs:
 
       - name: Get a docker ready tag
         run: |
-          echo "CUSTOM_TAG=$( ${{ env.GITHUB_REF }} | sed 's/[^a-zA-Z0-9]/-/g')" >> $GITHUB_ENV
+          echo "CUSTOM_TAG=$( ${{ env.GITHUB_HEAD_REF }} | sed 's/[^a-zA-Z0-9]/-/g')" >> $GITHUB_ENV
+          echo "${{ env.GITHUB_HEAD_REF }}"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
