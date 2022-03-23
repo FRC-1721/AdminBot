@@ -56,7 +56,7 @@ jobs:
   build-and-publish-image:
     name: Build and Publish Registry Image
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test, formatblack] # Keeps the bot from updating the image if its not tested/formatted
 
     permissions:
       contents: read
@@ -97,5 +97,5 @@ jobs:
           build-args: |
             GIT_COMMIT=${{ env.build_hash }}
             DEBUG=False
-          tags: $CUSTOM_TAG
+          tags: ${{ env.CUSTOM_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
