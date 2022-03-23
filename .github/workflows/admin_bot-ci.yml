@@ -1,0 +1,108 @@
+name: Admin Bot CI
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "*"
+  pull_request:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    name: Pytest the Bot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: Run Makefile
+        run: make test
+
+  formatblack:
+    name: Black Formatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check files using the black formatter
+        uses: rickstaa/action-black@v1
+        id: action_black
+        with:
+          black_args: "."
+
+      - name: Annotate diff changes using reviewdog
+        if: steps.action_black.outputs.is_formatted == 'true'
+        uses: reviewdog/action-suggester@v1
+        with:
+          tool_name: blackfmt
+
+      - name: Fail if actions taken
+        if: steps.action_black.outputs.is_formatted == 'true'
+        run: exit 1
+
+      - name: Discord notification
+        if: ${{ failure() }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "Black formatter reported errors in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
+
+  build-and-publish-image:
+    name: Build and Publish Registry Image
+    runs-on: ubuntu-latest
+    needs: [test, formatblack] # Keeps the bot from updating the image if its not tested/formatted
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Extract Version information for admin_bot
+        id: extract_hash
+        run: |
+          echo BUILD_HASH=$(git describe --abbrev=2 --always --tags --dirty) >> $GITHUB_ENV
+
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5.2
+
+      - name: Get a docker ready tag
+        run: |
+          echo "${{ steps.branch-name.outputs.current_branch }}"
+          echo "${{ steps.meta.outputs.tags }}"
+          echo "CUSTOM_TAG=ghcr.io/frc-1721/adminbot:$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          build-args: |
+            GIT_COMMIT=${{ env.BUILD_HASH }}
+            DEBUG=False
+          tags: ${{ env.CUSTOM_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
