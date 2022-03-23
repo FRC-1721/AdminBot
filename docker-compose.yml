@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  admin_bot:
+    image: admin_bot:$TAG
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "no"
+    command: "true"
