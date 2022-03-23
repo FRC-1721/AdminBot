@@ -24,7 +24,7 @@ jobs:
         run: make test
 
   formatblack:
-    name: Check Black Formatting
+    name: Black Formatter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
