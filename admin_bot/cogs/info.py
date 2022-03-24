@@ -20,7 +20,7 @@ class InfoCog(commands.Cog, name="Info"):
         await self.bot.get_guild(590309936538451972).me.edit(nick="Adman")
 
         await status_channel.send(
-            f"Admin Bot version {self.bot.version} just restarted."
+            f"Admin Bot version `{self.bot.version}` just restarted."
         )
 
     @commands.command()
@@ -33,7 +33,7 @@ class InfoCog(commands.Cog, name="Info"):
         Written by Joe.
         """
 
-        await ctx.send(f"I am running version {self.bot.version}.")
+        await ctx.send(f"I am running version `{self.bot.version}`.")
 
 
 def setup(bot):
