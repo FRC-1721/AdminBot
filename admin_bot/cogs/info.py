@@ -35,6 +35,20 @@ class InfoCog(commands.Cog, name="Info"):
 
         await ctx.send(f"I am running version `{self.bot.version}`.")
 
+    @commands.command()
+    async def manual(self, ctx, *, member: discord.Member = None):
+        """
+        Returns the latest infrastructure manual
+
+        Ex: ^manual
+
+        Written by Joe.
+        """
+
+        await ctx.send(
+            f"Find the build space manual here: https://github.com/FRC-1721/infrastructure/releases/latest/download/FRC1721_Infrastructure_Manual.pdf"
+        )
+
 
 def setup(bot):
     bot.add_cog(InfoCog(bot))
