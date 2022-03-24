@@ -51,6 +51,10 @@ class AdminBot(object):
         self.bot.run(str(os.environ.get("BOT_TOKEN")))
 
     async def rick(self, ctx):
+        """
+        Sometimes, randomly rickrolls you.
+        """
+
         num = random.randint(1, 100)
 
         if num == 1:
@@ -61,4 +65,4 @@ class AdminBot(object):
             else:
                 await ctx.send(str("https://www.youtube.com/watch?v=o-YBDTqX_ZU"))
 
-        return True
+            return True

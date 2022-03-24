@@ -27,7 +27,7 @@ class MiscCog(commands.Cog, name="Misc"):
         """
 
         # Random chance to rick-roll
-        if self.bot.rick():
+        if await self.bot.rick(ctx):
             return
 
         with open("admin_bot/resources/bee_movie.md") as f:
