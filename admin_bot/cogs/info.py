@@ -15,7 +15,7 @@ class InfoCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        status_channel = self.bot.get_channel(int("590312300695650305"))
+        status_channel = self.bot.get_channel(590312300695650305)
 
         await self.bot.get_guild(590309936538451972).me.edit(nick="Adman")
 
