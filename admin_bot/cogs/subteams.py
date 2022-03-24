@@ -10,7 +10,7 @@ import logging
 from discord.ext import commands
 
 
-class SubteamCog(commands.Cog):
+class SubteamCog(commands.Cog, name="Subteams"):
     def __init__(self, bot):
         self.bot = bot
 
