@@ -31,7 +31,15 @@ class SubteamCog(commands.Cog):
     @commands.command()
     @commands.has_role("Team Member")
     async def addroles(self, ctx, *args, member: discord.Member = None):
-        # Adds a user to a group
+        """
+        Adds a user to a subteam (or subteams),
+
+        ex: ^addroles "Chairmans"
+
+        Written by Joe.
+        """
+
+        # Adds a user to a subteam
         roles = args[1:]
         role_objects = []
         user = ctx.message.author
@@ -54,6 +62,14 @@ class SubteamCog(commands.Cog):
     @commands.command()
     @commands.has_role("Team Member")
     async def removeroles(self, ctx, *args, member: discord.Member = None):
+        """
+        Removes a user from a subteam (or subteams),
+
+        ex: ^removeroles "Kode Team"
+
+        Written by Joe.
+        """
+
         # Adds a user to a group
         roles = args[1:]
         role_objects = []
@@ -74,10 +90,13 @@ class SubteamCog(commands.Cog):
     @commands.command()
     @commands.has_role("Team Member")
     async def listroles(self, ctx, *args, member: discord.Member = None):
-        # Adds a user to a group
-        roles = args[1:]
-        role_objects = []
-        user = ctx.message.author
+        """
+        Lists the possible roles.
+
+        ex: ^listroles
+
+        Written by Joe.
+        """
 
         rolestr = ""
         for role in self.self_assignable_roles:

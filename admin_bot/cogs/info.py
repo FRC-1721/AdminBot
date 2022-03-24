@@ -25,6 +25,14 @@ class InfoCog(commands.Cog):
 
     @commands.command()
     async def version(self, ctx, *, member: discord.Member = None):
+        """
+        Prints the revision/version.
+
+        Ex: ^version
+
+        Written by Joe.
+        """
+
         await ctx.send(f"I am running version {self.bot.version}.")
 
 
