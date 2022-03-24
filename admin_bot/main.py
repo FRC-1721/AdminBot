@@ -5,6 +5,7 @@
 import os
 import sys
 import logging
+import random
 
 from discord.ext import commands
 
@@ -43,5 +44,25 @@ class AdminBot(object):
     def run(self):
         logging.info(f"using version {self.version}")
 
+        # Create custom bound entries
+        self.bot.rick = self.rick
+
         # Run the discord bot using our token.
         self.bot.run(str(os.environ.get("BOT_TOKEN")))
+
+    async def rick(self, ctx):
+        """
+        Sometimes, randomly rickrolls you.
+        """
+
+        num = random.randint(1, 100)
+
+        if num == 1:
+            num = random.randint(1, 100)
+
+            if num == 1:
+                await ctx.send(str("https://www.youtube.com/watch?v=hYs05S1WBlY"))
+            else:
+                await ctx.send(str("https://www.youtube.com/watch?v=o-YBDTqX_ZU"))
+
+            return True

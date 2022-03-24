@@ -98,6 +98,10 @@ class SubteamCog(commands.Cog, name="Subteams"):
         Written by Joe.
         """
 
+        # Random chance to rick-roll
+        if await self.bot.rick(ctx):
+            return
+
         rolestr = ""
         for role in self.self_assignable_roles:
             rolestr += f"`{role}`, "
