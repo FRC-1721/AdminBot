@@ -26,6 +26,10 @@ class MiscCog(commands.Cog, name="Misc"):
         Written by Joe + Casey, made as a request from https://github.com/FRC-1721/AdminBot/issues/7
         """
 
+        # Random chance to rick-roll
+        if self.bot.rick():
+            return
+
         with open("admin_bot/resources/bee_movie.md") as f:
             while self.bee_movie_line < 4000:
                 line = f.readlines()[self.bee_movie_line].rstrip()
