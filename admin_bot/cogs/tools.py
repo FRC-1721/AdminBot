@@ -45,6 +45,10 @@ class ToolCog(commands.Cog, name="Tools"):
         Written by Joe.
         """
 
+        # Random chance to rick-roll
+        if await self.bot.rick(ctx):
+            return
+
         await ctx.send(
             f"Find the build space manual here: https://github.com/FRC-1721/infrastructure/releases/latest/download/FRC1721_Infrastructure_Manual.pdf"
         )
@@ -58,6 +62,10 @@ class ToolCog(commands.Cog, name="Tools"):
 
         Written by Joe.
         """
+
+        # Random chance to rick-roll
+        if await self.bot.rick(ctx):
+            return
 
         title = "+".join(args)
 
