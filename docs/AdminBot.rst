@@ -1,8 +1,6 @@
 Admin Bot
 #########
 
-.. include:: ../resources/resources.rst
-
-|joeTag|
+This section comes from the AdminBot repo: https://github.com/FRC-1721/AdminBot
 
 Admin Bot
