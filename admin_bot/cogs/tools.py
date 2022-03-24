@@ -9,7 +9,7 @@ import logging
 from discord.ext import commands
 
 
-class InfoCog(commands.Cog, name="Info"):
+class ToolCog(commands.Cog, name="Tools"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -49,6 +49,22 @@ class InfoCog(commands.Cog, name="Info"):
             f"Find the build space manual here: https://github.com/FRC-1721/infrastructure/releases/latest/download/FRC1721_Infrastructure_Manual.pdf"
         )
 
+    @commands.command()
+    async def feature(self, ctx, *args):
+        """
+        Allows users to request a feature
+
+        Ex: ^feature Give the bot a self destruct command!
+
+        Written by Joe.
+        """
+
+        title = "+".join(args)
+
+        await ctx.send(
+            f"https://github.com/FRC-1721/AdminBot/issues/new?labels=feature&title={title}&body=Describe+your+feature+here+please!"
+        )
+
 
 def setup(bot):
-    bot.add_cog(InfoCog(bot))
+    bot.add_cog(ToolCog(bot))
