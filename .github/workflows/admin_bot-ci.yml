@@ -119,4 +119,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "Built and published a new Adman Bot docker image to ${{ env.CUSTOM_TAG }}!"
+          args: "Built and published a new Adman Bot docker image to `${{ env.CUSTOM_TAG }}`!"
