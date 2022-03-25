@@ -26,6 +26,10 @@ class SubteamCog(commands.Cog, name="Subteams"):
             "Scouting",
             "Media",
             "Student",
+            "Kode Helper",
+            "Mechanical Helper",
+            "Electrical Helper",
+            "CAD Helper",
         ]
 
     @commands.command()

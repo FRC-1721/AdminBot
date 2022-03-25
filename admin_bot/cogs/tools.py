@@ -45,10 +45,6 @@ class ToolCog(commands.Cog, name="Tools"):
         Written by Joe.
         """
 
-        # Random chance to rick-roll
-        if await self.bot.rick(ctx):
-            return
-
         await ctx.send(
             f"Find the build space manual here: https://github.com/FRC-1721/infrastructure/releases/latest/download/FRC1721_Infrastructure_Manual.pdf"
         )
@@ -63,15 +59,42 @@ class ToolCog(commands.Cog, name="Tools"):
         Written by Joe.
         """
 
-        # Random chance to rick-roll
-        if await self.bot.rick(ctx):
-            return
-
         title = "+".join(args)
 
         await ctx.send(
             f"https://github.com/FRC-1721/AdminBot/issues/new?labels=feature&title={title}&body=Describe+your+feature+here+please!"
         )
+
+    @commands.command()
+    async def get_help(self, ctx, team, *args):
+        """
+        Requests help from leads or learned members of the team, specified by team
+
+        Ex: ^get_help kode The PID wont fit in the kinematics, so I cant defibrillate the ramsete compiler!
+
+        Written by Khan
+        """
+
+        helper_roles = (
+            "Kode",
+            "Mechanical",
+            "Electrical",
+            "CAD",
+            "Mentor",
+            "all",
+        )
+
+        if team in helper_roles:
+            message = " ".join(args)
+
+            await ctx.send(
+                f"```asciidoc\n[HELP TICKET]\n{message}\n------------------\n```"
+            )
+
+        else:
+            await ctx.send(
+                f"Unrecagnized team {team}, please use one of the following:\nKode, Mechanical, Electrical, CAD, Mentor, all"
+            )
 
 
 def setup(bot):
