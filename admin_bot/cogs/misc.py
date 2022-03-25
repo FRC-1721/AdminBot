@@ -41,8 +41,14 @@ class MiscCog(commands.Cog, name="Misc"):
 
     @commands.command()
     async def resetScript(self, ctx):
+        """
+        Resets the bee command to start back at the begging of the script.
 
-        self.bee_movie_line = 0  # this is wrong and bad I think
+        ex: ^resetScript
+
+        Written by Jack.
+        """
+        self.bee_movie_line = 0
 
         # Random chance to rick-roll
         if await self.bot.rick(ctx):
