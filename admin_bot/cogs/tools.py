@@ -77,7 +77,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
         message = " ".join(args)
 
-        await ctx.send(f"'''\n{message}\n'''")
+        await ctx.send(f"'''\n{message}'''")
 
 
 def setup(bot):
