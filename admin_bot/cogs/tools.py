@@ -75,9 +75,26 @@ class ToolCog(commands.Cog, name="Tools"):
         Written by Khan
         """
 
-        message = " ".join(args)
+        helper_roles = (
+            "Kode",
+            "Mechanical",
+            "Electrical",
+            "CAD",
+            "Mentor",
+            "all",
+        )
 
-        await ctx.send(f"```\n{message}\n```")
+        if team in helper_roles:
+            message = " ".join(args)
+
+            await ctx.send(
+                f"```asciidoc\n[HELP TICKET]\n{message}\n------------------\n```"
+            )
+
+        else:
+            await ctx.send(
+                f"Unrecagnized team {team}, please use one of the following:\nKode, Mechanical, Electrical, CAD, Mentor, all"
+            )
 
 
 def setup(bot):

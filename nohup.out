@@ -425,3 +425,248 @@ qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 39372, resource id:
 file:///usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/ui/ToolTipDelegate.qml:89:9: QML ScrollView: Binding loop detected for property "bottomPadding"
 Discord 0.0.17
 Quitting secondary instance.
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+libkcups: Renew-Subscription last error: 1030 Subscription #419 does not exist.
+libkcups: Subscription not found
+libkcups: Create-Printer-Subscriptions last error: 1024 notify-events not specified.
+libkcups: Request failed 1024 -1
+libkcups: Create-Printer-Subscriptions last error: 0 successful-ok
+file:///usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/ui/ToolTipDelegate.qml:89:9: QML ScrollView: Binding loop detected for property "bottomPadding"
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64750, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64751, resource id: 39846383, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64752, resource id: 39846383, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64753, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64754, resource id: 39846385, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64755, resource id: 39846385, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64756, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64757, resource id: 39846387, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64758, resource id: 39846387, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64759, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64760, resource id: 39846389, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64761, resource id: 39846389, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64762, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64763, resource id: 39846391, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64764, resource id: 39846391, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64765, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64766, resource id: 39846393, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64767, resource id: 39846393, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64768, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64769, resource id: 39846395, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64770, resource id: 39846395, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 64771, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64772, resource id: 39846397, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 64773, resource id: 39846397, major code: 72 (PutImage), minor code: 0
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 322, resource id: 39846387, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 323, resource id: 39846388, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 324, resource id: 39846389, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 325, resource id: 39846390, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 326, resource id: 39846391, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 327, resource id: 39846392, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 328, resource id: 39846393, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 329, resource id: 39846394, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 330, resource id: 39846395, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 331, resource id: 39846396, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 332, resource id: 39846397, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 333, resource id: 39846398, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 334, resource id: 39846383, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 335, resource id: 39846384, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 336, resource id: 39846385, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 337, resource id: 39846386, major code: 60 (FreeGC), minor code: 0
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1695, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1696, resource id: 39846425, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1697, resource id: 39846425, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1698, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1699, resource id: 39846427, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1700, resource id: 39846427, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1701, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1702, resource id: 39846429, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1703, resource id: 39846429, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1704, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1705, resource id: 39846431, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1706, resource id: 39846431, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1707, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1708, resource id: 39846433, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1709, resource id: 39846433, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1710, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1711, resource id: 39846435, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1712, resource id: 39846435, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1713, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1714, resource id: 39846437, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1715, resource id: 39846437, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 1716, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1717, resource id: 39846439, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 1718, resource id: 39846439, major code: 72 (PutImage), minor code: 0
+libkcups: Renew-Subscription last error: 0 successful-ok
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14745, resource id: 39846429, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14746, resource id: 39846430, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14747, resource id: 39846431, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14748, resource id: 39846432, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14749, resource id: 39846433, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14750, resource id: 39846434, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14751, resource id: 39846435, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14752, resource id: 39846436, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14753, resource id: 39846437, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14754, resource id: 39846438, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14755, resource id: 39846439, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14756, resource id: 39846440, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14757, resource id: 39846425, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14758, resource id: 39846426, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 14759, resource id: 39846427, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 14760, resource id: 39846428, major code: 60 (FreeGC), minor code: 0
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16022, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16023, resource id: 39846497, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16024, resource id: 39846497, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16025, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16026, resource id: 39846499, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16027, resource id: 39846499, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16028, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16029, resource id: 39846501, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16030, resource id: 39846501, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16031, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16032, resource id: 39846503, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16033, resource id: 39846503, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16034, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16035, resource id: 39846505, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16036, resource id: 39846505, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16037, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16038, resource id: 39846507, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16039, resource id: 39846507, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16040, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16041, resource id: 39846509, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16042, resource id: 39846509, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 16043, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16044, resource id: 39846511, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 16045, resource id: 39846511, major code: 72 (PutImage), minor code: 0
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17887, resource id: 39846501, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17888, resource id: 39846502, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17889, resource id: 39846503, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17890, resource id: 39846504, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17891, resource id: 39846505, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17892, resource id: 39846506, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17893, resource id: 39846507, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17894, resource id: 39846508, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17895, resource id: 39846509, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17896, resource id: 39846510, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17897, resource id: 39846511, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17898, resource id: 39846512, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17899, resource id: 39846497, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17900, resource id: 39846498, major code: 60 (FreeGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 4 (BadPixmap), sequence: 17901, resource id: 39846499, major code: 54 (FreePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 13 (BadGC), sequence: 17902, resource id: 39846500, major code: 60 (FreeGC), minor code: 0
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+"Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/18”"
+qt.svg: <input>:303:258: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:463: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:659: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:913: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1049: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1251: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1453: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1631: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1739: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:1980: Could not add child element to parent element because the types are incorrect.
+qt.svg: <input>:303:2223: Could not add child element to parent element because the types are incorrect.
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21180, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21181, resource id: 39846557, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21182, resource id: 39846557, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21183, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21184, resource id: 39846559, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21185, resource id: 39846559, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21186, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21187, resource id: 39846561, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21188, resource id: 39846561, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21189, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21190, resource id: 39846563, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21191, resource id: 39846563, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21192, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21193, resource id: 39846565, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21194, resource id: 39846565, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21195, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21196, resource id: 39846567, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21197, resource id: 39846567, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21198, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21199, resource id: 39846569, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21200, resource id: 39846569, major code: 72 (PutImage), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 2 (BadValue), sequence: 21201, resource id: 0, major code: 53 (CreatePixmap), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21202, resource id: 39846571, major code: 55 (CreateGC), minor code: 0
+qt.qpa.xcb: QXcbConnection: XCB error: 9 (BadDrawable), sequence: 21203, resource id: 39846571, major code: 72 (PutImage), minor code: 0
+libkcups: Renew-Subscription last error: 1030 Subscription #420 does not exist.
+libkcups: Subscription not found
+libkcups: Create-Printer-Subscriptions last error: 1024 notify-events not specified.
+libkcups: Request failed 1024 -1
+libkcups: Create-Printer-Subscriptions last error: 0 successful-ok
