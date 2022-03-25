@@ -39,6 +39,15 @@ class MiscCog(commands.Cog, name="Misc"):
 
         await ctx.send(str(line))
 
+    @commands.command()
+    async def resetScript(self, ctx):
+
+        self.bee_movie_line = 0  # this is wrong and bad I think
+
+        # Random chance to rick-roll
+        if await self.bot.rick(ctx):
+            return
+
 
 def setup(bot):
     bot.add_cog(MiscCog(bot))
