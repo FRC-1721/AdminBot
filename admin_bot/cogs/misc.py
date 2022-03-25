@@ -48,13 +48,13 @@ class MiscCog(commands.Cog, name="Misc"):
 
         Written by Jack.
         """
-        self.bee_movie_line = 0
-
-        await ctx.send(str("Bee movie script has been reset"))
 
         # Random chance to rick-roll
         if await self.bot.rick(ctx):
             return
+
+        self.bee_movie_line = 0
+        await ctx.send(str("Bee movie script has been reset"))
 
 
 def setup(bot):
