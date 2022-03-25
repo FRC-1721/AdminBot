@@ -14,6 +14,10 @@ class ToolCog(commands.Cog, name="Tools"):
     def __init__(self, bot):
         self.bot = bot
 
+        # Random chance to rick-roll
+        if self.bot.rick():
+            return
+
     @commands.Cog.listener()
     async def on_ready(self):
         status_channel = self.bot.get_channel(590312300695650305)
@@ -66,36 +70,9 @@ class ToolCog(commands.Cog, name="Tools"):
             f"https://github.com/FRC-1721/AdminBot/issues/new?labels=feature&title={title}&body=Describe+your+feature+here+please!"
         )
 
-    @commands.command()
-    async def get_help(self, ctx, team, *args):
-        """
-        Requests help from leads or learned members of the team, specified by team
-
-        Ex: ^get_help kode The PID wont fit in the kinematics, so I cant defibrillate the ramsete compiler!
-
-        Written by Khan
-        """
-
-        helper_roles = (
-            "Kode",
-            "Mechanical",
-            "Electrical",
-            "CAD",
-            "Mentor",
-            "all",
-        )
-
-        if team in helper_roles:
-            message = " ".join(args)
-
-            await ctx.send(
-                f"```asciidoc\n[HELP TICKET]\n{message}\n------------------\n```"
-            )
-
-        else:
-            await ctx.send(
-                f"Unrecagnized team {team}, please use one of the following:\nKode, Mechanical, Electrical, CAD, Mentor, all"
-            )
+    async def kill(self, ctx):
+        await ctx.send(str("shutting off"))
+        await ctx.bot.logout()
 
     @commands.command()
     async def selfdestruct(self, ctx, *args):
