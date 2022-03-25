@@ -39,6 +39,21 @@ class MiscCog(commands.Cog, name="Misc"):
 
         await ctx.send(str(line))
 
+    @commands.command()
+    async def resetScript(self, ctx):
+        """
+        Resets the bee command to start back at the begging of the script.
+
+        ex: ^resetScript
+
+        Written by Jack.
+        """
+        self.bee_movie_line = 0
+
+        # Random chance to rick-roll
+        if await self.bot.rick(ctx):
+            return
+
 
 def setup(bot):
     bot.add_cog(MiscCog(bot))
