@@ -82,7 +82,7 @@ class AdminBot(object):
         ]
 
         if ctx.channel.id not in spam_channels:  # Check if this channel is ok for spam
-            await ctx.message.delete()  # Delete message if it is not
+            await ctx.message.add_reaction("❌")
             return True  # Return true, (cancel command)
 
         return False
