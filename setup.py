@@ -22,7 +22,6 @@ setup(
     long_description=readme,
     include_package_data=True,
     install_requires=[
-        "schedule",
         "discord.py",
     ],
     license="MIT",
