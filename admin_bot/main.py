@@ -46,6 +46,7 @@ class AdminBot(object):
 
         # Create custom bound entries
         self.bot.rick = self.rick
+        self.bot.check_spam = self.check_spam
 
         # Run the discord bot using our token.
         self.bot.run(str(os.environ.get("BOT_TOKEN")))
@@ -66,3 +67,22 @@ class AdminBot(object):
                 await ctx.send(str("https://www.youtube.com/watch?v=o-YBDTqX_ZU"))
 
             return True
+        return False
+
+    async def check_spam(self, ctx):
+        """
+        Prevents you from spamming some commands in channels where its not allowed
+        """
+
+        spam_channels = [
+            590931089426612284,
+            853061635904503838,
+            941894218123710475,
+            590349708992708627,
+        ]
+
+        if ctx.channel.id not in spam_channels:  # Check if this channel is ok for spam
+            await ctx.message.delete()  # Delete message if it is not
+            return True  # Return true, (cancel command)
+
+        return False

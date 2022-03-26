@@ -30,6 +30,9 @@ class MiscCog(commands.Cog, name="Misc"):
         if await self.bot.rick(ctx):
             return
 
+        if await self.bot.check_spam(ctx):
+            return
+
         with open("admin_bot/resources/bee_movie.md") as f:
             while self.bee_movie_line < 4000:
                 line = f.readlines()[self.bee_movie_line].rstrip()
