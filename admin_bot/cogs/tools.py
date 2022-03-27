@@ -36,11 +36,11 @@ class ToolCog(commands.Cog, name="Tools"):
         await ctx.send(f"I am running version `{self.bot.version}`.")
 
     @commands.command()
-    async def manual(self, ctx, *, member: discord.Member = None):
+    async def rtfm(self, ctx, *, member: discord.Member = None):
         """
         Returns the latest infrastructure manual
 
-        Ex: ^manual
+        Ex: ^rtfm
 
         Written by Joe.
         """
