@@ -79,6 +79,7 @@ class AdminBot(object):
             853061635904503838,
             941894218123710475,
             590349708992708627,
+            957837307577241601,
         ]
 
         if ctx.channel.id not in spam_channels:  # Check if this channel is ok for spam
