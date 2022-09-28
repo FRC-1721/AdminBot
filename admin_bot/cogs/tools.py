@@ -72,8 +72,14 @@ class ToolCog(commands.Cog, name="Tools"):
 
     @commands.command()
     @commands.has_any_role("Lead of Software", "Assistant lead of software")
-    async def kill(self, ctx, member: discord.Member = None):
+    async def kill(self, ctx):
+        """
+        Shuts down the discord bot
 
+        Ex: ^kill
+
+        Written by Jack.
+        """
         await ctx.send(str("shutting off"))
         await ctx.bot.logout()
 
