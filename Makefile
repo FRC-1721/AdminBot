@@ -72,4 +72,4 @@ prod:
 
 # Development stuff
 dev:
-	docker-compose -f docker-compose-prod.yml up
+	docker-compose -f docker-compose.yml build && docker-compose -f docker-compose.yml up

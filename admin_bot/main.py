@@ -6,14 +6,22 @@ import os
 import sys
 import logging
 import random
+import discord
 
 from discord.ext import commands
 
 
 class AdminBot(object):
     def __init__(self):
+        # Intents (new iirc)
+        intents = discord.Intents(messages=True, guilds=True)
+        intents.message_content = True
+
         # Create our discord bot
-        self.bot = commands.Bot(command_prefix="^")
+        self.bot = commands.Bot(command_prefix="^", intents=intents)
+
+        # Register
+        self.bot.on_ready = self.on_ready
 
         # Get the build commit that the code was built with.
         self.version = str(os.environ.get("GIT_COMMIT"))  # Currently running version
@@ -35,11 +43,12 @@ class AdminBot(object):
         # Append some extra information to our discord bot
         self.bot.version = self.version  # Package version with bot
 
+    async def on_ready(self):
         # Cog Loader!
         for filename in os.listdir(self.workdir + "cogs"):
             logging.info(f"Found file {filename}, loading as extension.")
             if filename.endswith(".py"):
-                self.bot.load_extension(f"cogs.{filename[:-3]}")
+                await self.bot.load_extension(f"cogs.{filename[:-3]}")
 
     def run(self):
         logging.info(f"using version {self.version}")
