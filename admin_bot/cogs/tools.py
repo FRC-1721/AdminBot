@@ -70,7 +70,10 @@ class ToolCog(commands.Cog, name="Tools"):
             f"https://github.com/FRC-1721/AdminBot/issues/new?labels=feature&title={title}&body=Describe+your+feature+here+please!"
         )
 
-    async def kill(self, ctx):
+    @commands.command()
+    @commands.has_any_role("Lead of Software", "Assistant lead of software")
+    async def kill(self, ctx, member: discord.Member = None):
+
         await ctx.send(str("shutting off"))
         await ctx.bot.logout()
 
