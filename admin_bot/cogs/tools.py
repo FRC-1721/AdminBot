@@ -97,5 +97,5 @@ class ToolCog(commands.Cog, name="Tools"):
             )
 
 
-def setup(bot):
-    bot.add_cog(ToolCog(bot))
+async def setup(bot):
+    await bot.add_cog(ToolCog(bot))

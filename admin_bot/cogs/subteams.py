@@ -16,16 +16,16 @@ class SubteamCog(commands.Cog, name="Subteams"):
 
         # These should be defined maybe in a yaml somewhere else
         self.self_assignable_roles = {
-            "Student": "Student",
-            "Chairmans": "Chairmans",
-            "Software": "Software Team",
-            "Mechanical": "Mechanical Team",
-            "CAD": "CAD Team",
-            "Electrical": "Electrical Team",
-            "Outreach": "Outreach",
-            "Business": "Business Team",
-            "Scouting": "Scouting",
-            "Media": "Media",
+            "student": "Student",
+            "chairmans": "Chairmans",
+            "software": "Software Team",
+            "mechanical": "Mechanical Team",
+            "cad": "CAD Team",
+            "electrical": "Electrical Team",
+            "outreach": "Outreach",
+            "business": "Business Team",
+            "scouting": "Scouting",
+            "media": "Media",
         }
 
     @commands.command()
@@ -40,11 +40,9 @@ class SubteamCog(commands.Cog, name="Subteams"):
         """
 
         # Fuzzy match
-        role = [
-            self.self_assignable_roles[key]
-            for key in self.self_assignable_roles
-            if args[1] in key.lower()
-        ][0]
+        # try:
+        request_role = args[0].lower()
+        role = self.self_assignable_roles[request_role]
 
         user = ctx.message.author
 
@@ -54,9 +52,9 @@ class SubteamCog(commands.Cog, name="Subteams"):
 
         await user.add_role(targetRole)
         await ctx.send(f"You've been added to the following roles: {role}")
-        # else:
+        # except KeyError:
         #     await ctx.send(
-        #         f"Invalid role name or unassignable role (make sure you spelt it correctly, and used qoutes, ie: `Kode Team` or `Chairmans`) Role was: {roles}"
+        #         "Sorry, i could not interpert that, try something like ^join CAD"
         #     )
 
     @commands.command()
@@ -110,9 +108,8 @@ class SubteamCog(commands.Cog, name="Subteams"):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         await ctx.send(f"Error! {error}")
-
         raise error
 
 
-def setup(bot):
-    bot.add_cog(SubteamCog(bot))
+async def setup(bot):
+    await bot.add_cog(SubteamCog(bot))
