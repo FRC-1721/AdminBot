@@ -22,6 +22,7 @@ class AdminBot(object):
 
         # Register
         self.bot.on_ready = self.on_ready
+        self.bot.on_message = self.on_message
 
         # Get the build commit that the code was built with.
         self.version = str(os.environ.get("GIT_COMMIT"))  # Currently running version
@@ -50,6 +51,12 @@ class AdminBot(object):
             if filename.endswith(".py"):
                 await self.bot.load_extension(f"cogs.{filename[:-3]}")
 
+    async def on_message(self, ctx):
+        # hehe, sneaky every time
+        await self.bot.rick(ctx)
+
+        await self.bot.process_commands(ctx)
+
     def run(self):
         logging.info(f"using version {self.version}")
 
@@ -65,15 +72,20 @@ class AdminBot(object):
         Sometimes, randomly rickrolls you.
         """
 
-        num = random.randint(1, 100)
+        num = random.randint(1, 1000)
+        logging.info(f"Checking rick.. {num}")
 
         if num == 1:
-            num = random.randint(1, 100)
+            num = random.randint(1, 10)
 
             if num == 1:
-                await ctx.send(str("https://www.youtube.com/watch?v=hYs05S1WBlY"))
+                await ctx.channel.send(
+                    str("https://www.youtube.com/watch?v=hYs05S1WBlY")
+                )
             else:
-                await ctx.send(str("https://www.youtube.com/watch?v=o-YBDTqX_ZU"))
+                await ctx.channel.send(
+                    str("https://www.youtube.com/watch?v=o-YBDTqX_ZU")
+                )
 
             return True
         return False
