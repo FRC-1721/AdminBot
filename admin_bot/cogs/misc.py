@@ -60,5 +60,5 @@ class MiscCog(commands.Cog, name="Misc"):
         await ctx.send(str("Bee movie script has been reset"))
 
 
-def setup(bot):
-    bot.add_cog(MiscCog(bot))
+async def setup(bot):
+    await bot.add_cog(MiscCog(bot))

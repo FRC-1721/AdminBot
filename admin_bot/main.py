@@ -6,14 +6,23 @@ import os
 import sys
 import logging
 import random
+import discord
 
 from discord.ext import commands
 
 
 class AdminBot(object):
     def __init__(self):
+        # Intents (new iirc)
+        intents = discord.Intents(messages=True, guilds=True)
+        intents.message_content = True
+
         # Create our discord bot
-        self.bot = commands.Bot(command_prefix="^")
+        self.bot = commands.Bot(command_prefix="^", intents=intents)
+
+        # Register
+        self.bot.on_ready = self.on_ready
+        self.bot.on_message = self.on_message
 
         # Get the build commit that the code was built with.
         self.version = str(os.environ.get("GIT_COMMIT"))  # Currently running version
@@ -35,11 +44,18 @@ class AdminBot(object):
         # Append some extra information to our discord bot
         self.bot.version = self.version  # Package version with bot
 
+    async def on_ready(self):
         # Cog Loader!
         for filename in os.listdir(self.workdir + "cogs"):
             logging.info(f"Found file {filename}, loading as extension.")
             if filename.endswith(".py"):
-                self.bot.load_extension(f"cogs.{filename[:-3]}")
+                await self.bot.load_extension(f"cogs.{filename[:-3]}")
+
+    async def on_message(self, ctx):
+        # hehe, sneaky every time
+        await self.bot.rick(ctx)
+
+        await self.bot.process_commands(ctx)
 
     def run(self):
         logging.info(f"using version {self.version}")
@@ -56,15 +72,20 @@ class AdminBot(object):
         Sometimes, randomly rickrolls you.
         """
 
-        num = random.randint(1, 100)
+        num = random.randint(1, 1000)
+        logging.info(f"Checking rick.. {num}")
 
         if num == 1:
-            num = random.randint(1, 100)
+            num = random.randint(1, 10)
 
             if num == 1:
-                await ctx.send(str("https://www.youtube.com/watch?v=hYs05S1WBlY"))
+                await ctx.channel.send(
+                    str("https://www.youtube.com/watch?v=hYs05S1WBlY")
+                )
             else:
-                await ctx.send(str("https://www.youtube.com/watch?v=o-YBDTqX_ZU"))
+                await ctx.channel.send(
+                    str("https://www.youtube.com/watch?v=o-YBDTqX_ZU")
+                )
 
             return True
         return False

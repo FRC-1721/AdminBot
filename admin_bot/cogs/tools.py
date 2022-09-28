@@ -5,6 +5,7 @@
 
 import discord
 import logging
+import asyncio
 
 from discord.ext import commands
 
@@ -96,6 +97,23 @@ class ToolCog(commands.Cog, name="Tools"):
                 f"Unrecagnized team {team}, please use one of the following:\nKode, Mechanical, Electrical, CAD, Mentor, all"
             )
 
+    @commands.command()
+    async def selfdestruct(self, ctx, *args):
+        async with ctx.typing():
+            await ctx.send(f"Computing...")
+            await asyncio.sleep(2)
+        await asyncio.sleep(3)
+        async with ctx.typing():
+            await ctx.send(f"Overloaded...")
+            await asyncio.sleep(10)
 
-def setup(bot):
-    bot.add_cog(ToolCog(bot))
+        async with ctx.typing():
+            for i in range(6):
+                await ctx.send(f"Overloaded...")
+                await asyncio.sleep(0.5)
+
+        quit()
+
+
+async def setup(bot):
+    await bot.add_cog(ToolCog(bot))

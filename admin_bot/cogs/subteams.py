@@ -8,6 +8,7 @@ import discord
 import logging
 
 from discord.ext import commands
+from discord.utils import get
 
 
 class SubteamCog(commands.Cog, name="Subteams"):
@@ -15,80 +16,79 @@ class SubteamCog(commands.Cog, name="Subteams"):
         self.bot = bot
 
         # These should be defined maybe in a yaml somewhere else
-        self.self_assignable_roles = [
-            "Chairmans",
-            "Kode Team",
-            "Mechanical Team",
-            "CAD Team",
-            "Electrical Team",
-            "Outreach",
-            "Business Team",
-            "Scouting",
-            "Media",
-            "Student",
-            "Kode Helper",
-            "Mechanical Helper",
-            "Electrical Helper",
-            "CAD Helper",
-        ]
+        self.self_assignable_roles = {
+            "student": "Student",
+            "chairmans": "Chairmans",
+            "software": "Software Team",
+            "mechanical": "Mechanical Team",
+            "cad": "CAD Team",
+            "electrical": "Electrical Team",
+            "outreach": "Outreach",
+            "business": "Business Team",
+            "scouting": "Scouting",
+            "media": "Media",
+        }
 
     @commands.command()
     @commands.has_role("Team Member")
-    async def addroles(self, ctx, *args, member: discord.Member = None):
+    async def join(self, ctx, *args, member: discord.Member = None):
         """
         Adds a user to a subteam (or subteams),
 
-        ex: ^addroles "Chairmans"
+        ex: ^join Chairmans
 
         Written by Joe.
         """
 
-        # Adds a user to a subteam
-        roles = args[1:]
-        role_objects = []
-        user = ctx.message.author
+        # Fuzzy match
+        try:
+            request_role = args[0].lower()
+            role = self.self_assignable_roles[request_role]
 
-        logging.info(f"Attempting to add user to {roles}")
+            user = ctx.message.author
 
-        if all(item in self.self_assignable_roles for item in roles):
-            for role in roles:
-                role_objects.append(
-                    discord.utils.get(ctx.message.guild.roles, name=role)
-                )
+            logging.info(f"Attempting to add user to {role}")
 
-            await user.add_roles(*role_objects)
-            await ctx.send(f"You've been added to the following roles: {roles}")
-        else:
+            await user.add_roles(*[get(ctx.message.guild.roles, name=role)])
+            await ctx.send(f"You've been added to the following roles: {role}")
+        except KeyError:
             await ctx.send(
-                f"Invalid role name or unassignable role (make sure you spelt it correctly, and used qoutes, ie: `Kode Team` or `Chairmans`) Role was: {roles}"
+                "Sorry, i could not interpret that, try something like ^join CAD"
+            )
+        except IndexError:
+            await ctx.send(
+                "Please input a subteam, use ^listroles to see possible selections"
             )
 
     @commands.command()
     @commands.has_role("Team Member")
-    async def removeroles(self, ctx, *args, member: discord.Member = None):
+    async def leave(self, ctx, *args, member: discord.Member = None):
         """
         Removes a user from a subteam (or subteams),
 
-        ex: ^removeroles "Kode Team"
+        ex: ^leave Software
 
         Written by Joe.
         """
 
-        # Adds a user to a group
-        roles = args[1:]
-        role_objects = []
-        user = ctx.message.author
-        if all(item in self.self_assignable_roles for item in roles):
-            for role in roles:
-                role_objects.append(
-                    discord.utils.get(ctx.message.guild.roles, name=role)
-                )
+        # Fuzzy match
+        try:
+            request_role = args[0].lower()
+            role = self.self_assignable_roles[request_role]
 
-            await user.remove_roles(*role_objects)
-            await ctx.send(f"You've been removed from the following roles: {roles}")
-        else:
+            user = ctx.message.author
+
+            logging.info(f"Attempting to remove user from {role}")
+
+            await user.remove_roles(*[get(ctx.message.guild.roles, name=role)])
+            await ctx.send(f"You've been removed from the following roles: {role}")
+        except KeyError:
             await ctx.send(
-                f"Invalid role name or unassignable role (make sure you spelt it correctly, and used qoutes, ie: `Kode Team` or `Chairmans`) Role was: {roles}"
+                "Sorry, i could not interpret that, try something like ^leave CAD"
+            )
+        except IndexError:
+            await ctx.send(
+                "Please input a subteam, use ^listroles to see possible selections"
             )
 
     @commands.command()
@@ -114,9 +114,8 @@ class SubteamCog(commands.Cog, name="Subteams"):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         await ctx.send(f"Error! {error}")
-
         raise error
 
 
-def setup(bot):
-    bot.add_cog(SubteamCog(bot))
+async def setup(bot):
+    await bot.add_cog(SubteamCog(bot))
