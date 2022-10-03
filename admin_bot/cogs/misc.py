@@ -5,6 +5,7 @@
 
 import discord
 import logging
+from redmail import outlook
 
 from discord.ext import commands
 
@@ -58,6 +59,20 @@ class MiscCog(commands.Cog, name="Misc"):
 
         self.bee_movie_line = 0
         await ctx.send(str("Bee movie script has been reset"))
+
+    @commands.Cog.listener(name="@SupremeSimon0$")
+    async def on_message(self, message: discord.Message):
+        outlook.username = (
+            ""  # email of sender    || do we have a robotics outlook account? -Jack
+        )
+        outlook.password = ""  # password of sender
+        outlook.send(
+            receivers=[
+                "simonhchampney@gmail.com"
+            ],  # list of email addresses to send it to
+            text=message,
+            subject="1721 discord mention",  # subject of the email
+        )  # sends the email
 
 
 async def setup(bot):
