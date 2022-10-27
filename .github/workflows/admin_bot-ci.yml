@@ -13,22 +13,22 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  test:
-    name: Pytest the Bot
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-      - name: Run Makefile
-        run: make test
-      - name: Discord notification
-        if: ${{ failure() }}
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: "AdminBot Pytest failed!"
+  # test:
+  #   name: Pytest the Bot
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         fetch-depth: 1
+  #     - name: Run Makefile
+  #       run: make test
+  #     - name: Discord notification
+  #       if: ${{ failure() }}
+  #       env:
+  #         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #       uses: Ilshidur/action-discord@master
+  #       with:
+  #         args: "AdminBot Pytest failed!"
 
   formatblack:
     name: Black Formatter
