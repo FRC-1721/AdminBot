@@ -5,6 +5,8 @@
 
 import discord
 import logging
+import cv2 as cv
+import io
 
 from discord.ext import commands
 
@@ -41,6 +43,32 @@ class MiscCog(commands.Cog, name="Misc"):
                     break
 
         await ctx.send(str(line))
+
+    @commands.command()
+    async def snap(self, ctx, *args):
+        """
+        Snaps a photo from the build space!
+
+        Ex: ^snap
+
+        Written by Joe
+        """
+
+        cap = cv.VideoCapture(0)
+
+        if not cap.isOpened():
+            ctx.send(str("Error opening camera.."))
+            return
+
+            # Capture a frame
+        ret, frame = cap.read()
+        # if frame is read correctly ret is True
+        if not ret:
+            ctx.send(str("Error receiving frame."))
+            return
+
+        cv.imwrite("/tmp/snap.png", frame)
+        await ctx.send(file=discord.File("/tmp/snap.png"))
 
     @commands.command()
     async def beeReset(self, ctx):
