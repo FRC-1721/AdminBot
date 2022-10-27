@@ -13,23 +13,6 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  # test:
-  #   name: Pytest the Bot
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@master
-  #       with:
-  #         fetch-depth: 1
-  #     - name: Run Makefile
-  #       run: make test
-  #     - name: Discord notification
-  #       if: ${{ failure() }}
-  #       env:
-  #         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-  #       uses: Ilshidur/action-discord@master
-  #       with:
-  #         args: "AdminBot Pytest failed!"
-
   formatblack:
     name: Black Formatter
     runs-on: ubuntu-latest
@@ -60,10 +43,27 @@ jobs:
         with:
           args: "Black formatter reported errors in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
 
+  # test:
+  #   name: Pytest the Bot
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         fetch-depth: 1
+  #     - name: Run Makefile
+  #       run: make test
+  #     - name: Discord notification
+  #       if: ${{ failure() }}
+  #       env:
+  #         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #       uses: Ilshidur/action-discord@master
+  #       with:
+  #         args: "AdminBot Pytest failed!"
+
   build-and-publish-image:
     name: Build and Publish Registry Image
     runs-on: ubuntu-latest
-    needs: [test, formatblack] # Keeps the bot from updating the image if its not tested/formatted
+    needs: [formatblack] # Keeps the bot from updating the image if its not tested/formatted
 
     permissions:
       contents: read
