@@ -6,6 +6,7 @@
 import discord
 import logging
 import cv2 as cv
+import io
 
 from discord.ext import commands
 
@@ -58,6 +59,16 @@ class MiscCog(commands.Cog, name="Misc"):
         if not cap.isOpened():
             ctx.send(str("Error opening camera.."))
             return
+
+            # Capture a frame
+        ret, frame = cap.read()
+        # if frame is read correctly ret is True
+        if not ret:
+            ctx.send(str("Error receiving frame."))
+            return
+
+        cv.imwrite("/tmp/snap.png", frame)
+        await ctx.send(file=discord.File("/tmp/snap.png"))
 
     @commands.command()
     async def beeReset(self, ctx):
