@@ -23,5 +23,7 @@ services:
       dockerfile: Dockerfile
     environment:
       BOT_TOKEN: "top.secret.token"
+    devices:
+      - "/dev/video0:/dev/video0"
     restart: "no"
     command: "true"
