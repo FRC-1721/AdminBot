@@ -7,6 +7,7 @@ import discord
 import logging
 import cv2 as cv
 import io
+import discord.utils
 
 from discord.ext import commands
 
@@ -80,7 +81,7 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         Resets the bee command to start back at the begging of the script.
 
-        ex: ^resetScript
+        ex: ^beeReset
 
         Written by Jack.
         """
@@ -89,8 +90,12 @@ class MiscCog(commands.Cog, name="Misc"):
         if await self.bot.rick(ctx):
             return
 
-        self.bee_movie_line = 0
-        await ctx.send(str("Bee movie script has been reset"))
+        if await self.bot.check_spam(ctx):
+            return
+
+        if not discord.utils.get(ctx.guild.members, name="darkstar"):
+            self.bee_movie_line = 0
+            await ctx.send(str("Bee movie script has been reset"))
 
 
 async def setup(bot):
