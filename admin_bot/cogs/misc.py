@@ -54,7 +54,12 @@ class MiscCog(commands.Cog, name="Misc"):
         Written by Joe
         """
 
+        # Set capture device
         cap = cv.VideoCapture(0)
+
+        # Set resolution (3264X2448@15fps)
+        cap.set(cv.CAP_PROP_FRAME_WIDTH, 3264)
+        cap.set(cv.CAP_PROP_FRAME_HEIGHT, 2448)
 
         if not cap.isOpened():
             ctx.send(str("Error opening camera.."))
