@@ -96,6 +96,13 @@ class MiscCog(commands.Cog, name="Misc"):
         if not discord.utils.get(ctx.guild.members, name="darkstar"):
             self.bee_movie_line = 0
             await ctx.send(str("Bee movie script has been reset"))
+        else:
+            await ctx.message.add_reaction("😂")
+            await ctx.send(
+                str(
+                    "you, darkstar, can no longer use this command. Better luck next time!"
+                )
+            )
 
 
 async def setup(bot):
