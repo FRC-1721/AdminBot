@@ -63,14 +63,14 @@ class MiscCog(commands.Cog, name="Misc"):
         cap.set(cv.CAP_PROP_FRAME_HEIGHT, 2448)
 
         if not cap.isOpened():
-            ctx.send(str("Error opening camera.."))
+            await ctx.send(str("Error opening camera.."))
             return
 
             # Capture a frame
         ret, frame = cap.read()
         # if frame is read correctly ret is True
         if not ret:
-            ctx.send(str("Error receiving frame."))
+            await ctx.send(str("Error receiving frame."))
             return
 
         cv.imwrite("/tmp/snap.png", frame)
