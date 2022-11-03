@@ -9,6 +9,7 @@ import random
 import discord
 
 from discord.ext import commands
+from discord.utils import get
 
 
 class AdminBot(object):
@@ -54,6 +55,7 @@ class AdminBot(object):
     async def on_message(self, ctx):
         # hehe, sneaky every time
         await self.bot.rick(ctx)
+        await self.bot.reacts(ctx)
 
         await self.bot.process_commands(ctx)
 
@@ -62,6 +64,7 @@ class AdminBot(object):
 
         # Create custom bound entries
         self.bot.rick = self.rick
+        self.bot.reacts = self.reacts
         self.bot.check_spam = self.check_spam
 
         # Run the discord bot using our token.
@@ -108,3 +111,20 @@ class AdminBot(object):
             return True  # Return true, (cancel command)
 
         return False
+
+    async def reacts(self, ctx):
+        """
+        Reacts to things!
+        """
+        if "joe" in ctx.content.lower():
+            await ctx.add_reaction(get(self.bot.emojis, name="wide_joe"))
+        if "mat" in ctx.content.lower():
+            await ctx.add_reaction(get(self.bot.emojis, name="Mat"))
+        if "mark" in ctx.content.lower():
+            await ctx.add_reaction(get(self.bot.emojis, name="3dprint_mork"))
+        if ctx.author.name == "myth 2.0":
+            await ctx.add_reaction("🤷‍♀️")
+        if ctx.author.name == "younglad":
+            await ctx.add_reaction(get(self.bot.emojis, name="captain"))
+        if ctx.author.name == "G!":
+            await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
