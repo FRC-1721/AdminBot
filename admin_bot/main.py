@@ -116,16 +116,16 @@ class AdminBot(object):
         """
         Reacts to things!
         """
-        if "joe" in ctx.content.lower():
-            await ctx.add_reaction(get(self.bot.emojis, name="wide_joe"))
-        if "mat" in ctx.content.lower():
-            await ctx.add_reaction(get(self.bot.emojis, name="Mat"))
-        if "mark" in ctx.content.lower():
-            await ctx.add_reaction(get(self.bot.emojis, name="3dprint_mork"))
-        if ctx.author.name == "myth 2.0":
-            if ctx.channel.id != 967054609233362946:  # Exclusion for counting channel
+        if ctx.channel.id != 967054609233362946:  # Exclusion for counting channel
+            if "joe" in ctx.content.lower():
+                await ctx.add_reaction(get(self.bot.emojis, name="wide_joe"))
+            if "mat" in ctx.content.lower():
+                await ctx.add_reaction(get(self.bot.emojis, name="Mat"))
+            if "mark" in ctx.content.lower():
+                await ctx.add_reaction(get(self.bot.emojis, name="3dprint_mork"))
+            if ctx.author.name == "myth 2.0":
                 await ctx.add_reaction("🤷‍♀️")
-        if ctx.author.name == "younglad":
-            await ctx.add_reaction(get(self.bot.emojis, name="captain"))
-        if ctx.author.name == "G!":
-            await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
+            if ctx.author.name == "younglad":
+                await ctx.add_reaction(get(self.bot.emojis, name="captain"))
+            if ctx.author.name == "G!":
+                await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
