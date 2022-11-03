@@ -123,7 +123,8 @@ class AdminBot(object):
         if "mark" in ctx.content.lower():
             await ctx.add_reaction(get(self.bot.emojis, name="3dprint_mork"))
         if ctx.author.name == "myth 2.0":
-            await ctx.add_reaction("🤷‍♀️")
+            if ctx.channel.id != 967054609233362946:  # Exclusion for counting channel
+                await ctx.add_reaction("🤷‍♀️")
         if ctx.author.name == "younglad":
             await ctx.add_reaction(get(self.bot.emojis, name="captain"))
         if ctx.author.name == "G!":
