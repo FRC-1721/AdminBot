@@ -93,15 +93,14 @@ class MiscCog(commands.Cog, name="Misc"):
 
         if await self.bot.check_spam(ctx):
             return
-
-        if ctx.author.name == "darkstar":
+        if ctx.author.name != "darkstar":
             self.bee_movie_line = 0
             await ctx.send(str("Bee movie script has been reset"))
         else:
             await ctx.message.add_reaction("😂")
             await ctx.send(
                 str(
-                    "you, darkstar, can no longer use this command. Better luck next time!"
+                    "you, Logan(AKA darkstar), can no longer use this command. Better luck next time!"
                 )
             )
 
