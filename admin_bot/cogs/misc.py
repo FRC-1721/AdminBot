@@ -8,8 +8,10 @@ import logging
 import cv2 as cv
 import io
 import discord.utils
+import requests
+import re
 
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 
 class MiscCog(commands.Cog, name="Misc"):
@@ -104,6 +106,21 @@ class MiscCog(commands.Cog, name="Misc"):
                     "you, darkstar, can no longer use this command. Better luck next time!"
                 )
             )
+
+    @tasks.loop(seconds=5.0)
+    async def checkHl3(self):
+        yt_url = "https://www.youtube.com/c/HazardTime"  # url to check at
+        html = requests.get(yt_url + "/videos").text  # Get the html
+        info = re.search('(?<={"label":").*?(?="})', html).group()  # check for stuff
+        date = re.search("\d+ \w+ ago.*seconds ", info).group()  # check for this too
+        url = (
+            "https://www.youtube.com/watch?v="
+            + re.search('(?<="videoId":").*?(?=")', html).group()
+        )
+
+        channel = self.bot.get_channel(849996840186675201)
+        print(f"Checked for new youtube video, date is {date}")
+        # await channel.send(f"Checking..")
 
 
 async def setup(bot):
