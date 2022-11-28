@@ -126,6 +126,6 @@ class AdminBot(object):
             if ctx.author.name == "myth 2.0":
                 await ctx.add_reaction("🤷‍♀️")
             if ctx.author.name == "younglad":
-                await ctx.add_reaction(get(self.bot.emojis, name="disappointed_capt"))
+                await ctx.add_reaction(get(self.bot.emojis, name="capn"))
             if ctx.author.name == "G!":
                 await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
