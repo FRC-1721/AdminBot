@@ -129,3 +129,5 @@ class AdminBot(object):
                 await ctx.add_reaction(get(self.bot.emojis, name="capn"))
             if ctx.author.name == "G!":
                 await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
+            if ctx.author.name == "Casey":
+                await ctx.add_reaction(get(self.bot.emojis, name="CAD"))
