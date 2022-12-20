@@ -46,6 +46,7 @@ class MiscCog(commands.Cog, name="Misc"):
         await ctx.send(str(line))
 
     @commands.command()
+    @commands.has_role("Team Member")
     async def snap(self, ctx, *args):
         """
         Snaps a photo from the build space!
