@@ -25,5 +25,7 @@ services:
       BOT_TOKEN: "top.secret.token"
     devices:
       - "/dev/video0:/dev/video0"
+    links:
+      - "db:database"
     restart: "no"
     command: "true"

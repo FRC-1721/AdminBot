@@ -1,2 +1,3 @@
 discord.py
 opencv-python
+psycopg[binary]
