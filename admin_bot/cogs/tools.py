@@ -142,7 +142,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
             # Find today's events
             todays_events = []
-            day_search = timedelta(days=1)
+            day_search = timedelta(days=3)
             for event in sorted_events:
                 if (
                     event.begin.replace(tzinfo=self.localtz)
@@ -154,7 +154,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
             if len(todays_events) > 0:
                 message = "```"  # String message we'll eventually send
-                message += f"        UPCOMING EVENTS for {now.strftime('%d %B, %Y')}\n"
+                message += f"        UPCOMING EVENTS\n"
 
                 for event in todays_events:
                     try:
@@ -162,9 +162,12 @@ class ToolCog(commands.Cog, name="Tools"):
                     except AttributeError:
                         summary = "Error fetching summary"
 
-                    message += f"{summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p')}\n"
+                    message += f"{summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
                     if len(event.description) > 0:
-                        message += "    " + event.description + "\n\n"
+                        desc = event.description.replace(
+                            "\n", "\n    "
+                        )  # Preserves indentation
+                        message += "    " + desc + "\n\n"
                 message += "```"
 
                 await self.alert_channel.send(message)  # Send it!
