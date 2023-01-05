@@ -164,9 +164,8 @@ class ToolCog(commands.Cog, name="Tools"):
 
                     message += f"{summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
                     if len(event.description) > 0:
-                        desc = event.description.replace(
-                            "\n", "\n    "
-                        )  # Preserves indentation
+                        desc = event.description.replace("<br>", "\n")  # Support <br>
+                        desc = desc.replace("\n", "\n    ")  # Preserves indentation
                         message += "    " + desc + "\n\n"
                 message += "```"
 
