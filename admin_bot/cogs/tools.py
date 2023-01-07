@@ -132,43 +132,9 @@ class ToolCog(commands.Cog, name="Tools"):
         while True:  # Runs forever
             await asyncio.sleep(self.seconds_until(6, 00))  # Wait here till 6am
 
-            cal_url = "https://calendar.google.com/calendar/ical/s6pg5kgtmu98ibee92h5d1gqh0%40group.calendar.google.com/public/basic.ics"  # From google
-            teamCal = Calendar(requests.get(cal_url).text)
-            events = teamCal.events
-            sorted_events = sorted(events, reverse=False)
+            message = self.get_events()
 
-            # Now
-            now = datetime.now()
-
-            # Find today's events
-            todays_events = []
-            day_search = timedelta(days=3)
-            for event in sorted_events:
-                if (
-                    event.begin.replace(tzinfo=self.localtz)
-                    > now.replace(tzinfo=self.localtz)
-                    and event.begin.replace(tzinfo=self.localtz)
-                    < now.replace(tzinfo=self.localtz) + day_search
-                ):
-                    todays_events.append(event)
-
-            if len(todays_events) > 0:
-                message = "```"  # String message we'll eventually send
-                message += f"        UPCOMING EVENTS\n"
-
-                for event in todays_events:
-                    try:
-                        summary = event.summary
-                    except AttributeError:
-                        summary = "Error fetching summary"
-
-                    message += f"{summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
-                    if len(event.description) > 0:
-                        desc = event.description.replace("<br>", "\n")  # Support <br>
-                        desc = desc.replace("\n", "\n    ")  # Preserves indentation
-                        message += "    " + desc + "\n\n"
-                message += "```"
-
+            if len(message) > 0:
                 await self.alert_channel.send(message)  # Send it!
             else:
                 logging.info("todays_events: No messages to display today")
@@ -193,6 +159,62 @@ class ToolCog(commands.Cog, name="Tools"):
             f"seconds_until: Seconds to wait.. {(future_exec - now).total_seconds()}"
         )
         return (future_exec - now).total_seconds()
+
+    def get_events(self, days=2):
+        """
+        Returns a list of upcoming events
+        """
+
+        cal_url = "https://calendar.google.com/calendar/ical/s6pg5kgtmu98ibee92h5d1gqh0%40group.calendar.google.com/public/basic.ics"  # From google
+        teamCal = Calendar(requests.get(cal_url).text)
+        events = teamCal.events
+        sorted_events = sorted(events, reverse=False)
+
+        # Now
+        now = datetime.now()
+
+        # Find today's events
+        todays_events = []
+        day_search = timedelta(days=2)
+
+        # Add the events that are in the search range
+        for event in sorted_events:
+            if (
+                event.begin.replace(tzinfo=self.localtz)
+                > now.replace(tzinfo=self.localtz)
+                and event.begin.replace(tzinfo=self.localtz)
+                < now.replace(tzinfo=self.localtz) + day_search
+            ):
+                todays_events.append(event)
+
+        # Remove events with no description
+        filtered_events = []
+        for event in todays_events:
+            try:
+                summary = event.summary
+                desc = event.description
+
+                logging.info(f"Len of {desc} is {len(desc)}")
+                if len(desc) != 0:
+                    filtered_events.append(event)
+            except AttributeError:
+                summary = "Error fetching summary"
+
+        if len(filtered_events) > 0:
+            message = "```\n"  # String message we'll eventually send
+            message += f"        UPCOMING EVENTS\n"
+
+            for event in filtered_events:
+                message += f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
+                if len(event.description) > 0:
+                    desc = event.description.replace("<br>", "\n")  # Support <br>
+                    desc = desc.replace("\n", "\n    ")  # Preserves indentation
+                    message += "    " + desc + "\n\n"
+
+            message += "```"
+            return message
+        else:
+            return ""  # Return nothing if nothing is happening
 
 
 async def setup(bot):
