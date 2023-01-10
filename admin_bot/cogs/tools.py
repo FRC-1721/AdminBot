@@ -194,7 +194,7 @@ class ToolCog(commands.Cog, name="Tools"):
                 summary = event.summary
                 desc = event.description
 
-                logging.info(f"Len of {desc} is {len(desc)}")
+                logging.debug(f"Len of {desc} is {len(desc)}")
                 if len(desc) != 0:
                     filtered_events.append(event)
             except AttributeError:
@@ -205,13 +205,18 @@ class ToolCog(commands.Cog, name="Tools"):
             message += f"        UPCOMING EVENTS\n"
 
             for event in filtered_events:
-                message += f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
+                if event.duration >= timedelta(
+                    days=1
+                ):  # All day events are a lil weird
+                    message += f"{event.summary} all day {(event.begin.astimezone(tz=self.localtz) + timedelta(days=1)).strftime('%A %-d/%-m')}\n"
+                else:
+                    message += f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
                 if len(event.description) > 0:
                     desc = event.description.replace("<br>", "\n")  # Support <br>
                     desc = desc.replace("\n", "\n    ")  # Preserves indentation
                     message += "    " + desc + "\n\n"
 
-            message += "```"
+            message += f"\n\nVersion {self.bot.version}\n```"
             return message
         else:
             return ""  # Return nothing if nothing is happening
