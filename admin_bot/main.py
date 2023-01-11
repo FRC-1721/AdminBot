@@ -76,7 +76,7 @@ class AdminBot(object):
         """
 
         num = random.randint(1, 1000)
-        logging.info(f"Checking rick.. {num}")
+        logging.debug(f"Checking rick.. {num}")
 
         if num == 1:
             num = random.randint(1, 10)

@@ -134,7 +134,16 @@ class ToolCog(commands.Cog, name="Tools"):
 
             message = self.get_events()
 
-            if len(message) > 0:
+            if len(message) > 0:  # Only post IF theres stuff to send!
+                # Check if the last message was posted by us (to prevent double posting)
+                last_message = await self.alert_channel.fetch_message(
+                    self.alert_channel.last_message_id
+                )  # Get last message
+
+                if last_message.author == self.bot.user:
+                    logging.info("Last announcement was sent bu us! Deleting it.")
+                    await last_message.delete()
+
                 await self.alert_channel.send(message)  # Send it!
             else:
                 logging.info("todays_events: No messages to display today")
@@ -200,7 +209,9 @@ class ToolCog(commands.Cog, name="Tools"):
             except AttributeError:
                 summary = "Error fetching summary"
 
-        if len(filtered_events) > 0:
+        if (
+            len(filtered_events) > 0
+        ):  # We only building a message IF we see that we have stuff to post about!
             message = "```\n"  # String message we'll eventually send
             message += f"        UPCOMING EVENTS\n"
 
@@ -216,7 +227,7 @@ class ToolCog(commands.Cog, name="Tools"):
                     desc = desc.replace("\n", "\n    ")  # Preserves indentation
                     message += "    " + desc + "\n\n"
 
-            message += f"\n\nVersion {self.bot.version}\n```"
+            message += f"\n```"
             return message
         else:
             return ""  # Return nothing if nothing is happening
