@@ -132,9 +132,9 @@ class ToolCog(commands.Cog, name="Tools"):
         while True:  # Runs forever
             await asyncio.sleep(self.seconds_until(6, 00))  # Wait here till 6am
 
-            message = self.get_events()
+            embed = self.get_events()
 
-            if len(message) > 0:  # Only post IF theres stuff to send!
+            if embed != None:  # Only post IF theres stuff to send!
                 # Check if the last message was posted by us (to prevent double posting)
                 last_message = await self.alert_channel.fetch_message(
                     self.alert_channel.last_message_id
@@ -144,7 +144,7 @@ class ToolCog(commands.Cog, name="Tools"):
                     logging.info("Last announcement was sent bu us! Deleting it.")
                     await last_message.delete()
 
-                await self.alert_channel.send(message)  # Send it!
+                await self.alert_channel.send(embed=embed)  # Send it!
             else:
                 logging.info("todays_events: No messages to display today")
 
@@ -184,7 +184,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
         # Find today's events
         todays_events = []
-        day_search = timedelta(days=2)
+        day_search = timedelta(days=days)
 
         # Add the events that are in the search range
         for event in sorted_events:
@@ -209,28 +209,40 @@ class ToolCog(commands.Cog, name="Tools"):
             except AttributeError:
                 summary = "Error fetching summary"
 
-        if (
-            len(filtered_events) > 0
-        ):  # We only building a message IF we see that we have stuff to post about!
-            message = "```\n"  # String message we'll eventually send
-            message += f"        UPCOMING EVENTS\n"
+        if len(filtered_events) > 0:
+            # We only building a message IF we see that we have stuff to post about!
+            embed = discord.Embed(
+                title="Upcoming Events",
+                url="https://www.frc1721.org/calendar.html",
+                color=0xE62900,
+            )
+
+            # Set thumbnail
+            embed.set_thumbnail(
+                url="https://raw.githubusercontent.com/FRC-1721/marketing-material/main/logos/2019/FMS/1721_fms.png"
+            )
 
             for event in filtered_events:
                 if event.duration >= timedelta(
                     days=1
                 ):  # All day events are a lil weird
-                    message += f"{event.summary} all day {(event.begin.astimezone(tz=self.localtz) + timedelta(days=1)).strftime('%A %-d/%-m')}\n"
+                    embed.add_field(
+                        name=f"{event.summary} all day {(event.begin.astimezone(tz=self.localtz) + timedelta(days=1)).strftime('%A %-d/%-m')}",
+                        value=event.description,
+                        inline=False,
+                    )
                 else:
-                    message += f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}\n"
-                if len(event.description) > 0:
-                    desc = event.description.replace("<br>", "\n")  # Support <br>
-                    desc = desc.replace("\n", "\n    ")  # Preserves indentation
-                    message += "    " + desc + "\n\n"
+                    embed.add_field(
+                        name=f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}",
+                        value=event.description,
+                        inline=False,
+                    )
 
-            message += f"\n```"
-            return message
+            embed.set_footer(text=f"Bot version {self.bot.version}")
+
+            return embed
         else:
-            return ""  # Return nothing if nothing is happening
+            return None  # Return nothing if nothing is happening
 
 
 async def setup(bot):
