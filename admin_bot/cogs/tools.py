@@ -9,6 +9,8 @@ import logging
 import asyncio
 import requests
 
+from typing import Literal, Optional
+from discord import app_commands
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta, time
 from ics import Calendar
@@ -45,8 +47,8 @@ class ToolCog(commands.Cog, name="Tools"):
 
         await ctx.send(f"I am running version `{self.bot.version}`.")
 
-    @commands.command()
-    async def rtfm(self, ctx, *, member: discord.Member = None):
+    @app_commands.command(name="rtfm")
+    async def rtfm(self, ctx: discord.Interaction) -> None:
         """
         Returns the latest infrastructure manual
 
@@ -55,12 +57,12 @@ class ToolCog(commands.Cog, name="Tools"):
         Written by Joe.
         """
 
-        await ctx.send(
+        await ctx.response.send_message(
             f"Find the build space manual here: https://github.com/FRC-1721/infrastructure/releases/latest/download/FRC1721_Infrastructure_Manual.pdf"
         )
 
-    @commands.command()
-    async def feature(self, ctx, *args):
+    @app_commands.command(name="feature")
+    async def feature(self, ctx: discord.Interaction, *args: str) -> None:
         """
         Allows users to request a feature
 
@@ -256,6 +258,47 @@ class ToolCog(commands.Cog, name="Tools"):
             return embed
         else:
             return None  # Return nothing if nothing is happening
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.is_owner()
+    async def sync(
+        self,
+        ctx: commands.Context,
+        guilds: commands.Greedy[discord.Object],
+        spec: Optional[Literal["~", "*", "^"]] = None,
+    ) -> None:
+        """
+        From here https://gist.github.com/AbstractUmbra/a9c188797ae194e592efe05fa129c57f
+        """
+        if not guilds:
+            if spec == "~":
+                synced = await ctx.bot.tree.sync(guild=ctx.guild)
+            elif spec == "*":
+                ctx.bot.tree.copy_global_to(guild=ctx.guild)
+                synced = await ctx.bot.tree.sync(guild=ctx.guild)
+            elif spec == "^":
+                ctx.bot.tree.clear_commands(guild=ctx.guild)
+                await ctx.bot.tree.sync(guild=ctx.guild)
+                synced = []
+            else:
+                synced = await ctx.bot.tree.sync()
+
+            await ctx.send(
+                f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+            )
+            return
+
+        ret = 0
+        for guild in guilds:
+            try:
+                await ctx.bot.tree.sync(guild=guild)
+            except discord.HTTPException:
+                pass
+            else:
+                ret += 1
+
+        await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
 
 async def setup(bot):
