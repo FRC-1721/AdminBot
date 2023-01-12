@@ -35,12 +35,13 @@ class AdminBot(object):
         sys.path.append(self.workdir)
 
         # Setup logging.
-        if self.debug:
-            logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-            logging.debug("Running in debug mode.")
-        else:
-            logging.basicConfig(stream=sys.stderr, level=logging.INFO)
-            logging.info("Running in prod mode.")
+        logging.basicConfig(
+            filename="/tmp/adman.log",
+            filemode="a",
+            format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
+            datefmt="%H:%M:%S",
+            level=logging.INFO,
+        )
 
         # Append some extra information to our discord bot
         self.bot.version = self.version  # Package version with bot

@@ -76,6 +76,19 @@ class ToolCog(commands.Cog, name="Tools"):
         )
 
     @commands.command()
+    async def getLogs(self, ctx, ln=10, *args):
+        """
+        Gets the last `x` number of lines in the logfile.
+        """
+
+        msg = f"```\n last {ln} lines of logs\n\n..."
+        with open("/tmp/adman.log") as logfile:
+            for line in logfile.readlines()[-ln:]:
+                msg += line
+        msg += "```"
+        await ctx.send(msg)
+
+    @commands.command()
     async def get_help(self, ctx, team, *args):
         """
         Requests help from leads or learned members of the team, specified by team
