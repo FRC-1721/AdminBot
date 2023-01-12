@@ -81,7 +81,7 @@ class ToolCog(commands.Cog, name="Tools"):
         Gets the last `x` number of lines in the logfile.
         """
 
-        msg = f"```\n last {ln} lines of logs\n\n..."
+        msg = f"```\n last {ln} lines of logs\n\n...\n"
         with open("/tmp/adman.log") as logfile:
             for line in logfile.readlines()[-ln:]:
                 msg += line
