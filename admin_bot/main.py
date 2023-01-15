@@ -117,18 +117,48 @@ class AdminBot(object):
         """
         Reacts to things!
         """
+
+        reactPairs = [
+            ["joe", "wide_joe"],
+            ["mat", "Mat"],
+            ["mark", "3dprint_mork"],
+            ["mike", "weldin_time"],
+            ["toast", "Toaster"],
+            ["code", "sofware"],
+        ]
+
+        userPairs = [
+            ["younglad", "capn"],
+            ["G!", "saftey_captian"],
+            ["Casey", "CAD"],
+        ]
+
         if ctx.channel.id != 967054609233362946:  # Exclusion for counting channel
-            if "joe" in ctx.content.lower():
-                await ctx.add_reaction(get(self.bot.emojis, name="wide_joe"))
-            if "mat" in ctx.content.lower():
-                await ctx.add_reaction(get(self.bot.emojis, name="Mat"))
-            if "mark" in ctx.content.lower():
-                await ctx.add_reaction(get(self.bot.emojis, name="3dprint_mork"))
+            for pair in reactPairs:
+                if pair[0] in ctx.content.lower() == pair[0]:
+                    try:
+                        print(f"Trying to pair {pair[0]} with {pair[1]}.")
+                        await ctx.add_reaction(get(self.bot.emojis, name=pair[1]))
+                    except TypeError:
+                        logging.warn(
+                            f"Tried to add {pair[1]} emoji to message with {pair[0]} but failed."
+                        )
+
+            for pair in userPairs:
+                if ctx.author.name == pair[0]:
+                    try:
+                        print(f"Trying to give {pair[0]} reaction {pair[1]}.")
+                        await ctx.add_reaction(get(self.bot.emojis, name=pair[1]))
+                    except TypeError:
+                        logging.warn(
+                            f"Tried to give {pair[1]} emoji for message with {pair[0]} but failed."
+                        )
+
+            # Special case
             if ctx.author.name == "myth 2.0":
                 await ctx.add_reaction("🤷‍♀️")
-            if ctx.author.name == "younglad":
-                await ctx.add_reaction(get(self.bot.emojis, name="capn"))
-            if ctx.author.name == "G!":
-                await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
-            if ctx.author.name == "Casey":
-                await ctx.add_reaction(get(self.bot.emojis, name="CAD"))
+
+
+if __name__ == "__main__":
+    bot = AdminBot()
+    bot.run()
