@@ -52,7 +52,7 @@ class ToolCog(commands.Cog, name="Tools"):
         """
         Returns the latest infrastructure manual
 
-        Ex: ^rtfm
+        Ex: /rtfm
 
         Written by Joe.
         """
@@ -61,7 +61,7 @@ class ToolCog(commands.Cog, name="Tools"):
             f"Find the build space manual here: https://github.com/FRC-1721/infrastructure/releases/latest/download/FRC1721_Infrastructure_Manual.pdf"
         )
 
-    @app_commands.command(name="feature")
+    @commands.command()  # Cannot be converted to app command?
     async def feature(self, ctx: discord.Interaction, *args: str) -> None:
         """
         Allows users to request a feature

@@ -7,6 +7,7 @@ from types import NoneType
 import discord
 import logging
 
+from discord import app_commands
 from discord.ext import commands
 from discord.utils import get
 
@@ -29,91 +30,102 @@ class SubteamCog(commands.Cog, name="Subteams"):
             "media": "Media",
         }
 
-    @commands.command()
-    @commands.has_role("Team Member")
-    async def join(self, ctx, *args, member: discord.Member = None):
+    async def rolesAutocomplete(
+        self,
+        interaction: discord.Interaction,
+        current: str,
+    ) -> list[app_commands.Choice[str]]:
+        roles = list(self.self_assignable_roles.values())
+        return [
+            app_commands.Choice(name=role, value=role)
+            for role in roles
+            if current.lower() in role.lower()
+        ]
+
+    @app_commands.command(name="join")
+    @app_commands.checks.has_role("Team Member")
+    @app_commands.describe(
+        team="Name of the subteam you want to join.",
+    )
+    @app_commands.autocomplete(team=rolesAutocomplete)
+    async def join(self, ctx: discord.Interaction, team: str):
         """
-        Adds a user to a subteam (or subteams),
-
-        ex: ^join Chairmans
-
-        Written by Joe.
+        Adds a user to a subteam.
         """
 
         # Fuzzy match
         try:
-            request_role = args[0].lower()
+            request_role = team.lower()
             role = self.self_assignable_roles[request_role]
 
-            user = ctx.message.author
+            user = ctx.user
 
             logging.info(f"Attempting to add user to {role}")
 
-            await user.add_roles(*[get(ctx.message.guild.roles, name=role)])
-            await ctx.send(f"You've been added to the following roles: {role}")
-        except KeyError:
-            await ctx.send(
-                "Sorry, i could not interpret that, try something like ^join CAD"
+            await user.add_roles(*[get(ctx.guild.roles, name=role)])
+            await ctx.response.send_message(
+                f"You've been added to the following roles: {role}"
+            )
+        except (KeyError, AttributeError):
+            await ctx.response.send_message(
+                "Sorry, i could not interpret that, try something like /join CAD"
             )
         except IndexError:
-            await ctx.send(
-                "Please input a subteam, use ^listroles to see possible selections"
+            await ctx.response.send_message(
+                "Please input a subteam, use /listroles to see possible selections"
             )
 
-    @commands.command()
-    @commands.has_role("Team Member")
-    async def leave(self, ctx, *args, member: discord.Member = None):
+    @app_commands.command(name="leave")
+    @app_commands.checks.has_role("Team Member")
+    @app_commands.describe(
+        team="Name of the subteam you want to leave.",
+    )
+    @app_commands.autocomplete(team=rolesAutocomplete)
+    async def leave(self, ctx: discord.Interaction, team: str):
         """
-        Removes a user from a subteam (or subteams),
-
-        ex: ^leave Software
-
-        Written by Joe.
+        Removes a user from a subteam.
         """
 
         # Fuzzy match
         try:
-            request_role = args[0].lower()
+            request_role = team.lower()
             role = self.self_assignable_roles[request_role]
 
-            user = ctx.message.author
+            user = ctx.user
 
             logging.info(f"Attempting to remove user from {role}")
 
-            await user.remove_roles(*[get(ctx.message.guild.roles, name=role)])
-            await ctx.send(f"You've been removed from the following roles: {role}")
-        except KeyError:
-            await ctx.send(
-                "Sorry, i could not interpret that, try something like ^leave CAD"
+            await user.remove_roles(*[get(ctx.guild.roles, name=role)])
+            await ctx.response.send_message(
+                f"You've been removed from the following roles: {role}"
+            )
+        except (KeyError, AttributeError):
+            await ctx.response.send_message(
+                "Sorry, i could not interpret that, try something like /leave CAD"
             )
         except IndexError:
-            await ctx.send(
-                "Please input a subteam, use ^listroles to see possible selections"
+            await ctx.response.send_message(
+                "Please input a subteam, use /listroles to see possible selections"
             )
 
-    @commands.command()
-    @commands.has_role("Team Member")
-    async def listroles(self, ctx, *args, member: discord.Member = None):
+    @app_commands.command(name="listroles")
+    @app_commands.checks.has_role("Team Member")
+    async def listroles(
+        self,
+        ctx: discord.Interaction,
+    ):
         """
         Lists the possible roles.
-
-        ex: ^listroles
-
-        Written by Joe.
         """
-
-        # Random chance to rick-roll
-        if await self.bot.rick(ctx):
-            return
 
         rolestr = ""
         for role in self.self_assignable_roles:
             rolestr += f"`{role}`, "
-        await ctx.send(f"The possible roles are: {rolestr}")
+        await ctx.response.send_message(f"The possible roles are: {rolestr}")
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        await ctx.send(f"Error! {error}")
+        await ctx.response.send_message(f"Error! {error}")
         raise error
 
 
