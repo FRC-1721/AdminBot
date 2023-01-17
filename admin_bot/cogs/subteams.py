@@ -19,7 +19,6 @@ class SubteamCog(commands.Cog, name="Subteams"):
         # These should be defined maybe in a yaml somewhere else
         self.self_assignable_roles = [
             "Student",
-            "Chairmans",
             "Software Team",
             "Mechanical Team",
             "CAD Team",
@@ -28,6 +27,7 @@ class SubteamCog(commands.Cog, name="Subteams"):
             "Business Team",
             "Scouting",
             "Media",
+            "Gaming Notifications",
         ]
 
     async def rolesAutocomplete(
@@ -65,7 +65,7 @@ class SubteamCog(commands.Cog, name="Subteams"):
             )
         except (KeyError, AttributeError) as e:
             await ctx.response.send_message(
-                "Sorry, i could not interpret that, try something like /join CAD"
+                "Sorry, i could not interpret that, try something like /join Cad Team"
             )
             logging.error(e)
         except IndexError:
@@ -96,7 +96,7 @@ class SubteamCog(commands.Cog, name="Subteams"):
             )
         except (KeyError, AttributeError) as e:
             await ctx.response.send_message(
-                "Sorry, i could not interpret that, try something like /leave CAD"
+                "Sorry, i could not interpret that, try something like /leave CAD Team"
             )
             logging.error(e)
         except IndexError:
