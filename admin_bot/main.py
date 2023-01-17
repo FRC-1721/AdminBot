@@ -94,7 +94,7 @@ class AdminBot(object):
             return True
         return False
 
-    async def check_spam(self, ctx):
+    async def check_spam(self, ctx: discord.Interaction):
         """
         Prevents you from spamming some commands in channels where its not allowed
         """
@@ -108,7 +108,7 @@ class AdminBot(object):
         ]
 
         if ctx.channel.id not in spam_channels:  # Check if this channel is ok for spam
-            await ctx.message.add_reaction("❌")
+            await ctx.response.send_message("❌")
             return True  # Return true, (cancel command)
 
         return False
