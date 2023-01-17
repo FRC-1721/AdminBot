@@ -17,25 +17,25 @@ class SubteamCog(commands.Cog, name="Subteams"):
         self.bot = bot
 
         # These should be defined maybe in a yaml somewhere else
-        self.self_assignable_roles = {
-            "student": "Student",
-            "chairmans": "Chairmans",
-            "software": "Software Team",
-            "mechanical": "Mechanical Team",
-            "cad": "CAD Team",
-            "electrical": "Electrical Team",
-            "outreach": "Outreach",
-            "business": "Business Team",
-            "scouting": "Scouting",
-            "media": "Media",
-        }
+        self.self_assignable_roles = [
+            "Student",
+            "Chairmans",
+            "Software Team",
+            "Mechanical Team",
+            "CAD Team",
+            "Electrical Team",
+            "Outreach",
+            "Business Team",
+            "Scouting",
+            "Media",
+        ]
 
     async def rolesAutocomplete(
         self,
         interaction: discord.Interaction,
         current: str,
     ) -> list[app_commands.Choice[str]]:
-        roles = list(self.self_assignable_roles.values())
+        roles = self.self_assignable_roles
         return [
             app_commands.Choice(name=role, value=role)
             for role in roles
@@ -55,21 +55,19 @@ class SubteamCog(commands.Cog, name="Subteams"):
 
         # Fuzzy match
         try:
-            request_role = team.lower()
-            role = self.self_assignable_roles[request_role]
-
             user = ctx.user
 
-            logging.info(f"Attempting to add user to {role}")
+            logging.info(f"Attempting to add user to {team}")
 
-            await user.add_roles(*[get(ctx.guild.roles, name=role)])
+            await user.add_roles(*[get(ctx.guild.roles, name=team)])
             await ctx.response.send_message(
-                f"You've been added to the following roles: {role}"
+                f"You've been added to the following roles: {team}"
             )
-        except (KeyError, AttributeError):
+        except (KeyError, AttributeError) as e:
             await ctx.response.send_message(
                 "Sorry, i could not interpret that, try something like /join CAD"
             )
+            logging.error(e)
         except IndexError:
             await ctx.response.send_message(
                 "Please input a subteam, use /listroles to see possible selections"
@@ -88,21 +86,19 @@ class SubteamCog(commands.Cog, name="Subteams"):
 
         # Fuzzy match
         try:
-            request_role = team.lower()
-            role = self.self_assignable_roles[request_role]
-
             user = ctx.user
 
-            logging.info(f"Attempting to remove user from {role}")
+            logging.info(f"Attempting to remove user from {team}")
 
-            await user.remove_roles(*[get(ctx.guild.roles, name=role)])
+            await user.remove_roles(*[get(ctx.guild.roles, name=team)])
             await ctx.response.send_message(
-                f"You've been removed from the following roles: {role}"
+                f"You've been removed from the following roles: {team}"
             )
-        except (KeyError, AttributeError):
+        except (KeyError, AttributeError) as e:
             await ctx.response.send_message(
                 "Sorry, i could not interpret that, try something like /leave CAD"
             )
+            logging.error(e)
         except IndexError:
             await ctx.response.send_message(
                 "Please input a subteam, use /listroles to see possible selections"
