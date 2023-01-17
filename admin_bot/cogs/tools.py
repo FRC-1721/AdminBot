@@ -261,7 +261,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
     @commands.command()
     @commands.guild_only()
-    @commands.is_owner()
+    @commands.has_role("Software Team")
     async def sync(
         self,
         ctx: commands.Context,
