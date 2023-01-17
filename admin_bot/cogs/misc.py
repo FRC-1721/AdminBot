@@ -60,7 +60,7 @@ class MiscCog(commands.Cog, name="Misc"):
         HIGH_VALUE = 10000
         WIDTH = HIGH_VALUE
         HEIGHT = HIGH_VALUE
-        fourcc = cv.VideoWriter_fourcc(*"XVID")
+        fourcc = cv.VideoWriter_fourcc(*"MJPG")
         cap.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH)
         cap.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT)
 
