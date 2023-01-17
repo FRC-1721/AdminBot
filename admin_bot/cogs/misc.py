@@ -8,6 +8,7 @@ import logging
 import cv2 as cv
 import io
 import discord.utils
+import asyncio
 
 from discord import app_commands
 from discord.ext import commands
@@ -19,6 +20,7 @@ class MiscCog(commands.Cog, name="Misc"):
 
         # Variables
         self.bee_movie_line = 0
+        self.robot_channel = self.bot.get_channel(590931089426612284)
 
     @app_commands.command(name="bee")
     async def bee(self, ctx: discord.Interaction):
@@ -97,6 +99,17 @@ class MiscCog(commands.Cog, name="Misc"):
                     "you, Logan(AKA darkstar), can no longer use this command. Better luck next time!"
                 )
             )
+
+    async def happy_birthday(self):
+        """
+        the feature was requested by Casey to wish Mat a happy birthday
+        https://github.com/FRC-1721/AdminBot/issues/42
+        """
+
+        while True:  # Runs forever
+            await asyncio.sleep(self.seconds_until(6, 00))  # Wait here till 6am
+            await self.robot_channel.send(str("Happy Birthday @Mat from @Casey"))
+            await asyncio.sleep(60)  # So we dont spam while its 11 pm
 
 
 async def setup(bot):
