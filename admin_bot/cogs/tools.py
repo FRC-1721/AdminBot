@@ -35,8 +35,8 @@ class ToolCog(commands.Cog, name="Tools"):
             f"Admin Bot version `{self.bot.version}` just restarted."
         )
 
-    @commands.command()
-    async def version(self, ctx, *, member: discord.Member = None):
+    @app_commands.command(name="version")
+    async def version(self, ctx: discord.Interaction):
         """
         Prints the revision/version.
 
@@ -45,7 +45,7 @@ class ToolCog(commands.Cog, name="Tools"):
         Written by Joe.
         """
 
-        await ctx.send(f"I am running version `{self.bot.version}`.")
+        await ctx.response.send_message(f"I am running version `{self.bot.version}`.")
 
     @app_commands.command(name="rtfm")
     async def rtfm(self, ctx: discord.Interaction) -> None:
