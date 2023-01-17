@@ -56,10 +56,13 @@ class MiscCog(commands.Cog, name="Misc"):
         # Set capture device
         cap = cv.VideoCapture(0)
 
-        # # Set resolution (3264X2448@15fps)
-        # fourcc = cv.VideoWriter_fourcc(*"MJPG")
-        # cap.set(cv.CAP_PROP_FRAME_WIDTH, 1600)
-        # cap.set(cv.CAP_PROP_FRAME_HEIGHT, 1200)
+        # Set resolution (try to anyway)
+        HIGH_VALUE = 10000
+        WIDTH = HIGH_VALUE
+        HEIGHT = HIGH_VALUE
+        fourcc = cv.VideoWriter_fourcc(*"XVID")
+        cap.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH)
+        cap.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT)
 
         if not cap.isOpened():
             await ctx.response.send_message(str("Error opening camera.."))
