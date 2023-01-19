@@ -109,7 +109,19 @@ class MiscCog(commands.Cog, name="Misc"):
         while True:  # Runs forever
             await asyncio.sleep(self.seconds_until(6, 00))  # Wait here till 6am
             await self.robot_channel.send(str("Happy Birthday @Mat from @Casey"))
-            await asyncio.sleep(60)  # So we dont spam while its 11 pm
+            await asyncio.sleep(60)
+
+    async def happy_birthday2(self):
+        """
+        This feature wishes veronica a happy birthday at exactly 15:42(3:42pm)
+        """
+
+        while True:  # Runs Forever
+            await asyncio.sleep(self.seconds_until(15, 42))  # Wait here till 6am
+            await self.robot_channel.send(
+                str("Happy Birthday @Veronica from @totally joe(logan)")
+            )
+            await asyncio.sleep(60)
 
 
 async def setup(bot):
