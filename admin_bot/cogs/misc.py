@@ -4,6 +4,7 @@
 
 
 import discord
+import pytz
 import logging
 import cv2 as cv
 import io
@@ -11,7 +12,9 @@ import discord.utils
 import asyncio
 
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
+
+from utilities.common import seconds_until
 
 
 class MiscCog(commands.Cog, name="Misc"):
@@ -21,6 +24,11 @@ class MiscCog(commands.Cog, name="Misc"):
         # Variables
         self.bee_movie_line = 0
         self.robot_channel = self.bot.get_channel(590931089426612284)
+
+        # Configure background tasks
+        self.localtz = pytz.timezone("US/Eastern")
+        self.happy_birthday.start()
+        self.happy_birthday2.start()
 
     @app_commands.command(name="bee")
     async def bee(self, ctx: discord.Interaction):
@@ -100,6 +108,7 @@ class MiscCog(commands.Cog, name="Misc"):
                 )
             )
 
+    @tasks.loop(minutes=1)
     async def happy_birthday(self):
         """
         the feature was requested by Casey to wish Mat a happy birthday
@@ -107,19 +116,26 @@ class MiscCog(commands.Cog, name="Misc"):
         """
 
         while True:  # Runs forever
-            await asyncio.sleep(self.seconds_until(6, 00))  # Wait here till 6am
-            await self.robot_channel.send(str("Happy Birthday @Mat from @Casey"))
+            await asyncio.sleep(
+                seconds_until(self.localtz, 6, 00)
+            )  # Wait here till 6am
+            await self.robot_channel.send(
+                f"Happy Birthday <@419596034877030402> from <@758000997418270850>"
+            )
             await asyncio.sleep(60)
 
+    @tasks.loop(minutes=1)
     async def happy_birthday2(self):
         """
         This feature wishes veronica a happy birthday at exactly 15:42(3:42pm)
         """
 
         while True:  # Runs Forever
-            await asyncio.sleep(self.seconds_until(15, 42))  # Wait here till 6am
+            await asyncio.sleep(
+                seconds_until(self.localtz, 15, 42)
+            )  # Wait here till 6am
             await self.robot_channel.send(
-                str("Happy Birthday @Veronica from @totally joe(logan)")
+                f"Happy Birthday <@995095621591629865> from <@291277282667134976>"
             )
             await asyncio.sleep(60)
 

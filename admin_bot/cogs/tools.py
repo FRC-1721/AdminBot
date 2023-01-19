@@ -15,6 +15,8 @@ from discord.ext import commands, tasks
 from datetime import datetime, timedelta, time
 from ics import Calendar
 
+from utilities.common import seconds_until
+
 
 class ToolCog(commands.Cog, name="Tools"):
     def __init__(self, bot):
@@ -145,7 +147,9 @@ class ToolCog(commands.Cog, name="Tools"):
         logging.info("Running upcomming events")
 
         while True:  # Runs forever
-            await asyncio.sleep(self.seconds_until(6, 00))  # Wait here till 6am
+            await asyncio.sleep(
+                seconds_until(self.localtz, 6, 00)
+            )  # Wait here till 6am
 
             embed = self.get_events()
 
@@ -164,25 +168,6 @@ class ToolCog(commands.Cog, name="Tools"):
                 logging.info("todays_events: No messages to display today")
 
             await asyncio.sleep(60)  # So we dont spam while its 11 pm
-
-    def seconds_until(self, hours, minutes):
-        """From stackoverflow and coppied by joe but will
-        wait for a designated period of time and then resume."""
-
-        given_time = time(hours, minutes, tzinfo=self.localtz)
-        now = datetime.now(tz=self.localtz)
-        future_exec = datetime.combine(now, given_time)
-        if (
-            future_exec - now
-        ).days < 0:  # If we are past the execution, it will take place tomorrow
-            future_exec = datetime.combine(
-                now + timedelta(days=1), given_time
-            )  # days always >= 0
-
-        logging.debug(
-            f"seconds_until: Seconds to wait.. {(future_exec - now).total_seconds()}"
-        )
-        return (future_exec - now).total_seconds()
 
     def get_events(self, days=2):
         """
