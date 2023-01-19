@@ -121,7 +121,7 @@ class SubteamCog(commands.Cog, name="Subteams"):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        await ctx.response.send_message(f"Error! {error}")
+        await ctx.send(f"Error! {error}")
         raise error
 
 
