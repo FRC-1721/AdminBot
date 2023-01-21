@@ -21,6 +21,9 @@ class AdminBot(object):
         # Create our discord bot
         self.bot = commands.Bot(command_prefix="^", intents=intents)
 
+        # Remove legacy help command
+        self.bot.remove_command("help")
+
         # Register
         self.bot.on_ready = self.on_ready
         self.bot.on_message = self.on_message

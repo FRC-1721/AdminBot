@@ -79,49 +79,18 @@ class ToolCog(commands.Cog, name="Tools"):
             f"https://github.com/FRC-1721/AdminBot/issues/new?labels=feature&title={title}&body=Describe+your+feature+here+please!"
         )
 
-    @commands.command()
-    async def getLogs(self, ctx, ln=10, *args):
+    @app_commands.command(name="getlogs")
+    async def getlogs(self, ctx: discord.Interaction, lines: int = 10) -> None:
         """
         Gets the last `x` number of lines in the logfile.
         """
 
-        msg = f"```\n last {ln} lines of logs\n\n...\n"
+        msg = f"```\n last {lines} lines of logs\n\n...\n"
         with open("/tmp/adman.log") as logfile:
-            for line in logfile.readlines()[-ln:]:
+            for line in logfile.readlines()[-lines:]:
                 msg += line
         msg += "```"
-        await ctx.send(msg)
-
-    @commands.command()
-    async def get_help(self, ctx, team, *args):
-        """
-        Requests help from leads or learned members of the team, specified by team
-
-        Ex: ^get_help kode The PID wont fit in the kinematics, so I cant defibrillate the ramsete compiler!
-
-        Written by Khan
-        """
-
-        helper_roles = (
-            "Kode",
-            "Mechanical",
-            "Electrical",
-            "CAD",
-            "Mentor",
-            "all",
-        )
-
-        if team in helper_roles:
-            message = " ".join(args)
-
-            await ctx.send(
-                f"```asciidoc\n[HELP TICKET]\n{message}\n------------------\n```"
-            )
-
-        else:
-            await ctx.send(
-                f"Unrecagnized team {team}, please use one of the following:\nKode, Mechanical, Electrical, CAD, Mentor, all"
-            )
+        await ctx.response.send_message(msg)
 
     @commands.command()
     @commands.has_role("Team Member")
