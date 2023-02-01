@@ -111,10 +111,10 @@ class ToolCog(commands.Cog, name="Tools"):
         quit()
 
     @app_commands.command(name="today")
-    async def today(self, ctx: discord.Interaction) -> None:
+    async def today(self, ctx: discord.Interaction, show_all: bool = True) -> None:
         """Gives you today's itinerary!"""
 
-        embed = self.get_events(all=True)
+        embed = self.get_events(days=1.5, all=show_all)
         if embed != None:  # Only post IF theres stuff to send!
             await ctx.response.send_message(embed=embed)  # Send it!
         else:
@@ -161,6 +161,13 @@ class ToolCog(commands.Cog, name="Tools"):
         # Now
         now = datetime.now()
 
+        if all:
+            # This sorta scoots us back if we're doing this later in the day, clunky but works
+            # =====
+            # A better solution to all this would be to just figure out what day today is, and what day the event falls on
+            # =====
+            now = now - timedelta(hours=12)
+
         # Find today's events
         todays_events = []
         day_search = timedelta(days=days)
@@ -180,14 +187,19 @@ class ToolCog(commands.Cog, name="Tools"):
         for event in todays_events:
             try:
                 summary = event.summary
-                desc = event.description
-
-                logging.debug(f"Len of {desc} is {len(desc)}")
-                if len(desc) != 0 or all:
-                    # If all is true, we'll just add everything in here
-                    filtered_events.append(event)
             except AttributeError:
-                summary = "Error fetching summary"
+                event.summary = "Error fetching summary"
+
+            try:
+                desc = event.description
+            except AttributeError:
+                event.description = "Error fetching desc"
+
+            logging.info(f"Len of {desc} is {len(desc)}")
+            if len(desc) != 0 or all:
+                # If all is true, we'll just add everything in here
+                logging.info(f"Adding event: {event}")
+                filtered_events.append(event)
 
         if len(filtered_events) > 0:
             # We only building a message IF we see that we have stuff to post about!
@@ -213,7 +225,7 @@ class ToolCog(commands.Cog, name="Tools"):
                     )
                 else:
                     embed.add_field(
-                        name=f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')}",
+                        name=f"{event.summary} at {event.begin.astimezone(tz=self.localtz).strftime('%-I:%M %p, %A %-d/%-m')} till {event.end.astimezone(tz=self.localtz).strftime('%-I:%M %p')}",
                         value=event.description,
                         inline=False,
                     )
