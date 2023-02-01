@@ -110,6 +110,16 @@ class ToolCog(commands.Cog, name="Tools"):
 
         quit()
 
+    @app_commands.command(name="today")
+    async def today(self, ctx: discord.Interaction) -> None:
+        """Gives you today's itinerary!"""
+
+        embed = self.get_events(all=True)
+        if embed != None:  # Only post IF theres stuff to send!
+            await ctx.response.send_message(embed=embed)  # Send it!
+        else:
+            await ctx.response.send_message("Nothing on the calender for today!")
+
     @tasks.loop(minutes=1)  # Still waits for 11:58 though
     async def upcoming_events(self):
         """Drops calender events in the announcements channel"""
@@ -138,7 +148,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
             await asyncio.sleep(60)  # So we dont spam while its 11 pm
 
-    def get_events(self, days=2):
+    def get_events(self, days=2, all=False):
         """
         Returns a list of upcoming events
         """
@@ -173,7 +183,8 @@ class ToolCog(commands.Cog, name="Tools"):
                 desc = event.description
 
                 logging.debug(f"Len of {desc} is {len(desc)}")
-                if len(desc) != 0:
+                if len(desc) != 0 or all:
+                    # If all is true, we'll just add everything in here
                     filtered_events.append(event)
             except AttributeError:
                 summary = "Error fetching summary"
