@@ -111,19 +111,29 @@ class ToolCog(commands.Cog, name="Tools"):
         quit()
 
     @app_commands.command(name="today")
-    async def today(self, ctx: discord.Interaction, show_all: bool = True) -> None:
+    async def today(self, ctx: discord.Interaction) -> None:
         """Gives you today's itinerary!"""
 
-        embed = self.get_events(days=1.5, all=show_all)
+        embed = self.get_events(days=1, all=True, embedName="Today's Events")
         if embed != None:  # Only post IF theres stuff to send!
             await ctx.response.send_message(embed=embed)  # Send it!
         else:
             await ctx.response.send_message("Nothing on the calender for today!")
 
+    @app_commands.command(name="tomorrow")
+    async def tomorrow(self, ctx: discord.Interaction, days: int = 2) -> None:
+        """Gives you tomorrow's itinerary!"""
+
+        embed = self.get_events(days=days, all=True, embedName="Tomorrow's Events")
+        if embed != None:  # Only post IF theres stuff to send!
+            await ctx.response.send_message(embed=embed)  # Send it!
+        else:
+            await ctx.response.send_message("Nothing on the calender for tomorrow!")
+
     @tasks.loop(minutes=1)  # Still waits for 11:58 though
     async def upcoming_events(self):
         """Drops calender events in the announcements channel"""
-        logging.info("Running upcomming events")
+        logging.info("Running upcoming events")
 
         while True:  # Runs forever
             await asyncio.sleep(
@@ -148,7 +158,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
             await asyncio.sleep(60)  # So we dont spam while its 11 pm
 
-    def get_events(self, days=2, all=False):
+    def get_events(self, days=2, all=False, embedName="Upcoming Events"):
         """
         Returns a list of upcoming events
         """
@@ -159,28 +169,20 @@ class ToolCog(commands.Cog, name="Tools"):
         sorted_events = sorted(events, reverse=False)
 
         # Now
-        now = datetime.now()
-
-        if all:
-            # This sorta scoots us back if we're doing this later in the day, clunky but works
-            # =====
-            # A better solution to all this would be to just figure out what day today is, and what day the event falls on
-            # =====
-            now = now - timedelta(hours=12)
+        now = datetime.now(self.localtz)
 
         # Find today's events
         todays_events = []
-        day_search = timedelta(days=days)
 
         # Add the events that are in the search range
         for event in sorted_events:
-            if (
-                event.begin.replace(tzinfo=self.localtz)
-                > now.replace(tzinfo=self.localtz)
-                and event.begin.replace(tzinfo=self.localtz)
-                < now.replace(tzinfo=self.localtz) + day_search
-            ):
-                todays_events.append(event)
+            begin = event.begin.replace(tzinfo=self.localtz)
+
+            # Search in range between -2 and +2 days
+            if begin > now - timedelta(days=2) and begin < now + timedelta(days=2):
+                if begin.day - now.day in range(0, days):
+                    print(f"Event {event} on day {begin.day} and day {now.day}")
+                    todays_events.append(event)
 
         # Remove events with no description
         filtered_events = []
@@ -204,7 +206,7 @@ class ToolCog(commands.Cog, name="Tools"):
         if len(filtered_events) > 0:
             # We only building a message IF we see that we have stuff to post about!
             embed = discord.Embed(
-                title="Upcoming Events",
+                title=embedName,
                 url="https://www.frc1721.org/calendar.html",
                 color=0xE62900,
             )
