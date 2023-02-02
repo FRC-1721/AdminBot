@@ -200,10 +200,9 @@ class ToolCog(commands.Cog, name="Tools"):
             except AttributeError:
                 event.description = "Error fetching desc"
 
-            logging.info(f"Len of {desc} is {len(desc)}")
             if len(desc) != 0 or all:
                 # If all is true, we'll just add everything in here
-                logging.info(f"Adding event: {event}")
+                logging.debug(f"Adding event: {event}")
                 filtered_events.append(event)
 
         if len(filtered_events) > 0:
@@ -216,12 +215,15 @@ class ToolCog(commands.Cog, name="Tools"):
 
             # Pick a more fun thumbnail!
             thumbUrl = "https://raw.githubusercontent.com/FRC-1721/marketing-material/main/logos/2019/FMS/1721_fms.png"
-            if self.teamServer is not None:
-                user = random.choice(self.teamServer.members)
-                if len(user.avatar) > 0:
-                    thumbUrl = user.avatar
-            else:
-                logging.warn("Error! Could not get random user pfp!")
+            try:
+                if self.teamServer is not None:
+                    user = random.choice(self.teamServer.members)
+                    if len(user.avatar) > 0:
+                        thumbUrl = user.avatar
+                else:
+                    logging.error("Error! Could not get guild!")
+            except BaseException as error:
+                logging.error("Error fetching pfp: {}".format(error))
 
             # Set thumbnail
             embed.set_thumbnail(url=thumbUrl)
