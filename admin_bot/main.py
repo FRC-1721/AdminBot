@@ -15,7 +15,7 @@ from discord.utils import get
 class AdminBot(object):
     def __init__(self):
         # Intents (new iirc)
-        intents = discord.Intents(messages=True, guilds=True)
+        intents = discord.Intents(messages=True, guilds=True, members=True)
         intents.message_content = True
 
         # Create our discord bot

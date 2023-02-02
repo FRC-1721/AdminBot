@@ -8,6 +8,7 @@ import discord
 import logging
 import asyncio
 import requests
+import random
 
 from typing import Literal, Optional
 from discord import app_commands
@@ -25,13 +26,15 @@ class ToolCog(commands.Cog, name="Tools"):
         self.status_channel = self.bot.get_channel(590312300695650305)
         self.alert_channel = self.bot.get_channel(634136760401526793)
 
+        self.teamServer = self.bot.get_guild(590309936538451972)
+
         # Setup calender
         self.localtz = pytz.timezone("US/Eastern")
         self.upcoming_events.start()
 
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.bot.get_guild(590309936538451972).me.edit(nick="Adman")
+        await self.teamServer.me.edit(nick="Adman")
 
         await self.status_channel.send(
             f"Admin Bot version `{self.bot.version}` just restarted."
@@ -181,7 +184,7 @@ class ToolCog(commands.Cog, name="Tools"):
             # Search in range between -2 and +2 days
             if begin > now - timedelta(days=2) and begin < now + timedelta(days=2):
                 if begin.day - now.day in range(0, days):
-                    print(f"Event {event} on day {begin.day} and day {now.day}")
+                    logging.debug(f"Event {event} on day {begin.day} and day {now.day}")
                     todays_events.append(event)
 
         # Remove events with no description
@@ -211,10 +214,17 @@ class ToolCog(commands.Cog, name="Tools"):
                 color=0xE62900,
             )
 
+            # Pick a more fun thumbnail!
+            thumbUrl = "https://raw.githubusercontent.com/FRC-1721/marketing-material/main/logos/2019/FMS/1721_fms.png"
+            if self.teamServer is not None:
+                user = random.choice(self.teamServer.members)
+                if len(user.avatar) > 0:
+                    thumbUrl = user.avatar
+            else:
+                logging.warn("Error! Could not get random user pfp!")
+
             # Set thumbnail
-            embed.set_thumbnail(
-                url="https://raw.githubusercontent.com/FRC-1721/marketing-material/main/logos/2019/FMS/1721_fms.png"
-            )
+            embed.set_thumbnail(url=thumbUrl)
 
             for event in filtered_events:
                 if event.duration >= timedelta(
