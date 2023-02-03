@@ -215,11 +215,14 @@ class ToolCog(commands.Cog, name="Tools"):
 
             # Pick a more fun thumbnail!
             thumbUrl = "https://raw.githubusercontent.com/FRC-1721/marketing-material/main/logos/2019/FMS/1721_fms.png"
+            thumbFooter = f"Bot version {self.bot.version}"
             try:
                 if self.teamServer is not None:
                     user = random.choice(self.teamServer.members)
                     if len(user.avatar) > 0:
                         thumbUrl = user.avatar
+                    if len(user.avatar) > 0:
+                        thumbFooter = f"User of the day: {user.display_name}"
                 else:
                     logging.error("Error! Could not get guild!")
             except BaseException as error:
@@ -244,7 +247,7 @@ class ToolCog(commands.Cog, name="Tools"):
                         inline=False,
                     )
 
-            embed.set_footer(text=f"Bot version {self.bot.version}")
+            embed.set_footer(text=thumbFooter)
 
             return embed
         else:
