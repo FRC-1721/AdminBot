@@ -26,10 +26,11 @@ class BatteryCog(commands.Cog, name="Batteries"):
 
         self.beakStatus = [
             "Good",
+            "Fair",
             "Poor",
         ]
 
-        # Database stuff.
+        # Connect to DB
         self.conn = psycopg.connect(
             "dbname=admin_bot_db user=postgres password=postgres host=database"
         )
@@ -44,7 +45,8 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     comp boolean DEFAULT TRUE,
                     beakStatus text,
                     beakRInt real,
-                    memo text)
+                    beakCharge real,
+                    note text)
                 """
             )
 
@@ -65,7 +67,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
     async def record(
         self,
         ctx: discord.Interaction,
-        battery_id: str = "AA",
+        battery_id: str = "23A",
         memo: str = '"None"',
         status: str = None,
     ):
@@ -73,16 +75,20 @@ class BatteryCog(commands.Cog, name="Batteries"):
 
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO batteryLogs (num, boolean, data, num, data) VALUES (%s, %s, %s, %s, %s)",
-                (battery_id, False, status, 0.1, memo),
+                "INSERT INTO batteryLogs (id, comp, beakStatus, beakRInt, beakCharge, note) VALUES (%s, %s, %s, %s, %s, %s)",
+                (battery_id, False, status, 100, 0.1, memo),
             )
 
             self.conn.commit()
 
             cur.execute("SELECT * FROM batteryLogs")
 
+            repl = "```\n"
             for record in cur:
-                await ctx.send(f"{record}")
+                repl += f"{record}\n"
+            repl += "\n```"
+
+            await ctx.response.send_message(repl)
 
 
 async def setup(bot):
