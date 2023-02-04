@@ -8,8 +8,14 @@ import logging
 import cv2 as cv
 import io
 import discord.utils
+import asyncio
+import random
+import yaml
 
+from discord import app_commands
 from discord.ext import commands
+
+from admin_bot.utilities.yamlTools import getSuggestion
 
 
 class MiscCog(commands.Cog, name="Misc"):
@@ -18,9 +24,10 @@ class MiscCog(commands.Cog, name="Misc"):
 
         # Variables
         self.bee_movie_line = 0
+        self.robot_channel = self.bot.get_channel(590931089426612284)
 
-    @commands.command()
-    async def bee(self, ctx, *args):
+    @app_commands.command(name="bee")
+    async def bee(self, ctx: discord.Interaction):
         """
         Prints a single line from the bee movie script.
 
@@ -28,10 +35,6 @@ class MiscCog(commands.Cog, name="Misc"):
 
         Written by Joe + Casey, made as a request from https://github.com/FRC-1721/AdminBot/issues/7
         """
-
-        # Random chance to rick-roll
-        if await self.bot.rick(ctx):
-            return
 
         if await self.bot.check_spam(ctx):
             return
@@ -43,11 +46,11 @@ class MiscCog(commands.Cog, name="Misc"):
                 if len(line) != 0:
                     break
 
-        await ctx.send(str(line))
+        await ctx.response.send_message(str(line))
 
-    @commands.command()
-    @commands.has_role("Team Member")
-    async def snap(self, ctx, *args):
+    @app_commands.command(name="snap")
+    @app_commands.checks.has_role("Team Member")
+    async def snap(self, ctx: discord.Interaction):
         """
         Snaps a photo from the build space!
 
@@ -65,21 +68,21 @@ class MiscCog(commands.Cog, name="Misc"):
         # cap.set(cv.CAP_PROP_FRAME_HEIGHT, 1200)
 
         if not cap.isOpened():
-            await ctx.send(str("Error opening camera.."))
+            await ctx.response.send_message(str("Error opening camera.."))
             return
 
             # Capture a frame
         ret, frame = cap.read()
         # if frame is read correctly ret is True
         if not ret:
-            await ctx.send(str("Error receiving frame."))
+            await ctx.response.send_message(str("Error receiving frame."))
             return
 
         cv.imwrite("/tmp/snap.png", frame)
-        await ctx.send(file=discord.File("/tmp/snap.png"))
+        await ctx.response.send_message(file=discord.File("/tmp/snap.png"))
 
-    @commands.command()
-    async def beeReset(self, ctx):
+    @app_commands.command(name="beereset")
+    async def beeReset(self, ctx: discord.Interaction):
         """
         Resets the bee command to start back at the begging of the script.
 
@@ -88,22 +91,26 @@ class MiscCog(commands.Cog, name="Misc"):
         Written by Jack.
         """
 
-        # Random chance to rick-roll
-        if await self.bot.rick(ctx):
-            return
-
         if await self.bot.check_spam(ctx):
             return
-        if ctx.author.name != "darkstar":
+        if ctx.user.name != "darkstar":
             self.bee_movie_line = 0
-            await ctx.send(str("Bee movie script has been reset"))
+            await ctx.response.send_message(str("Bee movie script has been reset"))
         else:
             await ctx.message.add_reaction("😂")
-            await ctx.send(
+            await ctx.response.send_message(
                 str(
                     "you, Logan(AKA darkstar), can no longer use this command. Better luck next time!"
                 )
             )
+
+    @app_commands.command(name="help")
+    async def help(self, ctx: discord.Interaction):
+        """Its like a real help, but silly"""
+
+        await ctx.response.send_message(
+            random.choice(getSuggestion([role.name for role in ctx.user.roles]))
+        )
 
 
 async def setup(bot):

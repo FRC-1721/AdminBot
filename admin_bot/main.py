@@ -15,11 +15,14 @@ from discord.utils import get
 class AdminBot(object):
     def __init__(self):
         # Intents (new iirc)
-        intents = discord.Intents(messages=True, guilds=True)
+        intents = discord.Intents(messages=True, guilds=True, members=True)
         intents.message_content = True
 
         # Create our discord bot
         self.bot = commands.Bot(command_prefix="^", intents=intents)
+
+        # Remove legacy help command
+        self.bot.remove_command("help")
 
         # Register
         self.bot.on_ready = self.on_ready
@@ -35,12 +38,13 @@ class AdminBot(object):
         sys.path.append(self.workdir)
 
         # Setup logging.
-        if self.debug:
-            logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-            logging.debug("Running in debug mode.")
-        else:
-            logging.basicConfig(stream=sys.stderr, level=logging.INFO)
-            logging.info("Running in prod mode.")
+        logging.basicConfig(
+            filename="/tmp/adman.log",
+            filemode="a",
+            format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
+            datefmt="%H:%M:%S",
+            level=logging.INFO,
+        )
 
         # Append some extra information to our discord bot
         self.bot.version = self.version  # Package version with bot
@@ -93,7 +97,7 @@ class AdminBot(object):
             return True
         return False
 
-    async def check_spam(self, ctx):
+    async def check_spam(self, ctx: discord.Interaction):
         """
         Prevents you from spamming some commands in channels where its not allowed
         """
@@ -107,7 +111,7 @@ class AdminBot(object):
         ]
 
         if ctx.channel.id not in spam_channels:  # Check if this channel is ok for spam
-            await ctx.message.add_reaction("❌")
+            await ctx.response.send_message("❌")
             return True  # Return true, (cancel command)
 
         return False
@@ -116,18 +120,48 @@ class AdminBot(object):
         """
         Reacts to things!
         """
+
+        reactPairs = [
+            ["joe", "wide_joe"],
+            ["mat", "Mat"],
+            ["mark", "3dprint_mork"],
+            ["mike", "weldin_time"],
+            ["toast", "Toaster"],
+            ["code", "sofware"],
+        ]
+
+        userPairs = [
+            ["younglad", "capn"],
+            ["G!", "saftey_captian"],
+            ["Casey", "CAD"],
+        ]
+
         if ctx.channel.id != 967054609233362946:  # Exclusion for counting channel
-            if "joe" in ctx.content.lower():
-                await ctx.add_reaction(get(self.bot.emojis, name="wide_joe"))
-            if "mat" in ctx.content.lower():
-                await ctx.add_reaction(get(self.bot.emojis, name="Mat"))
-            if "mark" in ctx.content.lower():
-                await ctx.add_reaction(get(self.bot.emojis, name="3dprint_mork"))
+            for pair in reactPairs:
+                if pair[0] in ctx.content.lower() == pair[0]:
+                    try:
+                        print(f"Trying to pair {pair[0]} with {pair[1]}.")
+                        await ctx.add_reaction(get(self.bot.emojis, name=pair[1]))
+                    except TypeError:
+                        logging.warn(
+                            f"Tried to add {pair[1]} emoji to message with {pair[0]} but failed."
+                        )
+
+            for pair in userPairs:
+                if ctx.author.name == pair[0]:
+                    try:
+                        print(f"Trying to give {pair[0]} reaction {pair[1]}.")
+                        await ctx.add_reaction(get(self.bot.emojis, name=pair[1]))
+                    except TypeError:
+                        logging.warn(
+                            f"Tried to give {pair[1]} emoji for message with {pair[0]} but failed."
+                        )
+
+            # Special case
             if ctx.author.name == "myth 2.0":
                 await ctx.add_reaction("🤷‍♀️")
-            if ctx.author.name == "younglad":
-                await ctx.add_reaction(get(self.bot.emojis, name="capn"))
-            if ctx.author.name == "G!":
-                await ctx.add_reaction(get(self.bot.emojis, name="saftey_captian"))
-            if ctx.author.name == "Casey":
-                await ctx.add_reaction(get(self.bot.emojis, name="CAD"))
+
+
+if __name__ == "__main__":
+    bot = AdminBot()
+    bot.run()
