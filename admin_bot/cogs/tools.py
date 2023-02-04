@@ -7,12 +7,9 @@ import pytz
 import discord
 import logging
 import asyncio
-<<<<<<< HEAD
 import psycopg
-=======
 import requests
 import random
->>>>>>> main
 
 from typing import Literal, Optional
 from discord import app_commands
@@ -33,11 +30,6 @@ class ToolCog(commands.Cog, name="Tools"):
 
         self.teamServer = self.bot.get_guild(590309936538451972)
 
-        # Database stuff.
-        self.conn = psycopg.connect(
-            "dbname=admin_bot_db user=postgres password=postgres host=database"
-        )
-
         # Setup calender
         self.localtz = pytz.timezone("US/Eastern")
         self.upcoming_events.start()
@@ -49,26 +41,6 @@ class ToolCog(commands.Cog, name="Tools"):
         await self.status_channel.send(
             f"Admin Bot version `{self.bot.version}` just restarted."
         )
-
-    @commands.command()
-    async def inject(self, ctx, *args):
-        """
-        Injects into the db and prints everything in there.
-
-        Ex: ^inject 100 "I'm Joe!"
-
-        Written by Joe.
-        """
-
-        with self.conn.cursor() as cur:
-            cur.execute(
-                "INSERT INTO test (num, data) VALUES (%s, %s)", (args[0], args[1])
-            )
-
-            cur.execute("SELECT * FROM test")
-
-            for record in cur:
-                await ctx.send(f"{record}")
 
     @app_commands.command(name="version")
     async def version(self, ctx: discord.Interaction):
