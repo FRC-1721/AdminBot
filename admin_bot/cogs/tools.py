@@ -117,7 +117,7 @@ class ToolCog(commands.Cog, name="Tools"):
     async def today(self, ctx: discord.Interaction) -> None:
         """Gives you today's itinerary!"""
 
-        embed = self.get_events(days=1, all=True, embedName="Today's Events")
+        embed = self.get_events(days=1, showAll=True, embedName="Today's Events")
         if embed != None:  # Only post IF theres stuff to send!
             await ctx.response.send_message(embed=embed)  # Send it!
         else:
@@ -127,7 +127,7 @@ class ToolCog(commands.Cog, name="Tools"):
     async def tomorrow(self, ctx: discord.Interaction, days: int = 2) -> None:
         """Gives you tomorrow's itinerary!"""
 
-        embed = self.get_events(days=days, all=True, embedName="Tomorrow's Events")
+        embed = self.get_events(days=days, showAll=True, embedName="Tomorrow's Events")
         if embed != None:  # Only post IF theres stuff to send!
             await ctx.response.send_message(embed=embed)  # Send it!
         else:
@@ -161,7 +161,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
             await asyncio.sleep(60)  # So we dont spam while its 11 pm
 
-    def get_events(self, days=2, all=False, embedName="Upcoming Events"):
+    def get_events(self, days=2, showAll=False, embedName="Upcoming Events"):
         """
         Returns a list of upcoming events
         """
@@ -200,7 +200,7 @@ class ToolCog(commands.Cog, name="Tools"):
             except AttributeError:
                 event.description = "Error fetching desc"
 
-            if len(desc) != 0 or all:
+            if len(desc) != 0 or showAll:
                 # If all is true, we'll just add everything in here
                 logging.debug(f"Adding event: {event}")
                 filtered_events.append(event)
@@ -217,7 +217,7 @@ class ToolCog(commands.Cog, name="Tools"):
             thumbUrl = "https://raw.githubusercontent.com/FRC-1721/marketing-material/main/logos/2019/FMS/1721_fms.png"
             thumbFooter = f"Bot version {self.bot.version}"
             try:
-                if self.teamServer is not None:
+                if self.teamServer is not None and showAll is False:
                     user = random.choice(self.teamServer.members)
                     if len(user.avatar) > 0:
                         thumbUrl = user.avatar
