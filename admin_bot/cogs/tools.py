@@ -147,13 +147,16 @@ class ToolCog(commands.Cog, name="Tools"):
 
             if embed != None:  # Only post IF theres stuff to send!
                 # Check if the last message was posted by us (to prevent double posting)
-                last_message = await self.alert_channel.fetch_message(
-                    self.alert_channel.last_message_id
-                )  # Get last message
+                try:
+                    last_message = await self.alert_channel.fetch_message(
+                        self.alert_channel.last_message_id
+                    )  # Get last message
 
-                if last_message.author == self.bot.user:
-                    logging.info("Last announcement was sent bu us! Deleting it.")
-                    await last_message.delete()
+                    if last_message.author == self.bot.user:
+                        logging.info("Last announcement was sent bu us! Deleting it.")
+                        await last_message.delete()
+                except discord.errors.NotFound as e:
+                    logging.error(f"Error fetching last message, error: {e}")
 
                 await self.alert_channel.send(embed=embed)  # Send it!
             else:
