@@ -66,15 +66,15 @@ class BatteryCog(commands.Cog, name="Batteries"):
         self,
         ctx: discord.Interaction,
         battery_id: str = "AA",
-        memo: str = None,
+        memo: str = '"None"',
         status: str = None,
     ):
         """Logs a new battery status!"""
 
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO batteryLogs (text, boolean, text, real, memo) VALUES (%s, %s, %s, %s, %s)",
-                (battery_id, False, status, 0.1, "None"),
+                "INSERT INTO batteryLogs (num, boolean, data, num, data) VALUES (%s, %s, %s, %s, %s)",
+                (battery_id, False, status, 0.1, memo),
             )
 
             self.conn.commit()
