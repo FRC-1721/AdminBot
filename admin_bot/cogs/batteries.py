@@ -57,20 +57,24 @@ class BatteryCog(commands.Cog, name="Batteries"):
         current: str,
     ) -> list[app_commands.Choice[str]]:
         statuses = self.beakStatus
-        return [
-            app_commands.Choice(name=status, value=status)
-            for status in statuses
-        ]
+        return [app_commands.Choice(name=status, value=status) for status in statuses]
 
     @app_commands.command(name="record")
     @commands.has_role("Electrical Team")
     @app_commands.autocomplete(status=beakStatuses)
-    async def record(self, ctx: discord.Interaction, battery_id: str = "AA", memo: str = None, status: str = None):
+    async def record(
+        self,
+        ctx: discord.Interaction,
+        battery_id: str = "AA",
+        memo: str = None,
+        status: str = None,
+    ):
         """Logs a new battery status!"""
 
         with self.conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO batteryLogs (text, boolean, text, real, memo) VALUES (%s, %s, %s, %s, %s)", (battery_id, False, status, 0.1, "None")
+                "INSERT INTO batteryLogs (text, boolean, text, real, memo) VALUES (%s, %s, %s, %s, %s)",
+                (battery_id, False, status, 0.1, "None"),
             )
 
             self.conn.commit()
