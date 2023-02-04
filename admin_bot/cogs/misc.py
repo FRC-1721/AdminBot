@@ -15,6 +15,8 @@ import yaml
 from discord import app_commands
 from discord.ext import commands
 
+from admin_bot.utilities.yamlTools import getSuggestion
+
 
 class MiscCog(commands.Cog, name="Misc"):
     def __init__(self, bot):
@@ -106,23 +108,9 @@ class MiscCog(commands.Cog, name="Misc"):
     async def help(self, ctx: discord.Interaction):
         """Its like a real help, but silly"""
 
-        suggestions = []
-
-        with open("admin_bot/resources/suggestions.yaml", "r") as file:
-            all_sug = yaml.safe_load(file)
-
-            for role in ctx.user.roles:
-                if role.name == "@everyone":
-                    role.name = "everyone"
-
-                if role.name in all_sug.keys():
-                    suggestions += all_sug[role.name]
-
-                    logging.debug(
-                        f"Trying to load {role} found {all_sug[role.name]} in {file}."
-                    )
-
-            await ctx.response.send_message(random.choice(suggestions))
+        await ctx.response.send_message(
+            random.choice(getSuggestion([role.name for role in ctx.user.roles]))
+        )
 
 
 async def setup(bot):
