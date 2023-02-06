@@ -10,11 +10,12 @@ import asyncio
 import psycopg
 import requests
 import random
+import time
 
 from typing import Literal, Optional
 from discord import app_commands
 from discord.ext import commands, tasks
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from ics import Calendar
 
 from utilities.common import seconds_until
@@ -24,6 +25,10 @@ class BatteryCog(commands.Cog, name="Batteries"):
     def __init__(self, bot):
         self.bot = bot
 
+        # Our timezone
+        self.localtz = pytz.timezone("US/Eastern")
+
+        # All possible beak statusees
         self.beakStatus = [
             "Good",
             "Fair",
@@ -41,6 +46,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS batteryLogs (
+                    timestamp bigint,
                     id text,
                     comp boolean DEFAULT TRUE,
                     beakStatus text,
@@ -129,8 +135,16 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     comp_ready = True  # Return default
 
             cur.execute(
-                "INSERT INTO batteryLogs (id, comp, beakStatus, beakRInt, beakCharge, note) VALUES (%s, %s, %s, %s, %s, %s)",
-                (battery_id, comp_ready, status, 100, 0.1, memo),
+                "INSERT INTO batteryLogs (timestamp, id, comp, beakStatus, beakRInt, beakCharge, note) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (
+                    int(time.time()),
+                    battery_id,
+                    comp_ready,
+                    status,
+                    charge_status,
+                    int_resistance,
+                    memo,
+                ),
             )
 
             self.conn.commit()
@@ -194,15 +208,30 @@ class BatteryCog(commands.Cog, name="Batteries"):
             return None
 
         ret = "```\n"
+        # Headers for table
         table = [
-            ("Batt ID", "Comp. Ready", "Condition", "Charge", "Int. Resis.", "Memo")
+            (
+                "Date",
+                "Batt. ID",
+                "Comp. Ready",
+                "Condition",
+                "Charge",
+                "Int. Resis.",
+                "Memo",
+            )
         ]
 
         for row in [record for record in cur]:
-            table.append(row)
+            # Convert timestamp to date.
+            date = datetime.fromtimestamp(int(row[0]), tz=self.localtz).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+            mutRow = list(row)
+            mutRow[0] = date
+            table.append(mutRow)
 
         for record in table:
-            ret += f"{record[0]:<10} {record[1]:<12} {record[2]:<12} {record[3]:<10} {record[4]:<12} {record[5]:<20}\n"
+            ret += f"{record[0]:<22} {record[2]:<12} {record[3]:<12} {record[4]:<10} {record[5]:<12} {record[6]:<20}\n"
         ret += "\n```"
 
         # Return the latest log as well as the latest record
