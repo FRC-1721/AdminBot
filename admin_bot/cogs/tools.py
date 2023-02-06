@@ -10,6 +10,7 @@ import asyncio
 import psycopg
 import requests
 import random
+import recurring_ical_events
 
 from typing import Literal, Optional
 from discord import app_commands
@@ -173,7 +174,10 @@ class ToolCog(commands.Cog, name="Tools"):
 
         cal_url = "https://calendar.google.com/calendar/ical/s6pg5kgtmu98ibee92h5d1gqh0%40group.calendar.google.com/public/basic.ics"  # From google
         teamCal = Calendar(requests.get(cal_url).text)
-        events = teamCal.events
+        events = recurring_ical_events.of(teamCal).between(
+            now - timedelta(weeks=50),
+            now + timedelta(weeks=50),
+        )
         sorted_events = sorted(events, reverse=False)
 
         # Now
