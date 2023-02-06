@@ -7,6 +7,7 @@ import pytz
 import discord
 import logging
 import asyncio
+import psycopg
 import requests
 import random
 
@@ -23,6 +24,7 @@ class ToolCog(commands.Cog, name="Tools"):
     def __init__(self, bot):
         self.bot = bot
 
+        # Channels
         self.status_channel = self.bot.get_channel(590312300695650305)
         self.alert_channel = self.bot.get_channel(634136760401526793)
 
