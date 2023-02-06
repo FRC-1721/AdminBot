@@ -89,15 +89,28 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 lastStatus = record
         return [app_commands.Choice(name=lastStatus, value=lastStatus)]
 
+    async def trueFalse(
+        self,
+        interaction: discord.Interaction,
+        current: str,
+    ) -> list[app_commands.Choice[str]]:
+        return [
+            app_commands.Choice(name="Ready", value="True"),
+            app_commands.Choice(name="Not Ready", value="False"),
+        ]
+
     @app_commands.command(name="battery_record")
     @commands.has_role("Electrical Team")
     @app_commands.autocomplete(status=beakStatuses)
     @app_commands.autocomplete(battery_id=batteries)
+    @app_commands.autocomplete(comp_ready=trueFalse)
     async def battery_record(
         self,
         ctx: discord.Interaction,
         battery_id: str,
         comp_ready: str = None,
+        charge_status: float = -1.0,
+        int_resistance: float = -1.0,
         memo: str = "N/A",
         status: str = "N/A",
     ):
@@ -110,10 +123,10 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     "SELECT DISTINCT comp FROM batteryLogs WHERE id = %s", (battery_id,)
                 )
                 prevStatus = cur.fetchone()
-                if len(prevStatus) > 0:
-                    comp_ready = prevStatus[0]
+                if prevStatus is not None:  # Check if is none
+                    comp_ready = prevStatus[0]  # Return whatever previous status
                 else:
-                    comp_ready = True
+                    comp_ready = True  # Return default
 
             cur.execute(
                 "INSERT INTO batteryLogs (id, comp, beakStatus, beakRInt, beakCharge, note) VALUES (%s, %s, %s, %s, %s, %s)",
@@ -122,7 +135,9 @@ class BatteryCog(commands.Cog, name="Batteries"):
 
             self.conn.commit()
 
-            cur.execute("SELECT * FROM batteryLogs")
+            cur.execute(
+                "SELECT * FROM batteryLogs WHERE id = %s LIMIT 1", (battery_id,)
+            )
 
             await ctx.response.send_message(self.format(cur)[0])
 
