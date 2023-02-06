@@ -53,7 +53,10 @@ class AdminBot(object):
         for filename in os.listdir(self.workdir + "cogs"):
             logging.info(f"Found file {filename}, loading as extension.")
             if filename.endswith(".py"):
-                await self.bot.load_extension(f"cogs.{filename[:-3]}")
+                try:
+                    await self.bot.load_extension(f"cogs.{filename[:-3]}")
+                except Exception as e:
+                    logging.fatal(f"Error loading {filename} as a cog, error: {e}")
 
     async def on_message(self, ctx):
         # hehe, sneaky every time

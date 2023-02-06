@@ -269,7 +269,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
     def makeExport(self, battery_id):
         # Yes i know this is vulnerable to injection, stfu
         with open(f"/tmp/battery_{battery_id}.csv", "w", newline="") as csvfile:
-            writer = csv.writer(csvfile)
+            writer = csv.writer(csvfile, quotechar="|")
 
             with self.conn.cursor() as cur:
                 query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp ASC"
@@ -278,7 +278,9 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 cur.execute(query, (battery_id,))
                 table = self.makeTable(cur)
                 for row in table:
-                    writer.writerow(row)
+                    cleanRow = list(row)
+                    cleanRow[-1] = "{" + cleanRow[-1] + "}"
+                    writer.writerow(cleanRow)
 
         return f"/tmp/battery_{battery_id}.csv"
 
