@@ -39,11 +39,10 @@ class AdminBot(object):
 
         # Setup logging.
         logging.basicConfig(
-            filename="/tmp/adman.log",
-            filemode="a",
             format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
             datefmt="%H:%M:%S",
             level=logging.INFO,
+            handlers=[logging.FileHandler("/tmp/adman.log"), logging.StreamHandler()],
         )
 
         # Append some extra information to our discord bot

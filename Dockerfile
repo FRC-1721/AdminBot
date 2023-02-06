@@ -8,6 +8,12 @@ LABEL authors="31870999+KenwoodFox@users.noreply.github.com"
 ARG APP_NAME=admin-bot
 ENV APP_NAME=${APP_NAME}
 
+# Install special deps
+RUN apt update && apt install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+
+# Upgrade pip
+RUN pip install --upgrade pip
+
 # Get the current git version
 ARG GIT_COMMIT
 ENV GIT_COMMIT=$GIT_COMMIT
@@ -15,9 +21,6 @@ ENV GIT_COMMIT=$GIT_COMMIT
 # App home
 ARG HOME="/app"
 ENV HOME=${HOME}
-
-# Upgrade pip
-RUN pip install --upgrade pip
 
 # Set workdir
 WORKDIR ${HOME}

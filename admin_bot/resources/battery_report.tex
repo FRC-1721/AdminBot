@@ -1,0 +1,40 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage[utf8]{inputenc}
+
+% Margins
+\usepackage[margin=0.5in]{geometry}
+\addtolength{\topmargin}{1.5in}
+
+% Packages
+\usepackage[table]{xcolor}
+\usepackage{graphicx,eso-pic}
+\usepackage{csvsimple}
+
+
+\definecolor{lightgray}{gray}{0.9}
+
+\AddToShipoutPictureBG{%
+  \AtPageUpperLeft{%
+    \raisebox{-\height}{\includegraphics[width=\paperwidth]{/app/admin_bot/resources/header.png}}
+  }
+}
+
+
+\begin{document}
+
+Report generated \today.
+
+Automated battery report for battery \textbf{BATTERYID}
+
+\vspace{0.5cm}
+\rowcolors{2}{gray!25}{white}
+\csvreader[
+  tabular = |l|l|l|l|l|l|l|l|,
+  table head = \hline Date & Battery ID & Comp Ready & Condition & Charge & Internal Resistance & User & Memo \\\hline\hline,
+]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi & \csvcolvii & \csvcoliii}
+
+\vspace*{1cm}
+Generated using version VERSION.
+
+
+\end{document}

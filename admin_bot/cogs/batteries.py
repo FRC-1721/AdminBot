@@ -9,6 +9,7 @@ import logging
 import asyncio
 import psycopg
 import requests
+import subprocess
 import random
 import time
 import csv
@@ -53,6 +54,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     beakStatus text,
                     beakRInt real,
                     beakCharge real,
+                    author text,
                     note text)
                 """
             )
@@ -136,7 +138,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     comp_ready = True  # Return default
 
             cur.execute(
-                "INSERT INTO batteryLogs (timestamp, id, comp, beakStatus, beakRInt, beakCharge, note) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                "INSERT INTO batteryLogs (timestamp, id, comp, beakStatus, beakRInt, beakCharge, author, note) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     int(time.time()),
                     battery_id,
@@ -144,6 +146,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     status,
                     charge_status,
                     int_resistance,
+                    ctx.user.nick,
                     memo,
                 ),
             )
@@ -227,10 +230,39 @@ class BatteryCog(commands.Cog, name="Batteries"):
     @app_commands.command(name="battery_export")
     @commands.has_role("Electrical Team")
     @app_commands.autocomplete(battery_id=batteries)
-    async def battery_export(self, ctx: discord.Interaction, battery_id: str):
-        """Export an entire battery's history as a .csv"""
+    @app_commands.choices(
+        format=[
+            app_commands.Choice(name="CSV", value=1),
+            app_commands.Choice(name="PDF", value=0),
+        ]
+    )
+    async def battery_export(
+        self, ctx: discord.Interaction, battery_id: str, format: int = 0
+    ):
+        """Export an entire battery's history as a .csv or .pdf"""
 
-        await ctx.response.send_message(file=discord.File(self.makeExport(battery_id)))
+        if format:
+            await ctx.response.send_message(
+                file=discord.File(self.makeExport(battery_id))
+            )
+        else:
+            with open("admin_bot/resources/battery_report.tex") as inF:
+                filedata = inF.read()
+
+                filedata = filedata.replace("VERSION", self.bot.version)
+                filedata = filedata.replace("BATTERYID", battery_id)
+
+                texName = f"/tmp/battery_report_{battery_id}.tex"
+
+                with open(texName, "w") as outF:
+                    outF.write(filedata)
+
+                self.makeExport(battery_id)
+
+                subprocess.run(["pdflatex", "--output-directory=/tmp", texName])
+                await ctx.response.send_message(
+                    file=discord.File(f"/tmp/battery_report_{battery_id}.pdf")
+                )
 
     def makeExport(self, battery_id):
         # Yes i know this is vulnerable to injection, stfu
@@ -258,6 +290,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 "Condition",
                 "Charge",
                 "Int. Resis.",
+                "User",
                 "Memo",
             )
         ]
@@ -283,7 +316,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
         table = self.makeTable(cur)
 
         for record in table:
-            ret += f"{record[0]:<22} {record[2]:<12} {record[3]:<12} {record[4]:<10} {record[5]:<12} {record[6]:<20}\n"
+            ret += f"{record[0]:<22} {record[2]:<12} {record[3]:<12} {record[4]:<10} {record[5]:<12} {record[6]:<14} {record[7]:<20}\n"
         ret += "\n```"
 
         # Return the latest log as well as the latest record
