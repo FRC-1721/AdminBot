@@ -11,6 +11,7 @@ import psycopg
 import requests
 import random
 import time
+import csv
 
 from typing import Literal, Optional
 from discord import app_commands
@@ -150,10 +151,11 @@ class BatteryCog(commands.Cog, name="Batteries"):
             self.conn.commit()
 
             cur.execute(
-                "SELECT * FROM batteryLogs WHERE id = %s LIMIT 1", (battery_id,)
+                "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp DESC LIMIT 1",
+                (battery_id,),
             )
 
-            await ctx.response.send_message(self.format(cur)[0])
+            await ctx.response.send_message(self.discordFormat(cur)[0])
 
     @app_commands.command(name="battery_info")
     @commands.has_role("Electrical Team")
@@ -164,50 +166,89 @@ class BatteryCog(commands.Cog, name="Batteries"):
         rawLog = ""
 
         with self.conn.cursor() as cur:
-            query = "SELECT * FROM batteryLogs WHERE id = %s"
+            query = (
+                "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp ASC LIMIT 5"
+            )
             cur.execute(query, (battery_id,))
 
-            rawLog = self.format(cur)
+            rawLog = self.discordFormat(cur)
 
-        if rawLog[1][1]:
-            embedColor = 0x00FF00
-        else:
-            embedColor = 0xE62900
+        if rawLog is not None:
+            if rawLog[1][1]:
+                embedColor = 0x00FF00
+            else:
+                embedColor = 0xE62900
 
-        embed = discord.Embed(
-            title=f"Battery {battery_id}",
-            color=embedColor,
-        )
+            embed = discord.Embed(
+                title=f"Battery {battery_id}",
+                color=embedColor,
+            )
 
-        embed.add_field(
-            name="Condition",
-            value=rawLog[1][2],
-            inline=True,
-        )
+            embed.add_field(
+                name="Condition",
+                value=rawLog[1][2],
+                inline=True,
+            )
 
-        embed.add_field(
-            name="Internal Resistance",
-            value=rawLog[1][4],
-            inline=True,
-        )
+            embed.add_field(
+                name="Internal Resistance",
+                value=rawLog[1][4],
+                inline=True,
+            )
 
-        embed.add_field(
-            name="Competition Ready",
-            value=rawLog[1][1],
-            inline=False,
-        )
+            embed.add_field(
+                name="Competition Ready",
+                value=rawLog[1][1],
+                inline=False,
+            )
 
-        if rawLog != None:
             await ctx.response.send_message(rawLog[0], embed=embed)
         else:
             await ctx.response.send_message(f"No records for battery `{battery_id}`.")
 
-    def format(self, cur):
-        """Returns a formatted table with each battery log, otherwise None"""
-        if cur.rowcount <= 0:
-            return None
+    @app_commands.command(name="battery_purge")
+    @commands.has_role("Electrical Team")
+    async def battery_purge(self, ctx: discord.Interaction, battery_id: str):
+        """Removes all records of a battery, you probably don't want to use this!"""
 
-        ret = "```\n"
+        backup = self.makeExport(battery_id)
+
+        with self.conn.cursor() as cur:
+            query = "DELETE FROM batteryLogs WHERE id = %s"
+            cur.execute(query, (battery_id,))
+
+            await ctx.response.send_message(
+                f"Deleted all records for battery `{battery_id}`.",
+                file=discord.File(backup),
+            )
+
+            self.conn.commit()
+
+    @app_commands.command(name="battery_export")
+    @commands.has_role("Electrical Team")
+    @app_commands.autocomplete(battery_id=batteries)
+    async def battery_export(self, ctx: discord.Interaction, battery_id: str):
+        """Export an entire battery's history as a .csv"""
+
+        await ctx.response.send_message(file=discord.File(self.makeExport(battery_id)))
+
+    def makeExport(self, battery_id):
+        # Yes i know this is vulnerable to injection, stfu
+        with open(f"/tmp/battery_{battery_id}.csv", "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+
+            with self.conn.cursor() as cur:
+                query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp ASC"
+
+                # Iter all records
+                cur.execute(query, (battery_id,))
+                table = self.makeTable(cur)
+                for row in table:
+                    writer.writerow(row)
+
+        return f"/tmp/battery_{battery_id}.csv"
+
+    def makeTable(self, cur):
         # Headers for table
         table = [
             (
@@ -229,6 +270,17 @@ class BatteryCog(commands.Cog, name="Batteries"):
             mutRow = list(row)
             mutRow[0] = date
             table.append(mutRow)
+
+        return table
+
+    def discordFormat(self, cur):
+        """Returns a formatted table with each battery log, otherwise None"""
+        if cur.rowcount <= 0:
+            return None
+
+        ret = "```\n"
+
+        table = self.makeTable(cur)
 
         for record in table:
             ret += f"{record[0]:<22} {record[2]:<12} {record[3]:<12} {record[4]:<10} {record[5]:<12} {record[6]:<20}\n"
