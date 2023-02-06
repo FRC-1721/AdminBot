@@ -29,9 +29,10 @@ Automated battery report for battery \textbf{BATTERYID}
 \vspace{0.5cm}
 \rowcolors{2}{gray!25}{white}
 \csvreader[
-  tabular = |l|l|l|l|l|l|l|l|,
-  table head = \hline Date & Battery ID & Comp Ready & Condition & Charge & Internal Resistance & User & Memo \\\hline\hline,
-]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi & \csvcolvii & \csvcoliii}
+tabular = |l|l|l|l|l|l|l|p{2.8cm}|,
+table head = \hline Date & Batt. ID & Comp Ready & Condition & Charge & Int. Res. & User & Memo \\\hline\hline,
+table foot = \hline,
+]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi & \csvcolvii & \csvcolviii}
 
 \vspace*{1cm}
 Generated using version VERSION.

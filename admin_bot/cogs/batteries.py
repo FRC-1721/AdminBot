@@ -205,6 +205,8 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 inline=False,
             )
 
+            embed.set_footer(text=f"Bot version {self.bot.version}")
+
             await ctx.response.send_message(rawLog[0], embed=embed)
         else:
             await ctx.response.send_message(f"No records for battery `{battery_id}`.")
