@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  postgres:
+  db:
     image: postgres:10.5
     restart: always
     environment:
@@ -23,5 +23,7 @@ services:
       BOT_TOKEN: "secret.token.here"
     devices:
       - "/dev/video0:/dev/video0"
+    links:
+      - "db:database"
     restart: "always"
     command: "true"
