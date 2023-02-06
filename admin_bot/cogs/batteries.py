@@ -189,19 +189,19 @@ class BatteryCog(commands.Cog, name="Batteries"):
 
             embed.add_field(
                 name="Condition",
-                value=rawLog[1][2],
+                value=rawLog[1][3],
                 inline=True,
             )
 
             embed.add_field(
                 name="Internal Resistance",
-                value=rawLog[1][4],
+                value=rawLog[1][5],
                 inline=True,
             )
 
             embed.add_field(
                 name="Competition Ready",
-                value=rawLog[1][1],
+                value=rawLog[1][2],
                 inline=False,
             )
 
