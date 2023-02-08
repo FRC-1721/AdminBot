@@ -322,6 +322,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 for row in table:
                     cleanRow = list(row)
                     cleanRow[-1] = "{" + cleanRow[-1] + "}"
+                    cleanRow[2] = "1" if bool(cleanRow[2]) else "0"
                     writer.writerow(cleanRow)
 
         return f"/tmp/battery_{battery_id}.csv"
@@ -340,18 +341,18 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 for record in cur:
                     battery_ids.append(record[0])
 
-                query = (
-                    "SELECT * FROM batteryLogs WHERE id = %s ORDER BY id ASC LIMIT 1"
-                )
+                query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp ASC LIMIT 1"
 
                 # Iter all records
                 for idx, battery_id in enumerate(battery_ids):
                     cur.execute(query, (battery_id,))
 
+                    # If idx is anything other than 0 dont print the header
                     table = self.makeTable(cur, idx == 0)
                     for row in table:
                         cleanRow = list(row)
                         cleanRow[-1] = "{" + cleanRow[-1] + "}"
+                        cleanRow[2] = "1" if bool(cleanRow[2]) else "0"
                         writer.writerow(cleanRow)
 
         return f"/tmp/battery_overview.csv"
