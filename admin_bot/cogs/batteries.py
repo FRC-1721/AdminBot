@@ -34,7 +34,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
         self.beakStatus = [
             "Good",
             "Fair",
-            "Poor",
+            "Bad",
         ]
 
         # Connect to DB
@@ -177,7 +177,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
             rawLog = self.discordFormat(cur)
 
         if rawLog is not None:
-            if rawLog[1][1]:
+            if rawLog[1][2]:
                 embedColor = 0x00FF00
             else:
                 embedColor = 0xE62900

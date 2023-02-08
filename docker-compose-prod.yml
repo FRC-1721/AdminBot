@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  db:
+  database:
     image: postgres:10.5
     restart: always
     environment:
@@ -16,6 +16,8 @@ services:
       - '5438:5432'
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - dbnet
 
   admin_bot:
     image: ghcr.io/frc-1721/adminbot:main
@@ -23,7 +25,13 @@ services:
       BOT_TOKEN: "secret.token.here"
     devices:
       - "/dev/video0:/dev/video0"
-    links:
-      - "db:database"
+    networks:
+      - dbnet
+    depends_on:
+      - database
     restart: "always"
     command: "true"
+
+networks:
+  dbnet:
+    driver: bridge
