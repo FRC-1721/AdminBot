@@ -252,6 +252,10 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 filedata = inF.read()
 
                 filedata = filedata.replace("VERSION", self.bot.version)
+                filedata = filedata.replace(
+                    "TITLE",
+                    f"Automated battery report for battery \\textbf{{battery_id}}.",
+                )
                 filedata = filedata.replace("BATTERYID", battery_id)
 
                 texName = f"/tmp/battery_report_{battery_id}.tex"
@@ -264,6 +268,42 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 subprocess.run(["pdflatex", "--output-directory=/tmp", texName])
                 await ctx.response.send_message(
                     file=discord.File(f"/tmp/battery_report_{battery_id}.pdf")
+                )
+
+    @app_commands.command(name="battery_overview")
+    @commands.has_role("Electrical Team")
+    @app_commands.choices(
+        format=[
+            app_commands.Choice(name="CSV", value=1),
+            app_commands.Choice(name="PDF", value=0),
+        ]
+    )
+    async def battery_overview(self, ctx: discord.Interaction, format: int = 0):
+        """Export an overview of every battery as a .csv or .pdf"""
+
+        if format:
+            await ctx.response.send_message(file=discord.File(self.makeOverview()))
+        else:
+            with open("admin_bot/resources/battery_report.tex") as inF:
+                filedata = inF.read()
+
+                filedata = filedata.replace("VERSION", self.bot.version)
+                filedata = filedata.replace(
+                    "TITLE",
+                    f"Automated battery overview.",
+                )
+                filedata = filedata.replace("BATTERYID", "overview")
+
+                texName = f"/tmp/battery_overview.tex"
+
+                with open(texName, "w") as outF:
+                    outF.write(filedata)
+
+                self.makeOverview()
+
+                subprocess.run(["pdflatex", "--output-directory=/tmp", texName])
+                await ctx.response.send_message(
+                    file=discord.File(f"/tmp/battery_overview.pdf")
                 )
 
     def makeExport(self, battery_id):
@@ -283,6 +323,33 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     writer.writerow(cleanRow)
 
         return f"/tmp/battery_{battery_id}.csv"
+
+    def makeOverview(self):
+        # Yes i know this is vulnerable to injection, stfu
+        with open(f"/tmp/battery_overview.csv", "w", newline="") as csvfile:
+            writer = csv.writer(csvfile, quotechar="|")
+
+            battery_ids = []
+            table = []
+
+            with self.conn.cursor() as cur:
+                # Fetch every ID
+                cur.execute("SELECT DISTINCT id FROM batteryLogs")
+                for record in cur:
+                    battery_ids.append(record[0])
+
+                query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp DESC LIMIT 1"
+
+                # Iter all records
+                for battery_id in battery_ids:
+                    cur.execute(query, (battery_id,))
+                    table += self.makeTable(cur)
+                    for row in table:
+                        cleanRow = list(row)
+                        cleanRow[-1] = "{" + cleanRow[-1] + "}"
+                        writer.writerow(cleanRow)
+
+        return f"/tmp/battery_overview.csv"
 
     def makeTable(self, cur):
         # Headers for table
