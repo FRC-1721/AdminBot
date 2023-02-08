@@ -254,9 +254,10 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 filedata = filedata.replace("VERSION", self.bot.version)
                 filedata = filedata.replace(
                     "TITLE",
-                    f"Automated battery report for battery \\textbf{{battery_id}}.",
+                    f"Automated battery report for battery \\textbf{{{battery_id}}}.",
                 )
                 filedata = filedata.replace("BATTERYID", battery_id)
+                filedata = filedata.replace("USER", ctx.user.nick)
 
                 texName = f"/tmp/battery_report_{battery_id}.tex"
 
@@ -293,6 +294,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     f"Automated battery overview.",
                 )
                 filedata = filedata.replace("BATTERYID", "overview")
+                filedata = filedata.replace("USER", ctx.user.nick)
 
                 texName = f"/tmp/battery_overview.tex"
 
@@ -338,12 +340,15 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 for record in cur:
                     battery_ids.append(record[0])
 
-                query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp DESC LIMIT 1"
+                query = (
+                    "SELECT * FROM batteryLogs WHERE id = %s ORDER BY id ASC LIMIT 1"
+                )
 
                 # Iter all records
-                for battery_id in battery_ids:
+                for idx, battery_id in enumerate(battery_ids):
                     cur.execute(query, (battery_id,))
-                    table += self.makeTable(cur)
+
+                    table = self.makeTable(cur, idx == 0)
                     for row in table:
                         cleanRow = list(row)
                         cleanRow[-1] = "{" + cleanRow[-1] + "}"
@@ -351,20 +356,23 @@ class BatteryCog(commands.Cog, name="Batteries"):
 
         return f"/tmp/battery_overview.csv"
 
-    def makeTable(self, cur):
+    def makeTable(self, cur, header=True):
         # Headers for table
-        table = [
-            (
-                "Date",
-                "Batt. ID",
-                "Comp. Ready",
-                "Condition",
-                "Charge",
-                "Int. Resis.",
-                "User",
-                "Memo",
+
+        table = []
+        if header:
+            table.append(
+                (
+                    "Date",
+                    "Batt. ID",
+                    "Comp. Ready",
+                    "Condition",
+                    "Charge",
+                    "Int. Resis.",
+                    "User",
+                    "Memo",
+                )
             )
-        ]
 
         for row in [record for record in cur]:
             # Convert timestamp to date.
