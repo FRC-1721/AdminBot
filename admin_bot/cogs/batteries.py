@@ -348,12 +348,19 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     cur.execute(query, (battery_id,))
 
                     # If idx is anything other than 0 dont print the header
-                    table = self.makeTable(cur, idx == 0)
-                    for row in table:
+                    dirtyRows = self.makeTable(cur, idx == 0)
+                    for row in dirtyRows:
                         cleanRow = list(row)
                         cleanRow[-1] = "{" + cleanRow[-1] + "}"
                         cleanRow[2] = "1" if bool(cleanRow[2]) else "0"
-                        writer.writerow(cleanRow)
+                        table.append(cleanRow)
+
+                for row in table:
+                    # Sort by battery ID
+                    print(table)
+                    table.sort(key=lambda a: a[1], reverse=True)
+                    print(table)
+                    writer.writerow(row)
 
         return f"/tmp/battery_overview.csv"
 

@@ -12,6 +12,7 @@
 \usepackage{colortbl,dcolumn}
 \usepackage{pdftexcmds}
 \usepackage{hyperref}
+\usepackage{longtable}
 
 
 % Formatting
@@ -47,7 +48,7 @@
 \vspace{0.5cm}
 \rowcolors{2}{gray!25}{white}
 \csvreader[
-tabular = |l|l|l|l|l|l|l|p{2.8cm}|,
+longtable = |l|l|l|l|l|l|l|p{2.8cm}|,
 table head = \hline Date & Batt. ID & Comp Ready & Condition & Charge & Int. Res. & User & Memo \\\hline\hline,
 table foot = \hline,
 ]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \ready{\csvcoliii} & \csvcoliv & \charge{ \csvcolv } & \csvcolvi & \csvcolvii & \csvcolviii}
