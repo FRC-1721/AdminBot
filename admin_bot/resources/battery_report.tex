@@ -2,8 +2,7 @@
 \usepackage[utf8]{inputenc}
 
 % Margins
-\usepackage[margin=0.5in]{geometry}
-\addtolength{\topmargin}{1.5in}
+\usepackage[top=1.7in, bottom=1.5in, left=0.75in, right=0.75in]{geometry}
 
 % Packages
 \usepackage[table]{xcolor}
@@ -11,19 +10,26 @@
 \usepackage{csvsimple}
 \usepackage{colortbl,dcolumn}
 \usepackage{pdftexcmds}
+\usepackage{hyperref}
+\usepackage{longtable}
+
+% Custom colors!
+\definecolor{pleasantGreen}{rgb}{0, 0.9, 0.3}
+\definecolor{hazzardYellow}{rgb}{0.8, 0.8, 0.4}
+\definecolor{dangerousRed}{rgb}{0.9, 0.2, 0.3}
 
 
 % Formatting
 \def\charge#1{%
 \ifdim#1pt<0pt\else
-\ifdim#1pt<65pt\cellcolor{red}\else
-\ifdim#1pt<95pt\cellcolor{yellow}\else
-\cellcolor{green}\fi\fi\fi
+\ifdim#1pt<65pt\cellcolor{dangerousRed}\else
+\ifdim#1pt<95pt\cellcolor{hazzardYellow}\else
+\cellcolor{pleasantGreen}\fi\fi\fi
 #1}
 
 \def\ready#1{%
-\ifdim#1pt=1pt\cellcolor{green}Ready\else
-\ifdim#1pt=0pt\cellcolor{red}Not Ready\else
+\ifdim#1pt=1pt\cellcolor{pleasantGreen}Ready\else
+\ifdim#1pt=0pt\cellcolor{dangerousRed}Not Ready\else
 \fi\fi
 }
 
@@ -46,7 +52,7 @@
 \vspace{0.5cm}
 \rowcolors{2}{gray!25}{white}
 \csvreader[
-tabular = |l|l|l|l|l|l|l|p{2.8cm}|,
+longtable = |l|l|l|l|l|l|l|p{2.8cm}|,
 table head = \hline Date & Batt. ID & Comp Ready & Condition & Charge & Int. Res. & User & Memo \\\hline\hline,
 table foot = \hline,
 ]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \ready{\csvcoliii} & \csvcoliv & \charge{ \csvcolv } & \csvcolvi & \csvcolvii & \csvcolviii}
@@ -56,5 +62,6 @@ Generated using version VERSION on \today.
 
 Requested by USER.
 
+\small{Please submit suggestions and issues \href{https://github.com/FRC-1721/AdminBot/issues/new}{here.}}
 
 \end{document}
