@@ -14,18 +14,23 @@
 \usepackage{hyperref}
 \usepackage{longtable}
 
+% Custom colors!
+\definecolor{pleasantGreen}{rgb}{0, 0.9, 0.3}
+\definecolor{hazzardYellow}{rgb}{0.8, 0.8, 0.4}
+\definecolor{dangerousRed}{rgb}{0.9, 0.2, 0.3}
+
 
 % Formatting
 \def\charge#1{%
 \ifdim#1pt<0pt\else
-\ifdim#1pt<65pt\cellcolor{red}\else
-\ifdim#1pt<95pt\cellcolor{yellow}\else
-\cellcolor{green}\fi\fi\fi
+\ifdim#1pt<65pt\cellcolor{dangerousRed}\else
+\ifdim#1pt<95pt\cellcolor{hazzardYellow}\else
+\cellcolor{pleasantGreen}\fi\fi\fi
 #1}
 
 \def\ready#1{%
-\ifdim#1pt=1pt\cellcolor{green}Ready\else
-\ifdim#1pt=0pt\cellcolor{red}Not Ready\else
+\ifdim#1pt=1pt\cellcolor{pleasantGreen}Ready\else
+\ifdim#1pt=0pt\cellcolor{dangerousRed}Not Ready\else
 \fi\fi
 }
 

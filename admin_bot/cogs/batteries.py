@@ -158,7 +158,9 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 (battery_id,),
             )
 
-            await ctx.response.send_message(self.discordFormat(cur)[0])
+            await ctx.response.send_message(
+                f"Recording entry for battery **{battery_id}**.\n{self.discordFormat(cur)[0]}"
+            )
 
     @app_commands.command(name="battery_info")
     @commands.has_role("Electrical Team")
