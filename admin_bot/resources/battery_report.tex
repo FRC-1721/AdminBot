@@ -9,6 +9,23 @@
 \usepackage[table]{xcolor}
 \usepackage{graphicx,eso-pic}
 \usepackage{csvsimple}
+\usepackage{colortbl,dcolumn}
+\usepackage{pdftexcmds}
+
+
+% Formatting
+\def\charge#1{%
+\ifdim#1pt<0pt\else
+\ifdim#1pt<65pt\cellcolor{red}\else
+\ifdim#1pt<95pt\cellcolor{yellow}\else
+\cellcolor{green}\fi\fi\fi
+#1}
+
+\def\ready#1{%
+\ifdim#1pt=1pt\cellcolor{green}Ready\else
+\ifdim#1pt=0pt\cellcolor{red}Not Ready\else
+\fi\fi
+}
 
 
 \definecolor{lightgray}{gray}{0.9}
@@ -22,9 +39,9 @@
 
 \begin{document}
 
-Report generated \today.
-
-Automated battery report for battery \textbf{BATTERYID}
+\begin{center}
+  \huge{TITLE}
+\end{center}
 
 \vspace{0.5cm}
 \rowcolors{2}{gray!25}{white}
@@ -32,10 +49,12 @@ Automated battery report for battery \textbf{BATTERYID}
 tabular = |l|l|l|l|l|l|l|p{2.8cm}|,
 table head = \hline Date & Batt. ID & Comp Ready & Condition & Charge & Int. Res. & User & Memo \\\hline\hline,
 table foot = \hline,
-]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi & \csvcolvii & \csvcolviii}
+]{/tmp/battery_BATTERYID.csv}{}{\csvcoli & \csvcolii & \ready{\csvcoliii} & \csvcoliv & \charge{ \csvcolv } & \csvcolvi & \csvcolvii & \csvcolviii}
 
 \vspace*{1cm}
-Generated using version VERSION.
+Generated using version VERSION on \today.
+
+Requested by USER.
 
 
 \end{document}
