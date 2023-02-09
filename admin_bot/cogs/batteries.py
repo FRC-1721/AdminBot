@@ -254,7 +254,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 filedata = filedata.replace("VERSION", self.bot.version)
                 filedata = filedata.replace(
                     "TITLE",
-                    f"Automated battery report for battery \\textbf{{{battery_id}}}.",
+                    f"Battery report for battery \\textbf{{{battery_id}}}.",
                 )
                 filedata = filedata.replace("BATTERYID", battery_id)
                 filedata = filedata.replace("USER", ctx.user.nick)
@@ -291,7 +291,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 filedata = filedata.replace("VERSION", self.bot.version)
                 filedata = filedata.replace(
                     "TITLE",
-                    f"Automated battery overview.",
+                    f"Battery overview.",
                 )
                 filedata = filedata.replace("BATTERYID", "overview")
                 filedata = filedata.replace("USER", ctx.user.nick)
@@ -341,7 +341,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 for record in cur:
                     battery_ids.append(record[0])
 
-                query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp ASC LIMIT 1"
+                query = "SELECT * FROM batteryLogs WHERE id = %s ORDER BY timestamp DESC LIMIT 1"
 
                 # Iter all records
                 for idx, battery_id in enumerate(battery_ids):
