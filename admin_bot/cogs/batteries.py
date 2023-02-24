@@ -403,16 +403,19 @@ class BatteryCog(commands.Cog, name="Batteries"):
         try:
             ret = "```\n"
 
+            # Get table
             table = self.makeTable(cur)
 
-            # This sanitizes the table, as requested by lila
-            table = [str(x) for x in table]  # Removes None defs
-
             for record in table:
+                # Sanitize input (requested bu lila)
+                record = [str(i) for i in record]
+
                 ret += f"{record[0]:<22} {record[2]:<12} {record[3]:<12} {record[4]:<10} {record[5]:<12} {record[6]:<14} {record[7]:<20}\n"
             ret += "\n```"
 
             # Return the latest log as well as the latest record
+            # print(f"Ret: {ret}")
+            # print(f"Table: {table[-1]}")
             return ret, table[-1]
         except Exception as e:
             logging.ERROR(f"Error formatting for discord, error was {e}")
