@@ -207,6 +207,33 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 inline=False,
             )
 
+            embed.add_field(
+                name="Last User",
+                value=rawLog[1][6],
+                inline=False,
+            )
+
+            embed.add_field(
+                name="Last Memo",
+                value=rawLog[1][7],
+                inline=False,
+            )
+
+            duration = (
+                datetime.now(tz=self.localtz)
+                - datetime.strptime(
+                    rawLog[1][0],
+                    "%Y-%m-%d %H:%M:%S",
+                ).astimezone(self.localtz)
+                - timedelta(hours=5)  # Idk why
+            )
+
+            embed.add_field(
+                name="Last Modified",
+                value=f"{duration.total_seconds()/pow(60, 2):0.2f} hours ago.",
+                inline=False,
+            )
+
             embed.set_footer(text=f"Bot version {self.bot.version}")
 
             await ctx.response.send_message(rawLog[0], embed=embed)
@@ -259,7 +286,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     f"Battery report for battery \\textbf{{{battery_id}}}.",
                 )
                 filedata = filedata.replace("BATTERYID", battery_id)
-                filedata = filedata.replace("USER", ctx.user.nick)
+                filedata = filedata.replace("USER", ctx.user.nick.replace("_", ""))
 
                 texName = f"/tmp/battery_report_{battery_id}.tex"
 
@@ -296,7 +323,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     f"Battery overview.",
                 )
                 filedata = filedata.replace("BATTERYID", "overview")
-                filedata = filedata.replace("USER", ctx.user.nick)
+                filedata = filedata.replace("USER", ctx.user.nick.replace("_", ""))
 
                 texName = f"/tmp/battery_overview.tex"
 
@@ -322,9 +349,12 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 cur.execute(query, (battery_id,))
                 table = self.makeTable(cur)
                 for row in table:
-                    cleanRow = list(row)
+                    # Replace all underscores
+                    cleanRow = [str(x).replace("_", "") for x in row]
+
                     cleanRow[-1] = "{" + cleanRow[-1] + "}"
-                    cleanRow[2] = "1" if bool(cleanRow[2]) else "0"
+                    print(cleanRow[2])
+                    cleanRow[2] = "1" if cleanRow[2] == "True" else "0"
                     writer.writerow(cleanRow)
 
         return f"/tmp/battery_{battery_id}.csv"
@@ -352,9 +382,11 @@ class BatteryCog(commands.Cog, name="Batteries"):
                     # If idx is anything other than 0 dont print the header
                     dirtyRows = self.makeTable(cur, idx == 0)
                     for row in dirtyRows:
-                        cleanRow = list(row)
+                        # Replace all underscores
+                        cleanRow = [str(x).replace("_", "") for x in row]
+
                         cleanRow[-1] = "{" + cleanRow[-1] + "}"
-                        cleanRow[2] = "1" if bool(cleanRow[2]) else "0"
+                        cleanRow[2] = "1" if cleanRow[2] == "True" else "0"
                         table.append(cleanRow)
 
                 for row in table:
