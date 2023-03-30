@@ -98,7 +98,7 @@ class ToolCog(commands.Cog, name="Tools"):
         await ctx.response.send_message(msg)
 
     @commands.command()
-    @commands.has_role("Team Member")
+    @commands.has_role("Software Team")
     async def selfdestruct(self, ctx, *args):
         async with ctx.typing():
             await ctx.send(f"Computing...")

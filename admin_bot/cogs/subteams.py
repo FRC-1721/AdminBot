@@ -43,7 +43,6 @@ class SubteamCog(commands.Cog, name="Subteams"):
         ]
 
     @app_commands.command(name="join")
-    @app_commands.checks.has_role("Team Member")
     @app_commands.describe(
         team="Name of the subteam you want to join.",
     )
@@ -74,7 +73,6 @@ class SubteamCog(commands.Cog, name="Subteams"):
             )
 
     @app_commands.command(name="leave")
-    @app_commands.checks.has_role("Team Member")
     @app_commands.describe(
         team="Name of the subteam you want to leave.",
     )
@@ -105,7 +103,6 @@ class SubteamCog(commands.Cog, name="Subteams"):
             )
 
     @app_commands.command(name="listroles")
-    @app_commands.checks.has_role("Team Member")
     async def listroles(
         self,
         ctx: discord.Interaction,
