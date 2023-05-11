@@ -11,6 +11,9 @@ import discord.utils
 import asyncio
 import random
 import yaml
+import subprocess
+
+from PIL import Image, ImageDraw, ImageFilter, UnidentifiedImageError
 
 from discord import app_commands
 from discord.ext import commands
@@ -47,6 +50,28 @@ class MiscCog(commands.Cog, name="Misc"):
                     break
 
         await ctx.response.send_message(str(line))
+
+    @app_commands.command(name="myvote")
+    async def myvote(self, ctx: discord.Interaction, img: str):
+        """
+        Automates that silly thing Aaron does.
+        """
+
+        subprocess.run(["wget", img, "-O", "/tmp/to_vote.png"])
+
+        try:
+            pip = Image.open("/tmp/to_vote.png")
+            frame = Image.open("admin_bot/resources/vote.png")
+
+            pip = pip.resize((375, 250))
+
+            frame.paste(pip, (40, 240))
+            frame.save("/tmp/myvoteout.png", quality=95)
+
+            await ctx.response.send_message(file=discord.File("/tmp/myvoteout.png"))
+        except UnidentifiedImageError:
+            logging.error("Could not download image when requested.")
+            await ctx.response.send_message("Error opening that image!")
 
     @app_commands.command(name="snap")
     async def snap(self, ctx: discord.Interaction):
