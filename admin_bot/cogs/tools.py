@@ -205,10 +205,17 @@ class ToolCog(commands.Cog, name="Tools"):
             except AttributeError:
                 event.description = "Error fetching desc"
 
-            if len(desc) != 0 or showAll:
-                # If all is true, we'll just add everything in here
-                logging.debug(f"Adding event: {event}")
-                filtered_events.append(event)
+            try:
+                if len(desc) != 0 or showAll:
+                    # If all is true, we'll just add everything in here
+                    logging.debug(f"Adding event: {event}")
+                    filtered_events.append(event)
+            except TypeError:
+                # This runs if desc is missing entirely
+                logging.error(f"Could not add {desc}")
+                if showAll:
+                    logging.warn(f"Force adding event: {event}")
+                    filtered_events.append(event)
 
         if len(filtered_events) > 0:
             # We only building a message IF we see that we have stuff to post about!
