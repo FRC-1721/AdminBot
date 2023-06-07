@@ -4,19 +4,20 @@
 
 
 import pytz
+import urllib
 import discord
 import logging
 import asyncio
 import psycopg
 import requests
 import random
+import icalendar
 import recurring_ical_events
 
 from typing import Literal, Optional
 from discord import app_commands
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta, time
-from ics import Calendar
 
 from utilities.common import seconds_until
 
@@ -172,23 +173,24 @@ class ToolCog(commands.Cog, name="Tools"):
         Returns a list of upcoming events
         """
 
+        # Now
+        now = datetime.now(self.localtz)
+
         cal_url = "https://calendar.google.com/calendar/ical/s6pg5kgtmu98ibee92h5d1gqh0%40group.calendar.google.com/public/basic.ics"  # From google
-        teamCal = Calendar(requests.get(cal_url).text)
+        ical_string = urllib.request.urlopen(cal_url).read()
+        teamCal = icalendar.Calendar.from_ical(ical_string)
         events = recurring_ical_events.of(teamCal).between(
             now - timedelta(weeks=50),
             now + timedelta(weeks=50),
         )
-        sorted_events = sorted(events, reverse=False)
-
-        # Now
-        now = datetime.now(self.localtz)
+        # sorted_events = sorted(events, reverse=False)  # Dosn't work with new event obj
 
         # Find today's events
         todays_events = []
 
         # Add the events that are in the search range
-        for event in sorted_events:
-            begin = event.begin.replace(tzinfo=self.localtz)
+        for event in events:
+            begin = event["DTSTART"].dt
 
             # Search in range between -2 and +2 days
             if begin > now - timedelta(days=2) and begin < now + timedelta(days=2):

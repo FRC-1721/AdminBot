@@ -5,5 +5,5 @@ requests
 PyYAML
 pillow
 pytz==2022.7
-ics==0.8.0.dev0
+icalendar
 recurring-ical-events
