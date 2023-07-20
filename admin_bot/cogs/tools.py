@@ -119,7 +119,7 @@ class ToolCog(commands.Cog, name="Tools"):
     async def today(self, ctx: discord.Interaction) -> None:
         """Gives you today's itinerary!"""
 
-        embed = self.get_events(days=1, showAll=True, embedName="Today's Events")
+        embed = self.get_events(searchDays=1, showAll=True, embedName="Today's Events")
         if embed != None:  # Only post IF theres stuff to send!
             await ctx.response.send_message(embed=embed)  # Send it!
         else:
@@ -129,7 +129,9 @@ class ToolCog(commands.Cog, name="Tools"):
     async def tomorrow(self, ctx: discord.Interaction, days: int = 2) -> None:
         """Gives you tomorrow's itinerary!"""
 
-        embed = self.get_events(days=days, showAll=True, embedName="Tomorrow's Events")
+        embed = self.get_events(
+            searchDays=days, showAll=True, embedName="Tomorrow's Events"
+        )
         if embed != None:  # Only post IF theres stuff to send!
             await ctx.response.send_message(embed=embed)  # Send it!
         else:
@@ -166,7 +168,7 @@ class ToolCog(commands.Cog, name="Tools"):
 
             await asyncio.sleep(60)  # So we dont spam while its 11 pm
 
-    def get_events(self, days=2, showAll=False, embedName="Upcoming Events"):
+    def get_events(self, searchDays=2, showAll=False, embedName="Upcoming Events"):
         """
         Returns a list of upcoming events
         """
@@ -174,7 +176,7 @@ class ToolCog(commands.Cog, name="Tools"):
         cal_url = "https://calendar.google.com/calendar/ical/s6pg5kgtmu98ibee92h5d1gqh0%40group.calendar.google.com/public/basic.ics"  # From google
         teamCal = Calendar(requests.get(cal_url).text)
         events = teamCal.events
-        sorted_events = sorted(events, reverse=False)
+        sorted_events = sorted(events, reverse=True)
 
         # Now
         now = datetime.now(self.localtz)
@@ -187,8 +189,8 @@ class ToolCog(commands.Cog, name="Tools"):
             begin = event.begin.replace(tzinfo=self.localtz)
 
             # Search in range between -2 and +2 days
-            if begin > now - timedelta(days=2) and begin < now + timedelta(days=2):
-                if begin.day - now.day in range(0, days):
+            if abs((begin - now).days) < searchDays:
+                if begin.day - now.day in range(0, searchDays):
                     logging.debug(f"Event {event} on day {begin.day} and day {now.day}")
                     todays_events.append(event)
 
