@@ -204,25 +204,30 @@ class ToolCog(commands.Cog, name="Tools"):
         filtered_events = []
         for event in todays_events:
             try:
-                summary = event.summary
+                event.summary = event.summary
             except AttributeError:
                 event.summary = "Error fetching summary"
 
             try:
-                desc = event.description
+                # limit to 1024 as per discord rules
+                event.description = event.description[:1024]
             except AttributeError:
                 event.description = "Error fetching desc"
 
             try:
-                if len(desc) != 0 or showAll:
+                if len(event.description) != 0 or showAll:
                     # If all is true, we'll just add everything in here
-                    logging.debug(f"Adding event: {event}")
+                    logging.debug(
+                        f"Adding event: '{event.summary}', '{event.description}'"
+                    )
                     filtered_events.append(event)
             except TypeError:
                 # This runs if desc is missing entirely
-                logging.error(f"Could not add {desc}")
+                logging.error(f"Could not add {event.description}")
                 if showAll:
-                    logging.warn(f"Force adding event: {event}")
+                    logging.warn(
+                        f"Force adding event: '{event.summary}', '{event.description}'"
+                    )
                     filtered_events.append(event)
 
         if len(filtered_events) > 0:
