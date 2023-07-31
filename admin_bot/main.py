@@ -41,7 +41,7 @@ class AdminBot(object):
         logging.basicConfig(
             format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
             datefmt="%H:%M:%S",
-            level=logging.INFO,
+            level=os.environ.get("LOG_LEVEL", "INFO").upper(),
             handlers=[logging.FileHandler("/tmp/adman.log"), logging.StreamHandler()],
         )
 

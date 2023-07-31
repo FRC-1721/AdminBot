@@ -189,10 +189,16 @@ class ToolCog(commands.Cog, name="Tools"):
             begin = event.begin.replace(tzinfo=self.localtz)
 
             # Search in range between -2 and +2 days
-            if abs((begin - now).days) < searchDays:
-                if begin.day - now.day in range(0, searchDays):
-                    logging.debug(f"Event {event} on day {begin.day} and day {now.day}")
-                    todays_events.append(event)
+            if (begin - now).days < searchDays and (begin - now).days >= 0:
+                logging.info(
+                    f"Event '{event.summary}' installed, {(begin - now).days} days away"
+                )
+                todays_events.append(event)
+
+            else:
+                logging.debug(
+                    f"Event '{event.summary}' not installed because it is outside the search range ({(begin - now).days} days away)."
+                )
 
         # Remove events with no description
         filtered_events = []
