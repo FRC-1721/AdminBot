@@ -7,6 +7,8 @@ import discord
 import logging
 import cv2 as cv
 import io
+import os
+import random
 import discord.utils
 import asyncio
 import random
@@ -72,6 +74,18 @@ class MiscCog(commands.Cog, name="Misc"):
         except UnidentifiedImageError:
             logging.error("Could not download image when requested.")
             await ctx.response.send_message("Error opening that image!")
+
+    @app_commands.command(name="aaron")
+    async def aaron(self, ctx: discord.Interaction):
+        """
+        Randomly gives you a picture of aaron
+        """
+
+        srcdir = "admin_bot/resources/pictures_of_aaron/"
+
+        await ctx.response.send_message(
+            file=discord.File(srcdir + random.choice(os.listdir(srcdir)))
+        )
 
     @app_commands.command(name="snap")
     async def snap(self, ctx: discord.Interaction):
