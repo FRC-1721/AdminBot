@@ -59,6 +59,7 @@ class MiscCog(commands.Cog, name="Misc"):
         Automates that silly thing Aaron does.
         """
 
+        # This is literally begging to be used for remote code injection
         subprocess.run(["wget", img, "-O", "/tmp/to_vote.png"])
 
         try:
