@@ -61,7 +61,7 @@ jobs:
   #         args: "AdminBot Pytest failed!"
 
   build-and-publish-image:
-    name: Build and Publish Registry Image
+    name: Build Registry
     runs-on: ubuntu-latest
     needs: [formatblack] # Keeps the bot from updating the image if its not tested/formatted
 
@@ -107,7 +107,7 @@ jobs:
         run: |
           echo "${{ steps.branch-name.outputs.current_branch }}"
           echo "${{ steps.meta.outputs.tags }}"
-          echo "CUSTOM_TAG=ghcr.io/frc-1721/$(echo ${{ matrix.package }} | sed 's/[A-Z]/\L&/g'):$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
+          echo "CUSTOM_TAG=ghcr.io/frc-1721/$(echo ${{ matrix.package }} | sed 's/[A-Z_]\|L&//'):$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
