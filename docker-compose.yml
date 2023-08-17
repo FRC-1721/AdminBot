@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   db:
@@ -13,13 +13,13 @@ services:
         max-size: 10m
         max-file: "3"
     ports:
-      - '5438:5432'
+      - "5438:5432"
     tmpfs: /var/lib/postgresql/data
 
   admin_bot:
     image: admin_bot:$TAG
     build:
-      context: .
+      context: admin_bot/
       dockerfile: Dockerfile
     environment:
       BOT_TOKEN: "top.secret.token"
