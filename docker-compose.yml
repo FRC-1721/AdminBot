@@ -16,15 +16,25 @@ services:
       - "5438:5432"
     tmpfs: /var/lib/postgresql/data
 
-  admin_bot:
-    image: admin_bot:$TAG
+  # admin_bot:
+  #   image: admin_bot:$TAG
+  #   build:
+  #     context: admin_bot/
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     BOT_TOKEN: "top.secret.token"
+  #   devices:
+  #     - "/dev/video0:/dev/video0"
+  #   links:
+  #     - "db:database"
+  #   restart: "no"
+  #   command: "true"
+
+  admin_interface:
+    image: admin_interface:$TAG
     build:
-      context: admin_bot/
+      context: admin_interface/
       dockerfile: Dockerfile
-    environment:
-      BOT_TOKEN: "top.secret.token"
-    devices:
-      - "/dev/video0:/dev/video0"
     links:
       - "db:database"
     restart: "no"

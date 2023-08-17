@@ -69,6 +69,12 @@ jobs:
       contents: read
       packages: write
 
+    strategy:
+      matrix:
+        package:
+          - admin_bot
+          - admin_interface
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -88,7 +94,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Extract Version information for admin_bot
+      - name: Extract Version information for ${{ matrix.package }}
         id: extract_hash
         run: |
           echo BUILD_HASH=$(git describe --abbrev=8 --always --tags --dirty) >> $GITHUB_ENV
@@ -101,12 +107,12 @@ jobs:
         run: |
           echo "${{ steps.branch-name.outputs.current_branch }}"
           echo "${{ steps.meta.outputs.tags }}"
-          echo "CUSTOM_TAG=ghcr.io/frc-1721/adminbot:$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
+          echo "CUSTOM_TAG=ghcr.io/frc-1721/$(echo ${{ matrix.package }} | sed 's/[A-Z]/\L&/g'):$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: admin_bot/
+          context: ${{ matrix.package }}/
           push: true
           build-args: |
             GIT_COMMIT=${{ env.BUILD_HASH }}
@@ -119,4 +125,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "Built and published a new Adman Bot docker image to `${{ env.CUSTOM_TAG }}`!"
+          args: "Built and published a new `${{ matrix.package }}` docker image to `${{ env.CUSTOM_TAG }}`!"

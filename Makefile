@@ -59,7 +59,7 @@ shell:
 
 # Run command in container
 run: build
-	docker-compose run admin_bot $(COMMAND)
+	docker-compose up
 
 # Stop container
 stop:
