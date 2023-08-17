@@ -126,3 +126,23 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: "Built and published a new `${{ matrix.package }}` docker image to `${{ env.CUSTOM_TAG }}`!"
+
+  gcr-cleaner:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # customize based on the gcr-cleaner flags
+      - uses: "docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli"
+        with:
+          args: >-
+            -repo=ghcr.io/frc-1721/adminbot
+            -repo=ghcr.io/frc-1721/admininterface
+            -grace=48h
+            -keep=1
+            -dry_run
