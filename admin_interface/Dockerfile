@@ -37,12 +37,11 @@ ADD . ${HOME}
 # Add /bin to path
 ENV PATH $PATH:${HOME}/bin
 
-# Install our app in edit mode using pip
-RUN pip install -e ${HOME}
-
 # Drop root and change ownership of /app to app:app
 RUN chown -R ${USER_ID}:${GROUP_ID} ${HOME}
 USER ${USER_ID}
+
+EXPOSE 8080
 
 # Run the entrypoint bin
 ENTRYPOINT ["entrypoint"]

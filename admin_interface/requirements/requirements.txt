@@ -1,2 +1,4 @@
+flask
+gunicorn
 pyscopg2
 sqlalchemy

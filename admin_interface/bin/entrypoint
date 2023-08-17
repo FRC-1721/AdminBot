@@ -1,11 +1,3 @@
 #!/bin/bash
 
-set -e
-
-if [ "$1" = test ]; then
-    # Run pytest if needed
-    exec pytest "${@:2}"
-else
-    # Run the actual code otherwise
-    exec python -m admin_interface
-fi
+cd admin_interface && gunicorn -b 0.0.0.0:8000 main:app
