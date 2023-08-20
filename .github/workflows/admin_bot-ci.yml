@@ -146,3 +146,4 @@ jobs:
             -repo=ghcr.io/frc-1721/adminbot
             -repo=ghcr.io/frc-1721/admininterface
             -grace=48h
+            -recursive=true
