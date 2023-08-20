@@ -132,13 +132,18 @@ jobs:
     # needs: [build-and-publish-image]
 
     steps:
-      - uses: snok/container-retention-policy@v2
+      - name: Clean adminbot
+        uses: actions/delete-package-versions@v4
         with:
-          image-names: "*"
-          cut-off: two hours ago UTC+2
-          timestamp-to-use: updated_at
-          account-type: org
-          org-name: frc1721
-          untagged-only: true
-          token: ${{ secrets.PAT }}
-          dry-run: true
+          package-name: "adminbot"
+          package-type: "container"
+          min-versions-to-keep: 2
+          delete-only-untagged-versions: "true"
+
+      - name: clean adminbotinterface
+        uses: actions/delete-package-versions@v4
+          with:
+            package-name: "adminbotinterface"
+            package-type: "container"
+            min-versions-to-keep: 2
+            delete-only-untagged-versions: "true"
