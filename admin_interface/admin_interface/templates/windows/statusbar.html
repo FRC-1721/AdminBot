@@ -1,33 +1,4 @@
 <div id="status" class="status">
-  <p id="mission_time">Wait...</p>
-  <p id="subtitle">Wait...</p>
-
-  <script type='text/javascript'>
-    function callme() {
-      //This promise will resolve when the network call succeeds
-      //Feel free to make a REST fetch using promises and assign it to networkPromise
-      var networkPromise = fetch('/get_time')
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          document.getElementById("mission_time").innerHTML = data["t"];
-          document.getElementById("subtitle").innerHTML = data["name"];
-        });;
-
-
-      //This promise will resolve when 2 seconds have passed
-      var timeOutPromise = new Promise(function (resolve, reject) {
-        // 2 Second delay
-        setTimeout(resolve, 2000, 'Timeout Done');
-      });
-
-      Promise.all(
-        [networkPromise, timeOutPromise]).then(function (values) {
-          console.log("Atleast 2 secs + TTL (Network/server)");
-          //Repeat
-          callme();
-        });
-    }
-    callme();
-  </script>
+  <p id="mission_time" class="timerText">Wait...</p>
+  <p id="subtitle" class="subTimerText">Wait...</p>
 </div>

@@ -1,0 +1,46 @@
+// Code for the dashboard
+$(document).ready(function () {
+    var socket = io.connect();
+
+    socket.on("updateSensorData", function (msg) {
+        console.log("Received sensorData :: " + msg.date + " :: " + msg.version);
+    });
+
+    socket.on("reconnect", (socket) => {
+        console.log("Just reconnected!");
+        window.location.reload();
+    });
+
+    socket.on("disconnect", (reason) => {
+        console.log("Disconnected! Reason was " + reason);
+    });
+});
+
+
+
+// function callme() {
+//     //This promise will resolve when the network call succeeds
+//     //Feel free to make a REST fetch using promises and assign it to networkPromise
+//     var networkPromise = fetch('/get_time')
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data);
+//             document.getElementById("mission_time").innerHTML = data["t"];
+//             document.getElementById("subtitle").innerHTML = data["name"];
+//         });;
+
+
+//     //This promise will resolve when 2 seconds have passed
+//     var timeOutPromise = new Promise(function (resolve, reject) {
+//         // 2 Second delay
+//         setTimeout(resolve, 2000, 'Timeout Done');
+//     });
+
+//     Promise.all(
+//         [networkPromise, timeOutPromise]).then(function (values) {
+//             console.log("Atleast 2 secs + TTL (Network/server)");
+//             //Repeat
+//             callme();
+//         });
+// }
+// callme();

@@ -41,7 +41,7 @@ ENV PATH $PATH:${HOME}/bin
 RUN chown -R ${USER_ID}:${GROUP_ID} ${HOME}
 USER ${USER_ID}
 
-EXPOSE 8080
+EXPOSE 8000
 
 # Run the entrypoint bin
 ENTRYPOINT ["entrypoint"]

@@ -1,4 +1,7 @@
 flask
 gunicorn
 pyscopg2
+# eventlet # for Flask-SocketIO
 sqlalchemy
+Flask-SocketIO
+# gevent-websocket # for Flask-SocketIO
