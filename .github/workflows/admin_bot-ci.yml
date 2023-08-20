@@ -139,11 +139,3 @@ jobs:
           package-type: "container"
           min-versions-to-keep: 2
           delete-only-untagged-versions: "true"
-
-      - name: clean adminbotinterface
-        uses: actions/delete-package-versions@v4
-          with:
-            package-name: "adminbotinterface"
-            package-type: "container"
-            min-versions-to-keep: 2
-            delete-only-untagged-versions: "true"
