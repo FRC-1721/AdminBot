@@ -133,9 +133,19 @@ jobs:
 
     steps:
       - name: Clean adminbot
+        id: clean_adminbot
         uses: actions/delete-package-versions@v4
         with:
           package-name: "adminbot"
+          package-type: "container"
+          min-versions-to-keep: 2
+          delete-only-untagged-versions: "true"
+
+      - name: Clean adminbotinterface
+        id: clean_adminbotinterface
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: "adminbotinterface"
           package-type: "container"
           min-versions-to-keep: 2
           delete-only-untagged-versions: "true"
