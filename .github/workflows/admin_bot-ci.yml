@@ -134,7 +134,7 @@ jobs:
     steps:
       - uses: snok/container-retention-policy@v2
         with:
-          image-names: *
+          image-names: "*"
           cut-off: two hours ago UTC+2
           timestamp-to-use: updated_at
           account-type: org
