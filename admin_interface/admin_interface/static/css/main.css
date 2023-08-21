@@ -9,6 +9,11 @@
   src: url("fonts/overpass-mono-regular.ttf");
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 /* Main Body */
 body {
   background-color: rgb(20, 20, 20);
