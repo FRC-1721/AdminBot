@@ -31,26 +31,26 @@ body {
   padding: 10px;
 }
 
-#logbook {
+#calendar {
   grid-column: 2;
   grid-row: 1;
   background: rgb(49, 49, 49);
 }
 
-#camera {
+#promo {
   background: rgb(84, 84, 84);
   grid-column: 1;
   grid-row: 1 / span 2;
 }
 
-#graphs {
+#discord {
   background: rgb(84, 84, 84);
   grid-column: 2;
   grid-row: 2;
 }
 
-#status {
-  /* CSS for the whole status page block (statusbar.html) */
+#countdown {
+  /* CSS for the whole countdown page block (countdown.html) */
   grid-column: 1 / span 2;
   grid-row: 3;
   background: rgb(49, 49, 49);

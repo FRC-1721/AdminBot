@@ -1,7 +1,7 @@
 # Shortcut makefile list
 
 help: ## Show this help.
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
 test: build ## Currently broken, requires build
@@ -10,7 +10,7 @@ test: build ## Currently broken, requires build
 
 configure-pipenv: ## sets up pipenv for you
 	pipenv install -r admin_bot/requirements/requirements.txt
-	pipenv install -r admin_interface/requirements/test_requirements.txt
+	pipenv install -r admin_interface/requirements/requirements.txt
 	pipenv shell
 
 
@@ -33,7 +33,6 @@ shell: ## Get container shell
 run: build ## Run command in container, requires build
 	docker-compose up
 
-
 stop: ## Stop containers
 	docker-compose down
 	docker-compose stop
@@ -41,3 +40,8 @@ stop: ## Stop containers
 
 dev: ## Build then run
 	docker-compose -f docker-compose.yml build && docker-compose -f docker-compose.yml up
+
+
+# Specific stuff
+flask-local: ## Runs flask locally for you!
+	cd admin_interface/admin_interface && flask --app main.py run
