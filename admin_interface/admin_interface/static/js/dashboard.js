@@ -1,9 +1,30 @@
 // Code for the dashboard
 $(document).ready(function () {
+    // Socket
     var socket = io.connect();
+
+    // Keep track of version
+    _verlock = false;
+    var _version = "none";
+
+    // Get all editable elements
+    let countdown_elm = document.getElementById("mission_time");
+    let subtitle_elm = document.getElementById("subtitle");
 
     socket.on("updateSensorData", function (msg) {
         console.log("Received sensorData :: " + msg.date + " :: " + msg.version);
+
+        // Check if server is updated
+        if (_verlock && _version != msg.version) {
+            console.log("AAH! Reload required!");
+            window.location.reload();
+        } else {
+            _version = msg.version;
+        }
+
+        // Update updatable elements
+        countdown_elm.textContent = msg.date;
+        subtitle_elm.textContent = "We're online";
     });
 
     socket.on("reconnect", (socket) => {
@@ -13,6 +34,7 @@ $(document).ready(function () {
 
     socket.on("disconnect", (reason) => {
         console.log("Disconnected! Reason was " + reason);
+        _verlock = true;
     });
 });
 

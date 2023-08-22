@@ -14,25 +14,25 @@ from threading import Lock
 
 from datetime import datetime, timedelta
 
-import consts
+from tools.misc import getVersion
 
 
 thread = None
 thread_lock = Lock()
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "donsky!"
+app.config["SECRET_KEY"] = "frc1721!"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", version=str(os.environ.get("GIT_COMMIT")))
+    return render_template("index.html", version=getVersion())
 
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html", version=str(os.environ.get("GIT_COMMIT")))
+    return render_template("dashboard.html", version=getVersion())
 
 
 # Get current date time
@@ -45,7 +45,7 @@ def get_current_datetime():
 def background_thread():
     while True:
         data = {
-            "version": str(os.environ.get("GIT_COMMIT")),
+            "version": getVersion(),
             "date": get_current_datetime(),
             "idk": "Hello World",
         }
