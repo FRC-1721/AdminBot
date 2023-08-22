@@ -3,12 +3,12 @@
 {% block content %}
 
 
-<div id="wrapper">
+<main>
     {% include "windows/calendar.html" %}
     {% include "windows/promo.html" %}
     {% include "windows/discord.html" %}
     {% include "windows/countdown.html" %}
-</div>
+</main>
 
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/dashboard.js') }}"></script>
 
