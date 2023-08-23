@@ -44,9 +44,9 @@ $(document).ready(function () {
         }
 
         // Update updatable elements
-        $("#mission_time").text = msg.date;
-        $("#subtitle").text = msg.next_meeting;
-        $("#promoImage").src = msg.promo_path;
+        $("#mission_time").text(msg.date);
+        $("#subtitle").text(msg.next_meeting);
+        $("#promoImage").attr("src", msg.promo_path);
 
         // Update table
         // let discord_elm = document.getElementById("discord_table");
