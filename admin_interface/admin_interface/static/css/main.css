@@ -46,7 +46,9 @@ main {
 #promo {
   grid-column: 1;
   grid-row: 1 / span 2;
-  border-right: 1px solid #665c54
+  border-right: 1px solid #665c54;
+  background-image: url("/static/images/background.svg");
+  background-size: 256px;
 }
 
 #discord {
