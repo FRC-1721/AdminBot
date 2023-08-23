@@ -1,12 +1,8 @@
 // Code for the dashboard
 
 // Creates a html table https://stackoverflow.com/questions/15164655/generate-html-table-from-2d-javascript-array
-function createTable(tableData, name) {
-    var table = document.createElement('table');
+function createTableBody(tableData) {
     var tableBody = document.createElement('tbody');
-
-    // Set ID so we can find it again later using getElementById
-    table.id = name;
 
     tableData.forEach(function (rowData) {
         var row = document.createElement('tr');
@@ -19,9 +15,7 @@ function createTable(tableData, name) {
 
         tableBody.appendChild(row);
     });
-
-    table.appendChild(tableBody);
-    return table;
+    return tableBody;
     // document.body.appendChild(table);
 }
 
@@ -34,9 +28,9 @@ $(document).ready(function () {
     var _version = "none";
 
     // Get all editable elements
-    let countdown_elm = document.getElementById("mission_time");
-    let subtitle_elm = document.getElementById("subtitle");
-    let promo_elm = document.getElementById("promoImage");
+    // let countdown_elm = document.getElementById("mission_time");
+    // let subtitle_elm = document.getElementById("subtitle");
+    // let promo_elm = document.getElementById("promoImage");
 
     socket.on("updateSensorData", function (msg) {
         console.log("Received sensorData :: " + msg.date + " :: " + msg.version);
@@ -50,13 +44,14 @@ $(document).ready(function () {
         }
 
         // Update updatable elements
-        countdown_elm.textContent = msg.date;
-        subtitle_elm.textContent = msg.next_meeting;
-        promoImage.src = msg.promo_path;
+        $("#mission_time").text = msg.date;
+        $("#subtitle").text = msg.next_meeting;
+        $("#promoImage").src = msg.promo_path;
 
         // Update table
-        let discord_elm = document.getElementById("discord_table");
-        discord_elm.parentNode.replaceChild(createTable(msg.discord, "discord_table"), discord_elm);
+        // let discord_elm = document.getElementById("discord_table");
+        // discord_elm.parentNode.replaceChild(createTable(msg.discord, "discord_table"), discord_elm);
+        $("#discord_table > tbody").replaceWith(createTableBody(msg.discord));
     });
 
     socket.on("reconnect", (socket) => {
