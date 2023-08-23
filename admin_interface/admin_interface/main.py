@@ -51,6 +51,7 @@ def websocket_push():
                 ["KenwoodFox", "I'm joe.", 1692797080],
                 ["dublU", "Joe momma", 1692797082],
             ],
+            "next_meeting": f"Next meeting in {10} days. Monday, January 1st",
             "promo_path": "static/placeholder/example1.png"
             if int(time.time()) % 20 >= 10
             else "static/placeholder/example2.png",

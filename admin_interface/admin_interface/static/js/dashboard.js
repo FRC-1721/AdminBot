@@ -51,7 +51,7 @@ $(document).ready(function () {
 
         // Update updatable elements
         countdown_elm.textContent = msg.date;
-        subtitle_elm.textContent = "We're online";
+        subtitle_elm.textContent = msg.next_meeting;
         promoImage.src = msg.promo_path;
 
         // Update table
