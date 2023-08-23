@@ -14,7 +14,7 @@ from threading import Lock
 
 from datetime import datetime, timedelta
 
-from tools.misc import getVersion
+from tools.misc import getVersion, getNextMeeting
 
 
 thread = None
@@ -48,10 +48,10 @@ def websocket_push():
             "version": getVersion(),
             "date": get_current_datetime(),
             "discord": [
-                ["KenwoodFox", "I'm joe.", 1692797080],
-                ["dublU", "Joe momma", 1692797082],
+                ["KenwoodFox", "I'm joe.", "Software", 1692797080],
+                ["dublU", "Joe momma", "Software", 1692797082],
             ],
-            "next_meeting": f"Next meeting in {10} days. Monday, January 1st",
+            "next_meeting": getNextMeeting(),
             "promo_path": "static/placeholder/example1.png"
             if int(time.time()) % 20 >= 10
             else "static/placeholder/example2.png",
@@ -79,17 +79,14 @@ def disconnect():
     logging.info("Client disconnected", request.sid)
 
 
-@app.route("/get_time")
-def get_time():
-    now = datetime.now()
-    epoch = datetime.fromtimestamp(consts.MISSION_EPOCH)
-
-    missionTime = now - epoch
-
-    data = {"t": f"T+{str(missionTime).split('.')[0]}", "name": "Countdown to Kickoff"}
-    return jsonify(data)
-
-
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(
+        format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
+        datefmt="%H:%M:%S",
+        level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+        handlers=[
+            logging.FileHandler("/tmp/admin_interface.log"),
+            logging.StreamHandler(),
+        ],
+    )
     socketio.run(app)

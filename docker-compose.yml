@@ -23,6 +23,7 @@ services:
       dockerfile: Dockerfile
     environment:
       BOT_TOKEN: "top.secret.token"
+      LOG_LEVEL: "DEBUG"
     links:
       - "db:database"
     restart: "no"
@@ -35,8 +36,8 @@ services:
       dockerfile: Dockerfile
     environment:
       LOG_LEVEL: "DEBUG"
-    devices:
-      - "/dev/video0:/dev/video0"
+    ports:
+      - 8000:8000
     links:
       - "db:database"
     restart: "no"

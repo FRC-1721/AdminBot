@@ -42,7 +42,10 @@ class AdminBot(object):
             format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
             datefmt="%H:%M:%S",
             level=os.environ.get("LOG_LEVEL", "INFO").upper(),
-            handlers=[logging.FileHandler("/tmp/adman.log"), logging.StreamHandler()],
+            handlers=[
+                logging.FileHandler("/tmp/admin_bot.log"),
+                logging.StreamHandler(),
+            ],
         )
 
         # Append some extra information to our discord bot
