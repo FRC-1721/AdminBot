@@ -42,12 +42,18 @@ def get_current_datetime():
 
 
 # Generate random sequence of dummy sensor values and send it to our clients
-def background_thread():
+def websocket_push():
     while True:
         data = {
             "version": getVersion(),
             "date": get_current_datetime(),
-            "idk": "Hello World",
+            "discord": [
+                ["KenwoodFox", "I'm joe.", 1692797080],
+                ["dublU", "Joe momma", 1692797082],
+            ],
+            "promo_path": "static/placeholder/example1.png"
+            if int(time.time()) % 20 >= 10
+            else "static/placeholder/example2.png",
         }
 
         socketio.emit("updateSensorData", data)
@@ -63,7 +69,7 @@ def connect():
     global thread
     with thread_lock:
         if thread is None:
-            thread = socketio.start_background_task(background_thread)
+            thread = socketio.start_background_task(websocket_push)
 
 
 # Client Disconnect

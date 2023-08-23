@@ -1,4 +1,30 @@
 // Code for the dashboard
+
+// Creates a html table https://stackoverflow.com/questions/15164655/generate-html-table-from-2d-javascript-array
+function createTable(tableData, name) {
+    var table = document.createElement('table');
+    var tableBody = document.createElement('tbody');
+
+    // Set ID so we can find it again later using getElementById
+    table.id = name;
+
+    tableData.forEach(function (rowData) {
+        var row = document.createElement('tr');
+
+        rowData.forEach(function (cellData) {
+            var cell = document.createElement('td');
+            cell.appendChild(document.createTextNode(cellData));
+            row.appendChild(cell);
+        });
+
+        tableBody.appendChild(row);
+    });
+
+    table.appendChild(tableBody);
+    return table;
+    // document.body.appendChild(table);
+}
+
 $(document).ready(function () {
     // Socket
     var socket = io.connect();
@@ -10,6 +36,7 @@ $(document).ready(function () {
     // Get all editable elements
     let countdown_elm = document.getElementById("mission_time");
     let subtitle_elm = document.getElementById("subtitle");
+    let promo_elm = document.getElementById("promoImage");
 
     socket.on("updateSensorData", function (msg) {
         console.log("Received sensorData :: " + msg.date + " :: " + msg.version);
@@ -25,6 +52,11 @@ $(document).ready(function () {
         // Update updatable elements
         countdown_elm.textContent = msg.date;
         subtitle_elm.textContent = "We're online";
+        promoImage.src = msg.promo_path;
+
+        // Update table
+        let discord_elm = document.getElementById("discord_table");
+        discord_elm.parentNode.replaceChild(createTable(msg.discord, "discord_table"), discord_elm);
     });
 
     socket.on("reconnect", (socket) => {
@@ -37,32 +69,3 @@ $(document).ready(function () {
         _verlock = true;
     });
 });
-
-
-
-// function callme() {
-//     //This promise will resolve when the network call succeeds
-//     //Feel free to make a REST fetch using promises and assign it to networkPromise
-//     var networkPromise = fetch('/get_time')
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log(data);
-//             document.getElementById("mission_time").innerHTML = data["t"];
-//             document.getElementById("subtitle").innerHTML = data["name"];
-//         });;
-
-
-//     //This promise will resolve when 2 seconds have passed
-//     var timeOutPromise = new Promise(function (resolve, reject) {
-//         // 2 Second delay
-//         setTimeout(resolve, 2000, 'Timeout Done');
-//     });
-
-//     Promise.all(
-//         [networkPromise, timeOutPromise]).then(function (values) {
-//             console.log("Atleast 2 secs + TTL (Network/server)");
-//             //Repeat
-//             callme();
-//         });
-// }
-// callme();
