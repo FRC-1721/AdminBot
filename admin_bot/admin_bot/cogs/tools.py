@@ -3,21 +3,26 @@
 # MIT License
 
 
+import time
 import pytz
 import discord
 import logging
 import asyncio
-import psycopg
+import psycopg2
 import requests
 import random
 
 from typing import Literal, Optional
 from discord import app_commands
 from discord.ext import commands, tasks
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from ics import Calendar
 
 from utilities.common import seconds_until
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from shared.models import DiscordMessage
 
 
 class ToolCog(commands.Cog, name="Tools"):
@@ -33,6 +38,14 @@ class ToolCog(commands.Cog, name="Tools"):
         # Setup calender
         self.localtz = pytz.timezone("US/Eastern")
         self.upcoming_events.start()
+
+        # Connect to connector database
+        engine = create_engine(
+            "postgresql+psycopg2://postgres:postgres@database/admin_bot_db"
+        )
+
+        Session = sessionmaker(bind=engine)
+        self.db = Session()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -318,6 +331,30 @@ class ToolCog(commands.Cog, name="Tools"):
                 ret += 1
 
         await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+
+    @commands.Cog.listener()
+    async def on_message(self, ctx: discord.message.Message):
+        """
+        Pushes messages into the postgresql database.
+        """
+
+        if (
+            not isinstance(ctx.channel, discord.channel.DMChannel)
+            and not ctx.author.bot
+        ):
+            logging.info(
+                f"Sending message from {ctx.channel.id}, author was {ctx.author.name}, forwarding it!"
+            )
+
+            msg = DiscordMessage(
+                time=int(time.time()),
+                username=ctx.author.name,
+                content=ctx.content,
+                channel=ctx.channel.name,
+            )
+
+            self.db.add(msg)
+            self.db.commit()
 
 
 async def setup(bot):

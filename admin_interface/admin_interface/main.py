@@ -11,9 +11,6 @@ from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 
-from psycopg2.errors import UndefinedTable
-
-from random import random
 from threading import Lock
 
 from datetime import datetime, timedelta
@@ -65,15 +62,6 @@ def websocket_push():
     while True:
         discord_logs = []
         with app.app_context():
-            user = DiscordMessage(
-                time=int(time.time()),
-                username="KenwoodFox",
-                content="I'm Joe",
-                channel="General",
-            )
-            db.session.add(user)
-            db.session.commit()
-
             for line in DiscordMessage.query.all():
                 discord_logs.append(
                     [line.username, line.content, line.channel, line.time]

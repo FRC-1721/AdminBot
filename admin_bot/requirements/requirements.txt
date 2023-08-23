@@ -1,6 +1,8 @@
 discord.py
 opencv-python
 psycopg[binary]
+psycopg2-binary
+sqlalchemy
 requests
 PyYAML
 pillow
