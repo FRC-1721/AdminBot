@@ -1,41 +1,43 @@
 version: "3.7"
 
 services:
-  # db:
-  #   image: postgres:10.5
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=admin_bot_db
-  #   logging:
-  #     options:
-  #       max-size: 10m
-  #       max-file: "3"
-  #   ports:
-  #     - "5438:5432"
-  #   tmpfs: /var/lib/postgresql/data
+  db:
+    image: postgres:10.5
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=admin_bot_db
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "5438:5432"
+    tmpfs: /var/lib/postgresql/data
 
-  # admin_bot:
-  #   image: admin_bot:$TAG
-  #   build:
-  #     context: admin_bot/
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     BOT_TOKEN: "top.secret.token"
-  #   devices:
-  #     - "/dev/video0:/dev/video0"
-  #   links:
-  #     - "db:database"
-  #   restart: "no"
-  #   command: "true"
+  admin_bot:
+    image: admin_bot:$TAG
+    build:
+      context: admin_bot/
+      dockerfile: Dockerfile
+    environment:
+      BOT_TOKEN: "top.secret.token"
+    links:
+      - "db:database"
+    restart: "no"
+    command: "true"
 
   admin_interface:
     image: admin_interface:$TAG
     build:
       context: admin_interface/
       dockerfile: Dockerfile
-    # links:
-    #   - "db:database"
+    environment:
+      LOG_LEVEL: "DEBUG"
+    devices:
+      - "/dev/video0:/dev/video0"
+    links:
+      - "db:database"
     restart: "no"
     command: "true"
