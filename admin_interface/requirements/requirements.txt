@@ -1,6 +1,6 @@
 flask
 gunicorn
-pyscopg2
+psycopg2-binary
 eventlet # for Flask-SocketIO
-sqlalchemy
+Flask-SQLAlchemy
 Flask-SocketIO

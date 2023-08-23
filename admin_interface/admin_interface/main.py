@@ -7,7 +7,11 @@ import threading
 
 
 from flask import Flask, render_template, jsonify, request
+
 from flask_socketio import SocketIO
+from flask_sqlalchemy import SQLAlchemy
+
+from psycopg2.errors import UndefinedTable
 
 from random import random
 from threading import Lock
@@ -16,13 +20,28 @@ from datetime import datetime, timedelta
 
 from tools.misc import getVersion, getNextMeeting
 
+from shared.models import db, DiscordMessage
 
+
+# Thread locking
 thread = None
 thread_lock = Lock()
 
+# Configure Flask App
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "frc1721!"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "postgresql+psycopg2://postgres:postgres@database/admin_bot_db"
 socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Connect/init DB
+db.init_app(app)
+
+# Create app tables
+with app.app_context():
+    logging.info("Applying initial DB creation setup.")
+    db.create_all()
 
 
 @app.route("/")
@@ -44,13 +63,26 @@ def get_current_datetime():
 # Generate random sequence of dummy sensor values and send it to our clients
 def websocket_push():
     while True:
+        discord_logs = []
+        with app.app_context():
+            user = DiscordMessage(
+                time=int(time.time()),
+                username="KenwoodFox",
+                content="I'm Joe",
+                channel="General",
+            )
+            db.session.add(user)
+            db.session.commit()
+
+            for line in DiscordMessage.query.all():
+                discord_logs.append(
+                    [line.username, line.content, line.channel, line.time]
+                )
+
         data = {
             "version": getVersion(),
             "date": get_current_datetime(),
-            "discord": [
-                ["KenwoodFox", "I'm joe.", "Software", 1692797080],
-                ["dublU", "Joe momma", "Software", 1692797082],
-            ],
+            "discord": discord_logs,
             "next_meeting": getNextMeeting(),
             "promo_path": "static/placeholder/example1.png"
             if int(time.time()) % 20 >= 10
@@ -89,4 +121,5 @@ if __name__ == "__main__":
             logging.StreamHandler(),
         ],
     )
+
     socketio.run(app)
