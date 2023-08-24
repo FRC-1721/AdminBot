@@ -2,18 +2,16 @@
 
 // Creates a html table https://stackoverflow.com/questions/15164655/generate-html-table-from-2d-javascript-array
 function createTableBody(tableData) {
-    var tableBody = document.createElement('tbody');
+    var tableBody = $("<tbody>");
 
-    tableData.forEach(function (rowData) {
-        var row = document.createElement('tr');
+    tableData.forEach(rowData => {
+        var row = $("<tr>");
 
-        rowData.forEach(function (cellData) {
-            var cell = document.createElement('td');
-            cell.appendChild(document.createTextNode(cellData));
-            row.appendChild(cell);
+        rowData.forEach(cellData => {
+            row.append($("<td>").text(cellData));
         });
 
-        tableBody.appendChild(row);
+        tableBody.append(row);
     });
     return tableBody;
     // document.body.appendChild(table);
@@ -52,6 +50,9 @@ $(document).ready(function () {
         // let discord_elm = document.getElementById("discord_table");
         // discord_elm.parentNode.replaceChild(createTable(msg.discord, "discord_table"), discord_elm);
         $("#discord_table > tbody").replaceWith(createTableBody(msg.discord));
+
+        // Scroll table
+        $("#discord").scrollTop($('#discord').prop('scrollHeight'));
     });
 
     socket.on("reconnect", (socket) => {

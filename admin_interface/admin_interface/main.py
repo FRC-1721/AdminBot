@@ -28,7 +28,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 # App Memory
 discord_logs = [
-    ["DublU", "First!", "General", 1692832019],
+    ["dublU", "First!", "General", 1692832019],
     ["KenwoodFox", "How does he do it every time?!", "General", 1692832030],
 ]
 max_discord_logs = 30
