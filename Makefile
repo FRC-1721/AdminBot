@@ -5,7 +5,7 @@ help: ## Show this help.
 
 
 test: build ## Currently broken, requires build
-	docker-compose run admin_bot test
+	docker compose run admin_bot test
 
 
 configure-pipenv: ## sets up pipenv for you
@@ -19,23 +19,23 @@ build: ## Build containers locally
 	echo TAG=$(shell git rev-parse --abbrev-ref HEAD | sed 's/[^a-zA-Z0-9]/-/g') > .env
 
 	# Build
-	docker-compose build --build-arg GIT_COMMIT=$(shell git describe --abbrev=8 --always --tags --dirty) --build-arg DEBUG=True
+	docker compose build --build-arg GIT_COMMIT=$(shell git describe --abbrev=8 --always --tags --dirty) --build-arg DEBUG=True
 
 
 docker-rm: stop  ## Delete containers, requires stop
-	docker-compose rm -f
+	docker compose rm -f
 
 
 shell: ## Get container shell
-	docker-compose run --entrypoint "/bin/bash" admin_bot
+	docker compose run --entrypoint "/bin/bash" admin_bot
 
 
 run: build ## Run command in container, requires build
-	docker-compose up
+	docker compose up
 
 stop: ## Stop containers
-	docker-compose down
-	docker-compose stop
+	docker compose down
+	docker compose stop
 
 # Specific stuff
 flask-local: ## Runs flask locally for you!

@@ -52,9 +52,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 # Create a full filename
                 filename = f"/app/promo/{(ctx.user.nick).replace(' ', '_')}_{_rand}"
 
-                # Get the file
-                subprocess.run(["wget", img, "-O", f"{filename}.png"])
-
+                # Write metadata first
                 imgData = {
                     "expires": f"{int(time.time()) + (86400*days)}",
                 }
@@ -62,6 +60,10 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 json_object = json.dumps(imgData, indent=4)
                 with open(f"{filename}.json", "w") as outfile:
                     outfile.write(json_object)
+
+                # Download the file
+                subprocess.run(["wget", img, "-O", f"{filename}.png"])
+
                 await ctx.followup.send("Done!")
             except Exception as e:
                 await ctx.followup.send(f"Sorry! There was an error! {e}")

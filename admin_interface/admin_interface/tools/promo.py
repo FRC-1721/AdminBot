@@ -28,7 +28,7 @@ def getNextImage(prune=True):
                 fname = file.split(".")[0]
                 if isfile(join(promo_path, f"{fname}.json")):
                     fdata = json.load(open(join(promo_path, f"{fname}.json")))
-                    logging.info(f"Loaded file with metadata {fdata}")
+                    logging.debug(f"Loaded file with metadata {fdata}")
 
                     if int(fdata["expires"]) < int(time.time()):
                         logging.info("Pruning image file with expired date")
@@ -39,7 +39,7 @@ def getNextImage(prune=True):
                         logging.debug(f"Added {file} to valid promo's list")
                         valid_promos.append(file)
                 else:
-                    logging.warning("Pruning image file with no matching json")
+                    logging.info("Pruning image file with no matching json")
                     remove(join(promo_path, file))
 
         current_index += 1

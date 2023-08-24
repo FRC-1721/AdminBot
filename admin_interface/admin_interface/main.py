@@ -122,7 +122,7 @@ def connect():
 # Client Disconnect
 @socketio.on("disconnect")
 def disconnect():
-    logging.info("Client disconnected", request.sid)
+    logging.info(f"Client disconnected!")
 
 
 if __name__ == "__main__":
