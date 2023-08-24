@@ -33,6 +33,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
         self.bot = bot
 
     @app_commands.command(name="clear_promo")
+    @commands.has_any_role("Leads", "Adult Mentor", "Student Mentor")
     async def clearPromo(self, ctx: discord.Interaction):
         """
         Removes all promo materials in rotation
@@ -47,6 +48,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
         await ctx.response.send_message(msg)
 
     @app_commands.command(name="submit_promo")
+    @commands.has_any_role("Leads", "Adult Mentor", "Student Mentor")
     async def submitPromo(self, ctx: discord.Interaction, img: str, days: int):
         """
         Submits a promotional image to be displayed in rotation.
