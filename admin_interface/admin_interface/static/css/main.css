@@ -64,8 +64,8 @@ main {
 }
 
 #discord td {
-padding: 0 .5rem;
-font-size: 1.3rem;
+  padding: 0 0.5rem;
+  font-size: 1.3rem;
 }
 
 #discord td:nth-of-type(1) {
@@ -108,8 +108,16 @@ font-size: 1.3rem;
   align-items: center;
 }
 
-#countdownWrapper > *:last-child {
+#countdownWrapper > *:nth-child(2) {
   flex-grow: 2;
+}
+
+#countdownTechnical {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1px;
+  align-items: stretch;
 }
 
 .timerText {
@@ -126,7 +134,6 @@ font-size: 1.3rem;
 }
 
 .countdown {
-
 }
 
 /* Other stuff */

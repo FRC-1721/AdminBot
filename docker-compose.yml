@@ -48,6 +48,7 @@ services:
       dockerfile: Dockerfile
     environment:
       LOG_LEVEL: "DEBUG"
+      TZ: "America/New_York"
     ports:
       - 8000:8000
     links:

@@ -25,13 +25,8 @@ $(document).ready(function () {
     _verlock = false;
     var _version = "none";
 
-    // Get all editable elements
-    // let countdown_elm = document.getElementById("mission_time");
-    // let subtitle_elm = document.getElementById("subtitle");
-    // let promo_elm = document.getElementById("promoImage");
-
     socket.on("updateSensorData", function (msg) {
-        console.log("Received sensorData :: " + msg.date + " :: " + msg.version);
+        console.log("Received data :: " + msg.version);
 
         // Check if server is updated
         if (_verlock && _version != msg.version) {
@@ -44,6 +39,9 @@ $(document).ready(function () {
         // Update updatable elements
         $("#mission_time").text(msg.date);
         $("#subtitle").text(msg.next_meeting);
+        $("#botVersion").text(msg.bot_version);
+        $("#intVersion").text(msg.version);
+        $("#connected").text("👍");
         $("#promoImage").attr("src", msg.promo_path);
 
         // Update table
@@ -62,6 +60,7 @@ $(document).ready(function () {
 
     socket.on("disconnect", (reason) => {
         console.log("Disconnected! Reason was " + reason);
+        $("#connected").text("👎");
         _verlock = true;
     });
 });

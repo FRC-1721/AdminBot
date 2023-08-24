@@ -27,11 +27,9 @@ app.config["SECRET_KEY"] = "frc1721!"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # App Memory
-discord_logs = [
-    ["dublU", "First!", "General", 1692832019],
-    ["KenwoodFox", "How does he do it every time?!", "General", 1692832030],
-]
-max_discord_logs = 30
+discord_logs = []
+bot_version = "Unknown"
+max_discord_logs = 40
 
 
 @app.route("/")
@@ -57,10 +55,24 @@ def webhook():
             f"Data received from Webhook is: {request.data} data was {request.json}"
         )
 
+        # External scope
+        global bot_version
+
+        # We need to extract all the data
         data = request.json
+
+        # Discord logs
         discord_logs.append(
-            [data["author"], data["content"], data["channel"], int(time.time())]
+            [
+                data["author"],
+                data["content"],
+                data["channel"],
+                time.strftime("%H:%M:%S", time.localtime()),  # Now
+            ]
         )
+
+        # Bot Version
+        bot_version = data["version"]
 
         while len(discord_logs) > max_discord_logs:
             discord_logs.pop(0)
@@ -68,11 +80,12 @@ def webhook():
         return "Webhook processed!"
 
 
-# Generate random sequence of dummy sensor values and send it to our clients
+# Push a websocket update! Do this a lot.
 def websocket_push():
     while True:
         data = {
             "version": getVersion(),
+            "bot_version": bot_version,
             "date": get_current_datetime(),
             "discord": discord_logs,
             "next_meeting": getNextMeeting(),

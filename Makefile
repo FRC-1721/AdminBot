@@ -37,11 +37,6 @@ stop: ## Stop containers
 	docker-compose down
 	docker-compose stop
 
-
-dev: ## Build then run
-	docker-compose -f docker-compose.yml build && docker-compose -f docker-compose.yml up
-
-
 # Specific stuff
 flask-local: ## Runs flask locally for you!
 	cd admin_interface/admin_interface && flask --app main.py run
