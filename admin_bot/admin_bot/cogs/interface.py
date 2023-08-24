@@ -3,6 +3,7 @@
 # MIT License
 
 
+import os
 import time
 import json
 import pytz
@@ -31,13 +32,27 @@ class InterfaceCog(commands.Cog, name="Interface"):
     def __init__(self, bot):
         self.bot = bot
 
+    @app_commands.command(name="clear_promo")
+    async def clearPromo(self, ctx: discord.Interaction):
+        """
+        Removes all promo materials in rotation
+        """
+        msg = "Removing: "
+
+        dir = "/app/promo"
+        for f in os.listdir(dir):
+            msg += f"{f}, "
+            os.remove(os.path.join(dir, f))
+
+        await ctx.response.send_message(msg)
+
     @app_commands.command(name="submit_promo")
     async def submitPromo(self, ctx: discord.Interaction, img: str, days: int):
         """
         Submits a promotional image to be displayed in rotation.
         """
 
-        if days > 30:
+        if days > 90:
             await ctx.response.send_message(
                 "Sorry, thats too long for a submitted image to be in rotation. Contact <@&614313406345904148> to submit a permanent promo image."
             )
