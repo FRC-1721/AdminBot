@@ -4,11 +4,11 @@
 
 
 import time
+import json
 import pytz
 import discord
 import logging
 import asyncio
-import psycopg2
 import requests
 import random
 
@@ -19,10 +19,6 @@ from datetime import datetime, timedelta
 from ics import Calendar
 
 from utilities.common import seconds_until
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from shared.models import DiscordMessage
 
 
 class ToolCog(commands.Cog, name="Tools"):
@@ -38,14 +34,6 @@ class ToolCog(commands.Cog, name="Tools"):
         # Setup calender
         self.localtz = pytz.timezone("US/Eastern")
         self.upcoming_events.start()
-
-        # Connect to connector database
-        engine = create_engine(
-            "postgresql+psycopg2://postgres:postgres@database/admin_bot_db"
-        )
-
-        Session = sessionmaker(bind=engine)
-        self.db = Session()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -346,15 +334,20 @@ class ToolCog(commands.Cog, name="Tools"):
                 f"Sending message from {ctx.channel.id}, author was {ctx.author.name}, forwarding it!"
             )
 
-            msg = DiscordMessage(
-                time=int(time.time()),
-                username=ctx.author.name,
-                content=ctx.content,
-                channel=ctx.channel.name,
-            )
+            webhookUrl = "http://interface:8000/dashboard/hook"
 
-            self.db.add(msg)
-            self.db.commit()
+            dataToSend = {
+                "channel": ctx.channel.name,
+                "author": ctx.author.display_name,
+                "author_avatar": str(ctx.author.avatar.url),
+                "content": ctx.content,
+            }
+
+            req = requests.post(
+                url=webhookUrl,
+                data=json.dumps(dataToSend),
+                headers={"Content-type": "application/json"},
+            )
 
 
 async def setup(bot):

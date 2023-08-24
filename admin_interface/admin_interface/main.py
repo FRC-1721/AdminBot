@@ -9,15 +9,12 @@ import threading
 from flask import Flask, render_template, jsonify, request
 
 from flask_socketio import SocketIO
-from flask_sqlalchemy import SQLAlchemy
 
 from threading import Lock
 
 from datetime import datetime, timedelta
 
 from tools.misc import getVersion, getNextMeeting
-
-from shared.models import db, DiscordMessage
 
 
 # Thread locking
@@ -27,18 +24,14 @@ thread_lock = Lock()
 # Configure Flask App
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "frc1721!"
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "postgresql+psycopg2://postgres:postgres@database/admin_bot_db"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Connect/init DB
-db.init_app(app)
-
-# Create app tables
-with app.app_context():
-    logging.info("Applying initial DB creation setup.")
-    db.create_all()
+# App Memory
+discord_logs = [
+    ["DublU", "First!", "General", 1692832019],
+    ["KenwoodFox", "How does he do it every time?!", "General", 1692832030],
+]
+max_discord_logs = 30
 
 
 @app.route("/")
@@ -57,16 +50,27 @@ def get_current_datetime():
     return now.strftime("%m/%d/%Y %H:%M:%S")
 
 
+@app.route("/dashboard/hook", methods=["POST"])
+def webhook():
+    if request.method == "POST":
+        logging.debug(
+            f"Data received from Webhook is: {request.data} data was {request.json}"
+        )
+
+        data = request.json
+        discord_logs.append(
+            [data["author"], data["content"], data["channel"], int(time.time())]
+        )
+
+        while len(discord_logs) > max_discord_logs:
+            discord_logs.pop(0)
+
+        return "Webhook processed!"
+
+
 # Generate random sequence of dummy sensor values and send it to our clients
 def websocket_push():
     while True:
-        discord_logs = []
-        with app.app_context():
-            for line in DiscordMessage.query.all():
-                discord_logs.append(
-                    [line.username, line.content, line.channel, line.time]
-                )
-
         data = {
             "version": getVersion(),
             "date": get_current_datetime(),
