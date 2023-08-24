@@ -29,6 +29,8 @@ services:
     build:
       context: admin_bot/
       dockerfile: Dockerfile
+    volumes:
+      - promo:/app/promo
     environment:
       BOT_TOKEN: "top.secret.token"
       LOG_LEVEL: "DEBUG"
@@ -46,6 +48,8 @@ services:
     build:
       context: admin_interface/
       dockerfile: Dockerfile
+    volumes:
+      - promo:/app/admin_interface/static/promo
     environment:
       LOG_LEVEL: "DEBUG"
       TZ: "America/New_York"
@@ -55,3 +59,7 @@ services:
       - "db:database"
     restart: "no"
     command: "true"
+
+# Docker Volumes
+volumes:
+  promo:

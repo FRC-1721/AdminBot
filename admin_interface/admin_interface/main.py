@@ -15,7 +15,18 @@ from threading import Lock
 from datetime import datetime, timedelta
 
 from tools.misc import getVersion, getNextMeeting
+from tools.promo import getNextImage
 
+# Logging
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
+    datefmt="%H:%M:%S",
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    handlers=[
+        logging.FileHandler("/tmp/admin_interface.log"),
+        logging.StreamHandler(),
+    ],
+)
 
 # Thread locking
 thread = None
@@ -89,9 +100,7 @@ def websocket_push():
             "date": get_current_datetime(),
             "discord": discord_logs,
             "next_meeting": getNextMeeting(),
-            "promo_path": "static/placeholder/example1.png"
-            if int(time.time()) % 20 >= 10
-            else "static/placeholder/example2.png",
+            "promo_path": getNextImage(),
         }
 
         socketio.emit("updateSensorData", data)
@@ -117,14 +126,4 @@ def disconnect():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
-        datefmt="%H:%M:%S",
-        level=os.environ.get("LOG_LEVEL", "INFO").upper(),
-        handlers=[
-            logging.FileHandler("/tmp/admin_interface.log"),
-            logging.StreamHandler(),
-        ],
-    )
-
     socketio.run(app)
