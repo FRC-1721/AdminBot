@@ -63,7 +63,6 @@ jobs:
   build-and-publish-image:
     name: Build Registry
     runs-on: ubuntu-latest
-    needs: [formatblack] # Keeps the bot from updating the image if its not tested/formatted
 
     permissions:
       contents: read
@@ -129,7 +128,7 @@ jobs:
 
   gcr-cleaner:
     runs-on: "ubuntu-latest"
-    # needs: [build-and-publish-image]
+    needs: [build-and-publish-image]
 
     steps:
       - name: Clean adminbot

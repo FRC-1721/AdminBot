@@ -42,9 +42,6 @@ services:
 
   admin_interface:
     image: admin_interface:$TAG
-    depends_on:
-      db:
-        condition: service_healthy
     build:
       context: admin_interface/
       dockerfile: Dockerfile
