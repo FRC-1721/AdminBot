@@ -60,72 +60,72 @@ jobs:
   #       with:
   #         args: "AdminBot Pytest failed!"
 
-  # build-and-publish-image:
-  #   name: Build Registry
-  #   runs-on: ubuntu-latest
-  #   needs: [formatblack] # Keeps the bot from updating the image if its not tested/formatted
+  build-and-publish-image:
+    name: Build Registry
+    runs-on: ubuntu-latest
+    needs: [formatblack] # Keeps the bot from updating the image if its not tested/formatted
 
-  #   permissions:
-  #     contents: read
-  #     packages: write
+    permissions:
+      contents: read
+      packages: write
 
-  #   strategy:
-  #     matrix:
-  #       package:
-  #         - admin_bot
-  #         - admin_interface
+    strategy:
+      matrix:
+        package:
+          - admin_bot
+          - admin_interface
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-  #     - name: Log in to the Container registry
-  #       uses: docker/login-action@v1
-  #       with:
-  #         registry: ${{ env.REGISTRY }}
-  #         username: ${{ github.actor }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: Extract metadata (tags, labels) for Docker
-  #       id: meta
-  #       uses: docker/metadata-action@v3
-  #       with:
-  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-  #     - name: Extract Version information for ${{ matrix.package }}
-  #       id: extract_hash
-  #       run: |
-  #         echo BUILD_HASH=$(git describe --abbrev=8 --always --tags --dirty) >> $GITHUB_ENV
+      - name: Extract Version information for ${{ matrix.package }}
+        id: extract_hash
+        run: |
+          echo BUILD_HASH=$(git describe --abbrev=8 --always --tags --dirty) >> $GITHUB_ENV
 
-  #     - name: Get branch name
-  #       id: branch-name
-  #       uses: tj-actions/branch-names@v5.2
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5.2
 
-  #     - name: Get a docker ready tag
-  #       run: |
-  #         echo "${{ steps.branch-name.outputs.current_branch }}"
-  #         echo "${{ steps.meta.outputs.tags }}"
-  #         echo "CUSTOM_TAG=ghcr.io/frc-1721/$(echo ${{ matrix.package }} | sed 's/[A-Z_]\|L&//'):$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
+      - name: Get a docker ready tag
+        run: |
+          echo "${{ steps.branch-name.outputs.current_branch }}"
+          echo "${{ steps.meta.outputs.tags }}"
+          echo "CUSTOM_TAG=ghcr.io/frc-1721/$(echo ${{ matrix.package }} | sed 's/[A-Z_]\|L&//'):$(echo "${{ steps.branch-name.outputs.current_branch }}" | sed 's/[^a-zA-Z0-9]/-/g; s/[A-Z]/\L&/g')" >> $GITHUB_ENV
 
-  #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@v2
-  #       with:
-  #         context: ${{ matrix.package }}/
-  #         push: true
-  #         build-args: |
-  #           GIT_COMMIT=${{ env.BUILD_HASH }}
-  #           DEBUG=False
-  #         tags: ${{ env.CUSTOM_TAG }}
-  #         labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.package }}/
+          push: true
+          build-args: |
+            GIT_COMMIT=${{ env.BUILD_HASH }}
+            DEBUG=False
+          tags: ${{ env.CUSTOM_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
 
-  #     - name: Discord notification
-  #       env:
-  #         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-  #       uses: Ilshidur/action-discord@master
-  #       with:
-  #         args: "Built and published a new `${{ matrix.package }}` docker image to `${{ env.CUSTOM_TAG }}`!"
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "Built and published a new `${{ matrix.package }}` docker image to `${{ env.CUSTOM_TAG }}`!"
 
   gcr-cleaner:
     runs-on: "ubuntu-latest"
