@@ -13,13 +13,15 @@ current_index = 0
 valid_promos = []
 time_per_image = 25  # Seconds
 
+placeholderImg = "static/placeholder/default.png"
+
 
 def getNextImage(prune=True):
     try:
         files = [f for f in listdir(promo_path) if isfile(join(promo_path, f))]
     except FileNotFoundError:
         logging.debug("Not running in prod environment or docker volume missing.")
-        return "static/placeholder/default.png"
+        return placeholderImg
 
     global current_index
     global valid_promos
@@ -51,6 +53,11 @@ def getNextImage(prune=True):
         if len(valid_promos) > 0:
             if len(valid_promos) - 1 < current_index:
                 current_index = 0
-            return f"static/promo/{valid_promos[current_index]}"
+
+            promo = f"static/promo/{valid_promos[current_index]}"
+            logging.debug(f"Sending: {promo}")
+
+            return promo
         else:
-            return "static/placeholder/default.png"
+            logging.debug("Nothing in rotation, showing default")
+            return placeholderImg

@@ -26,7 +26,7 @@ $(document).ready(function () {
     var _version = "none";
 
     socket.on("updateSensorData", function (msg) {
-        console.log("Received data :: " + msg.version);
+        console.log("Received data :: " + msg.promo_path);
 
         // Check if server is updated
         if (_verlock && _version != msg.version) {
@@ -42,7 +42,9 @@ $(document).ready(function () {
         $("#botVersion").text(msg.bot_version);
         $("#intVersion").text(msg.version);
         $("#connected").text("👍");
-        $("#promoImage").attr("src", msg.promo_path);
+        if (msg.promo_path != null) {
+            $("#promoImage").attr("src", msg.promo_path);
+        }
 
         // Update table
         // let discord_elm = document.getElementById("discord_table");
