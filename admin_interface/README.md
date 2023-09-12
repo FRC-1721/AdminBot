@@ -16,3 +16,9 @@ Run the development flask server
 ```
 make flask-local
 ```
+
+# Run with docker
+
+```
+make run
+```
