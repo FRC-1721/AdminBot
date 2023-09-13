@@ -72,6 +72,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 # Write metadata first
                 imgData = {
                     "expires": f"{int(time.time()) + (86400*days)}",
+                    "author": f"Submitted by {ctx.user.nick}",
                 }
 
                 json_object = json.dumps(imgData, indent=4)
@@ -81,7 +82,10 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 # Download the file
                 subprocess.run(["wget", img, "-O", f"{filename}.png"])
 
-                await ctx.followup.send("Done!")
+                await ctx.followup.send(
+                    f"Done! Added {filename}, expires in {days} days.",
+                    file=discord.File(f"{filename}.png"),
+                )
             except Exception as e:
                 await ctx.followup.send(f"Sorry! There was an error! {e}")
 
