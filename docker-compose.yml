@@ -32,7 +32,7 @@ services:
     volumes:
       - promo:/app/promo
     environment:
-      BOT_TOKEN: "NTM1MDg2NjQzMDkxMDc5MTY5.Gqo2gN.tkMedB4_gh8XxKsgeT_tT7bH-h6eBFE6e5W4K8"
+      BOT_TOKEN: "top.secret.token"
       LOG_LEVEL: "DEBUG"
     links:
       - "db:database"

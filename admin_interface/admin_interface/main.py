@@ -72,10 +72,18 @@ def webhook():
         # We need to extract all the data
         data = request.json
 
+        # Truncate author name
+        maxName = 15
+        _author = (
+            data["author"]
+            if len(data["author"]) < maxName
+            else data["author"][: maxName - 3] + "..."
+        )
+
         # Discord logs
         discord_logs.append(
             [
-                data["author"],
+                _author,
                 data["content"],
                 data["channel"],
                 time.strftime("%H:%M:%S", time.localtime()),  # Now
