@@ -54,7 +54,7 @@ def getNextEvent():
             logging.debug(f"Found {event['SUMMARY']} only {days} away.")
 
             # Make sure we're adding the closest meeting.
-            if days < _days:
+            if days < _days and days >= 0:
                 _ret = f"Next meeting in {days} days, {hours} hours, {minutes} minutes."
                 _days = days
 
