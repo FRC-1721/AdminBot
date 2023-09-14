@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 
 from tools.misc import getVersion, getNextMeeting
 from tools.promo import getNextImage
+from tools.calendar import getNextEvent
 
 # Logging
 logging.basicConfig(
@@ -107,7 +108,7 @@ def websocket_push():
             "bot_version": bot_version,
             "date": get_current_datetime(),
             "discord": discord_logs,
-            "next_meeting": getNextMeeting(),
+            "next_meeting": getNextEvent(),
             "promo_path": getNextImage(),
         }
 
