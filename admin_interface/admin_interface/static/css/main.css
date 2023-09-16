@@ -49,6 +49,7 @@ main {
   border-right: 1px solid #665c54;
   background-image: url("/static/images/background.svg");
   background-size: 256px;
+  position: relative;
 }
 
 #discord {
@@ -120,16 +121,21 @@ main {
   align-items: stretch;
 }
 
-.caption {
+#caption-wrapper {
   position: absolute;
-  top: 83%;
-  left: 23%;
-  /*   transform: translate(-250%, 260%); */
-  background-color: #1d1d1d;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 30px;
+  bottom: 16px;
+  left: 0;
+  right: 0;
   text-align: center;
+}
+
+#caption {
+  display: inline;
+  background-color: #282828;
+  color: #ebdbb2;
+  padding: 10px 20px;
+  margin: 0 auto;
+  font-size: 30px;
 }
 
 .image-container img {

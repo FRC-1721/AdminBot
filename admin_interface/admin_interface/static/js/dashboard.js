@@ -43,7 +43,11 @@ $(document).ready(function () {
         $("#intVersion").text(msg.version);
         $("#connected").text("👍");
 
-        $("#caption").text(msg.promo_caption);
+	if (msg.promo_caption) {
+	    $("#caption").show().text(msg.promo_caption);
+	} else {
+	    $("#caption").hide();
+	}
 
         if (msg.promo_path != null) {
             $("#promoImage").attr("src", msg.promo_path);
