@@ -3,7 +3,7 @@ version: "3.7"
 services:
   db:
     image: postgres:10.5
-    restart: always
+    restart: "no"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -52,8 +52,6 @@ services:
       TZ: "America/New_York"
     ports:
       - 8000:8000
-    links:
-      - "db:database"
     restart: "no"
     command: "true"
 
