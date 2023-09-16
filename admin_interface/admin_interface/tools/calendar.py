@@ -51,8 +51,6 @@ def getNextEvent():
             hours = int(duration.seconds / (60 * 60))
             minutes = int((duration.seconds - int(hours * (60 * 60))) / 60)
 
-            logging.debug(f"Found {event['SUMMARY']} only {days} away.")
-
             # Make sure we're adding the closest meeting.
             if days < _days and days >= 0:
                 _ret = f"Next meeting in {days} days, {hours} hours, {minutes} minutes."

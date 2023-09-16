@@ -120,6 +120,24 @@ main {
   align-items: stretch;
 }
 
+.caption {
+  position: absolute;
+  top: 83%;
+  left: 23%;
+  /*   transform: translate(-250%, 260%); */
+  background-color: #1d1d1d;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.image-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .timerText {
   /* This is used for the timer big text */
   padding: 0;

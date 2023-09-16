@@ -42,6 +42,9 @@ $(document).ready(function () {
         $("#botVersion").text(msg.bot_version);
         $("#intVersion").text(msg.version);
         $("#connected").text("👍");
+
+        $("#caption").text(msg.promo_caption);
+
         if (msg.promo_path != null) {
             $("#promoImage").attr("src", msg.promo_path);
         }

@@ -49,7 +49,9 @@ class InterfaceCog(commands.Cog, name="Interface"):
 
     @app_commands.command(name="submit_promo")
     @commands.has_any_role("Leads", "Adult Mentor", "Student Mentor")
-    async def submitPromo(self, ctx: discord.Interaction, img: str, days: int):
+    async def submitPromo(
+        self, ctx: discord.Interaction, img: str, days: int, caption: str = None
+    ):
         """
         Submits a promotional image to be displayed in rotation.
         """
@@ -73,6 +75,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 imgData = {
                     "expires": f"{int(time.time()) + (86400*days)}",
                     "author": f"Submitted by {ctx.user.nick}",
+                    "caption": caption,
                 }
 
                 json_object = json.dumps(imgData, indent=4)
@@ -83,7 +86,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 subprocess.run(["wget", img, "-O", f"{filename}.png"])
 
                 await ctx.followup.send(
-                    f"Done! Added {filename}, expires in {days} days.",
+                    f"Done! Added `{filename}`, expires in `{days}` days! Caption was `{caption}`.",
                     file=discord.File(f"{filename}.png"),
                 )
             except Exception as e:
