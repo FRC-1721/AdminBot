@@ -100,16 +100,11 @@ class InterfaceCog(commands.Cog, name="Interface"):
 
         # We dont want to publish EVERY channel, just some specific ones!
         allowed_channels = [
-            719692563405078620,  # Bot Dev
-            590309937125523488,  # General
-            590309937125523488,
-            590312336414212107,
-            1075174212723032064,
-            590312300695650305,
-            1024362276951703552,
-            849996840186675201,
-            634136760401526793,
-            1077252589697126523,
+            590312336414212107, # mechanical-cad
+            1075174212723032064, # electrical
+            590312300695650305, # software
+            776835421976002570, # outreach-buisness
+            1024362276951703552, # media
         ]
 
         if (
