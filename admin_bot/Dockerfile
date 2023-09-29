@@ -1,5 +1,4 @@
-# See here https://hub.docker.com/r/gorialis/discord.py/
-FROM gorialis/discord.py
+FROM python:latest
 
 # Authors
 LABEL authors="31870999+KenwoodFox@users.noreply.github.com"
@@ -9,7 +8,7 @@ ARG APP_NAME=admin-bot
 ENV APP_NAME=${APP_NAME}
 
 # Install special deps
-RUN apt update && apt install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+RUN apt update && apt install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra python-dev-is-python3
 
 # Upgrade pip
 RUN pip install --upgrade pip

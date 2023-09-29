@@ -22,6 +22,8 @@ from ics import Calendar
 
 from PIL import Image, ImageDraw, ImageFilter, UnidentifiedImageError
 
+from profanity_check import predict, predict_prob
+
 from utilities.common import seconds_until
 
 
@@ -30,7 +32,7 @@ from utilities.common import seconds_until
 
 class InterfaceCog(commands.Cog, name="Interface"):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot = bot  # Local instance of bot
 
     @app_commands.command(name="clear_promo")
     @commands.has_any_role("Leads", "Adult Mentor", "Student Mentor")
@@ -100,13 +102,17 @@ class InterfaceCog(commands.Cog, name="Interface"):
 
         # We dont want to publish EVERY channel, just some specific ones!
         allowed_channels = [
+            634136760401526793,  # announcements
             590312336414212107,  # mechanical-cad
             1075174212723032064,  # electrical
             590312300695650305,  # software
             776835421976002570,  # outreach-buisness
             1024362276951703552,  # media
+            1077252589697126523,  # Quotes
+            719692563405078620,  # Joe's testing channel
         ]
 
+        # Check if bot or in pm
         if (
             not isinstance(ctx.channel, discord.channel.DMChannel)
             and not ctx.author.bot
@@ -125,13 +131,17 @@ class InterfaceCog(commands.Cog, name="Interface"):
                 "version": self.bot.version,
             }
 
-            if ctx.channel.id in allowed_channels:
-                req = requests.post(
-                    url=webhookUrl,
-                    data=json.dumps(dataToSend),
-                    headers={"Content-type": "application/json"},
-                )
-                logging.debug(f"Sent webhook to signage, req was {req}")
+            if ctx.channel.id in allowed_channels:  # If in allowed channel
+                if predict([ctx.content]) == 0:  # If not profanity
+                    req = requests.post(  # post
+                        url=webhookUrl,
+                        data=json.dumps(dataToSend),
+                        headers={"Content-type": "application/json"},
+                    )
+                    logging.debug(f"Sent webhook to signage, req was {req}")
+                else:
+                    logging.warn(f"Profanity detected in {ctx.content}.")
+                    await ctx.add_reaction("⁉️")
             else:
                 logging.debug(f"Channel {ctx.channel.id} was not in allowed channels.")
 

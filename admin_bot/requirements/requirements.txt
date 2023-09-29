@@ -3,6 +3,8 @@ opencv-python
 psycopg[binary]
 requests
 PyYAML
+alt-profanity-check
+joblib
 pillow
 pytz==2022.7
 ics==0.8.0.dev0
