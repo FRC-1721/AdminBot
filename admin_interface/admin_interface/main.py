@@ -115,8 +115,12 @@ def websocket_push():
             "promo_caption": _promoData[1],  # Caption
         }
 
-        socketio.emit("updateSensorData", data)
+        try:
+            socketio.emit("updateSensorData", data)
+        except Exception as e:
+            logging.error(f"Got exception {e} during emit")
         socketio.sleep(1)
+    quit()
 
 
 # Client Connect
@@ -125,7 +129,6 @@ def connect():
     global thread
     logging.info("Client connected")
 
-    global thread
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(websocket_push)

@@ -5,6 +5,7 @@ requests
 PyYAML
 alt-profanity-check
 joblib
+aiohttp==3.8.2
 pillow
 pytz==2022.7
 ics==0.8.0.dev0

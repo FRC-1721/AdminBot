@@ -49,6 +49,29 @@ class InterfaceCog(commands.Cog, name="Interface"):
 
         await ctx.response.send_message(msg)
 
+    @app_commands.command(name="show_promo")
+    @commands.has_any_role("Leads", "Adult Mentor", "Student Mentor")
+    async def showPromo(self, ctx: discord.Interaction):
+        """
+        Lists all the currently shown promos
+        """
+        msg = "Promo List: "
+
+        dir = "/app/promo"
+        for f in os.listdir(dir):
+            # if its a json load it
+            if ".json" in f:
+                with open(dir + "/" + f) as file:
+                    rawData = json.loads(file.read())
+
+                    # update expires
+                    _days = (time.time() - int(rawData["expires"])) / 86400
+                    rawData["expires"] = f"{_days:.2f} days"
+
+                    msg += f"```{rawData}```"
+
+        await ctx.response.send_message(msg)
+
     @app_commands.command(name="submit_promo")
     @commands.has_any_role("Leads", "Adult Mentor", "Student Mentor")
     async def submitPromo(

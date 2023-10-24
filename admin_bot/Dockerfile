@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.11
 
 # Authors
 LABEL authors="31870999+KenwoodFox@users.noreply.github.com"
