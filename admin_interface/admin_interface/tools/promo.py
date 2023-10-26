@@ -42,7 +42,7 @@ def getNextImage(prune=True) -> tuple:
                     fdata = json.load(open(join(promo_path, f"{fname}.json")))
                     logging.debug(f"Loaded file with metadata {fdata}")
 
-                    if int(fdata["expires"]) < int(time.time() and prune):
+                    if (int(fdata["expires"]) < int(time.time())) and prune:
                         logging.info("Pruning image file with expired date")
                         remove(join(promo_path, file))
                         remove(join(promo_path, f"{fname}.json"))
