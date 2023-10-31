@@ -102,18 +102,25 @@ def webhook():
 
 # Push a websocket update! Do this a lot.
 def websocket_push():
+    data = {}
+
     while True:
         # Get promotional image data
         _promoData = getNextImage()
-        data = {
-            "version": getVersion(),
-            "bot_version": bot_version,
-            "date": get_current_datetime(),
-            "discord": discord_logs,
-            "next_meeting": getNextEvent(),
-            "promo_path": _promoData[0],  # File path
-            "promo_caption": _promoData[1],  # Caption
-        }
+        try:
+            newData = {
+                "version": getVersion(),
+                "bot_version": bot_version,
+                "date": get_current_datetime(),
+                "discord": discord_logs,
+                "next_meeting": getNextEvent(),
+                "promo_path": _promoData[0],  # File path
+                "promo_caption": _promoData[1],  # Caption
+            }
+
+            data = newData
+        except Exception as e:
+            logging.error(f"Exception in getting new data! Exception was {e}")
 
         try:
             socketio.emit("updateSensorData", data)
