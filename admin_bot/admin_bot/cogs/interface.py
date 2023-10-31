@@ -126,12 +126,12 @@ class InterfaceCog(commands.Cog, name="Interface"):
         # We dont want to publish EVERY channel, just some specific ones!
         allowed_channels = [
             634136760401526793,  # announcements
-            590312336414212107,  # mechanical-cad
-            1075174212723032064,  # electrical
-            590312300695650305,  # software
-            776835421976002570,  # outreach-buisness
-            1024362276951703552,  # media
-            1077252589697126523,  # Quotes
+            # 590312336414212107,  # mechanical-cad
+            # 1075174212723032064,  # electrical
+            # 590312300695650305,  # software
+            # 776835421976002570,  # outreach-buisness
+            # 1024362276951703552,  # media
+            # 1077252589697126523,  # Quotes
             719692563405078620,  # Joe's testing channel
         ]
 
@@ -162,6 +162,7 @@ class InterfaceCog(commands.Cog, name="Interface"):
                         headers={"Content-type": "application/json"},
                     )
                     logging.debug(f"Sent webhook to signage, req was {req}")
+                    await ctx.add_reaction("📧")
                 else:
                     logging.warn(f"Profanity detected in {ctx.content}.")
                     await ctx.add_reaction("⁉️")
