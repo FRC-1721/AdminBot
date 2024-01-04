@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Adminbot Interface</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='placeholder/320x240.png') }}">
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/topbar.css') }}">
+
+  <!-- Libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
+    integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ=="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  {% block content %}{% endblock %}
+</body>
+
+</html>

@@ -1,31 +1,60 @@
-version: '3.7'
+version: "3.7"
 
 services:
   db:
     image: postgres:10.5
-    restart: always
+    restart: "no"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=admin_bot_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     logging:
       options:
         max-size: 10m
         max-file: "3"
     ports:
-      - '5438:5432'
+      - "5438:5432"
     tmpfs: /var/lib/postgresql/data
 
   admin_bot:
     image: admin_bot:$TAG
+    depends_on:
+      db:
+        condition: service_healthy
     build:
-      context: .
+      context: admin_bot/
       dockerfile: Dockerfile
+    volumes:
+      - promo:/app/promo
     environment:
       BOT_TOKEN: "top.secret.token"
-    devices:
-      - "/dev/video0:/dev/video0"
+      LOG_LEVEL: "DEBUG"
     links:
       - "db:database"
+      - "admin_interface:interface"
     restart: "no"
     command: "true"
+
+  admin_interface:
+    image: admin_interface:$TAG
+    build:
+      context: admin_interface/
+      dockerfile: Dockerfile
+    volumes:
+      - promo:/app/admin_interface/static/promo
+    environment:
+      LOG_LEVEL: "DEBUG"
+      TZ: "America/New_York"
+    ports:
+      - 8000:8000
+    restart: "no"
+    command: "true"
+
+# Docker Volumes
+volumes:
+  promo:

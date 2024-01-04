@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<main>
+    {% include "windows/calendar.html" %}
+    {% include "windows/promo.html" %}
+    {% include "windows/discord.html" %}
+    {% include "windows/countdown.html" %}
+</main>
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/dashboard.js') }}"></script>
+
+{% endblock %}

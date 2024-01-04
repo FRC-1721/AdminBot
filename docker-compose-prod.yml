@@ -1,19 +1,24 @@
-version: '3.7'
+version: "3.7"
 
 services:
-  database:
+  db:
     image: postgres:10.5
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=admin_bot_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     logging:
       options:
         max-size: 10m
         max-file: "3"
     ports:
-      - '5438:5432'
+      - "5438:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     networks:
@@ -23,15 +28,39 @@ services:
     image: ghcr.io/frc-1721/adminbot:main
     environment:
       BOT_TOKEN: "secret.token.here"
-    devices:
-      - "/dev/video0:/dev/video0"
-    networks:
-      - dbnet
     depends_on:
-      - database
+      db:
+        condition: service_healthy
+    volumes:
+      - promo:/app/promo
+    links:
+      - "db:database"
+      - "admin_interface:interface"
     restart: "always"
     command: "true"
 
-networks:
-  dbnet:
-    driver: bridge
+  admin_interface:
+    image: ghcr.io/frc-1721/admininterface:main
+    volumes:
+      - promo:/app/admin_interface/static/promo
+    environment:
+      LOG_LEVEL: "DEBUG"
+      TZ: "America/New_York"
+    ports:
+      - 8000:8000
+    restart: "always"
+
+  watchtower:
+    image: containrrr/watchtower
+    environment:
+      WATCHTOWER_NOTIFICATIONS: shoutrrr
+      WATCHTOWER_NOTIFICATION_URL: "discord://mK0Opd9ov35Z61mzLFympguG8QgyDtEbNcOhfde-b7A7ti4VbTpgaXoz9aSiYm0mKOjF@886982405058088980"
+      WATCHTOWER_NOTIFICATION_TEMPLATE: '{{range .}}{{.Time.Format "2006-01-02 15:04:05"}} ({{.Level}}): {{.Message}}{{println}}{{end}}'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: "always"
+    command: --interval 120
+
+# Docker Volumes
+volumes:
+  promo:

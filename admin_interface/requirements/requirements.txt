@@ -1,0 +1,8 @@
+flask
+aiohttp==3.8.2
+gunicorn
+psycopg2-binary
+eventlet # for Flask-SocketIO
+Flask-SQLAlchemy
+Flask-SocketIO
+recurring-ical-events # For "next meeting"

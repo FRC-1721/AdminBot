@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+if [ "$1" = test ]; then
+    # Run pytest if needed
+    exec pytest "${@:2}"
+else
+    # Run the actual code otherwise
+    exec python -m admin_bot
+fi

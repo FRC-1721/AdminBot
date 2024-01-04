@@ -1,0 +1,198 @@
+/* Fonts */
+@font-face {
+  font-family: "overpass-bold";
+  src: url("fonts/overpass-mono-bold.ttf");
+}
+
+@font-face {
+  font-family: "overpass";
+  src: url("fonts/overpass-mono-regular.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Images */
+img {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Main Body */
+body {
+  background-color: #1d2021;
+  color: #ebdbb2;
+  font-family: "overpass";
+}
+
+/* Windows */
+main {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 800px;
+  grid-template-rows: 200px 1fr auto;
+}
+
+#calendar {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#promo {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  border-right: 1px solid #665c54;
+  background-image: url("/static/images/background.svg");
+  background-size: 256px;
+  position: relative;
+}
+
+#discord {
+  background: #282828;
+  grid-column: 2;
+  grid-row: 2;
+  overflow-y: scroll;
+}
+
+#discord > table {
+  gap: 0;
+  border-collapse: collapse;
+}
+
+#discord td {
+  padding: 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+#discord td:nth-of-type(1) {
+  background: #1d2021;
+  text-align: end;
+  border-right: 1px solid #665c54;
+}
+
+#discord td:nth-of-type(2) {
+  width: 100%;
+}
+
+#discord td:nth-of-type(3) {
+  color: #a89984;
+}
+
+#discord td:nth-of-type(4) {
+  color: #a89984;
+}
+
+#countdownWrapper {
+  /* CSS for the whole countdown page block (countdown.html) */
+  grid-column: 1 / span 2;
+  grid-row: 3;
+  background: #665c54;
+  border-top: 1px solid #665c54;
+  font-family: "overpass-bold";
+
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  align-items: stretch;
+}
+
+#countdownWrapper > * {
+  padding: 0 1.5rem;
+  text-align: start;
+  background: #3c3836;
+  display: flex;
+  align-items: center;
+}
+
+#countdownWrapper > *:nth-child(2) {
+  flex-grow: 2;
+}
+
+#countdownTechnical {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1px;
+  align-items: stretch;
+}
+
+#caption-wrapper {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+#caption {
+  display: inline;
+  background-color: #282828;
+  color: #ebdbb2;
+  padding: 10px 20px;
+  margin: 0 auto;
+  font-size: 30px;
+}
+
+.image-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.timerText {
+  /* This is used for the timer big text */
+  padding: 0;
+  font-size: 50px;
+  line-height: 1.5em;
+}
+
+.subTimerText {
+  /* This is used for the timer small text */
+  padding: 0;
+  font-size: 2vh;
+}
+
+.countdown {
+}
+
+/* Other stuff */
+.load {
+  float: right;
+  width: 300px;
+  border: 1px solid black;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.load th,
+.load td {
+  padding: 6px;
+  text-align: center;
+}
+
+/* Buttons! */
+.rpm {
+  border: 3px solid black;
+  background-color: white;
+  color: black;
+  padding: 10px 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.red_flashing {
+  border-color: #f44336;
+  color: red;
+  animation: blinker 1s step-start infinite;
+}
+
+.red_flashing:hover {
+  background: #f44336;
+  color: white;
+}
