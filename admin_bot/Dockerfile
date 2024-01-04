@@ -8,7 +8,7 @@ ARG APP_NAME=admin-bot
 ENV APP_NAME=${APP_NAME}
 
 # Install special deps
-RUN apt update && apt install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra python-dev-is-python3
+RUN apt update && apt install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra python-dev-is-python3 python3-psycopg2
 
 # Upgrade pip
 RUN pip install --upgrade pip
