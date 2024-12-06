@@ -25,23 +25,24 @@ def keegan_task(input_image: Image.Image) -> Image.Image:
     """
     Keegan transformations lol!
     """
-    # Load the foreground overlay (with transparency)
+    # Load the foreground overlay (ensure it has an alpha channel)
     foreground = Image.open(
         "admin_bot/resources/what_is_keegan_looking_at/fore.png"
     ).convert("RGBA")
 
-    # Corner points for his screen (close enough)
-    corners = [(450, 1600), (1448, 856), (984, 2300), (1800, 1500)]
+    # Create a new blank RGBA image with the same size as the foreground
+    result_image = Image.new("RGBA", foreground.size, (0, 0, 0, 0))  # Fully transparent
 
-    # Perform a perspective transform on the input image
-    transformed_image = input_image.transform(
-        foreground.size,  # Match the size of the foreground image
-        Image.QUAD,
-        [coord for point in corners for coord in point],  # Flatten corner points
-        Image.BICUBIC,
-    )
+    # Resize image to fit screen
+    resized_image = input_image.resize((1550, 900))
 
-    # Composite the transformed image onto the foreground
-    result = Image.alpha_composite(foreground, transformed_image.convert("RGBA"))
+    # Rotate image counterclockwise by 38.2 degrees
+    rotated_image = resized_image.rotate(38.2, expand=True)
 
-    return result
+    # Paste the rotated image onto the result image
+    result_image.paste(rotated_image, (240, 780))
+
+    # Place the foreground on top
+    result_image.paste(foreground, (0, 0), foreground)
+
+    return result_image
