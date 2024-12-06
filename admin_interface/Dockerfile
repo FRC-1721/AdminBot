@@ -43,5 +43,7 @@ USER ${USER_ID}
 
 EXPOSE 8000
 
+HEALTHCHECK NONE
+
 # Run the entrypoint bin
 ENTRYPOINT ["entrypoint"]
