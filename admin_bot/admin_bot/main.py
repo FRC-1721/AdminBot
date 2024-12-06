@@ -61,6 +61,9 @@ class AdminBot(object):
                 except Exception as e:
                     logging.fatal(f"Error loading {filename} as a cog, error: {e}")
 
+        # Sync tree after all changes
+        await self.bot.tree.sync()
+
     async def on_message(self, ctx):
         # hehe, sneaky every time
         await self.bot.rick(ctx)

@@ -3,17 +3,17 @@
 # MIT License
 
 
-import discord
-import logging
-import cv2 as cv
 import io
 import os
-import random
-import discord.utils
-import asyncio
-import random
 import yaml
+import random
+import discord
+import logging
+import asyncio
 import subprocess
+import discord.utils
+
+import cv2 as cv
 
 from PIL import Image, ImageDraw, ImageFilter, UnidentifiedImageError
 
@@ -52,29 +52,6 @@ class MiscCog(commands.Cog, name="Misc"):
                     break
 
         await ctx.response.send_message(str(line))
-
-    @app_commands.command(name="myvote")
-    async def myvote(self, ctx: discord.Interaction, img: str):
-        """
-        Automates that silly thing Aaron does.
-        """
-
-        # This is literally begging to be used for remote code injection
-        subprocess.run(["wget", img, "-O", "/tmp/to_vote.png"])
-
-        try:
-            pip = Image.open("/tmp/to_vote.png")
-            frame = Image.open("admin_bot/resources/vote.png")
-
-            pip = pip.resize((375, 250))
-
-            frame.paste(pip, (40, 240))
-            frame.save("/tmp/myvoteout.png", quality=95)
-
-            await ctx.response.send_message(file=discord.File("/tmp/myvoteout.png"))
-        except UnidentifiedImageError:
-            logging.error("Could not download image when requested.")
-            await ctx.response.send_message("Error opening that image!")
 
     @app_commands.command(name="aaron")
     async def aaron(self, ctx: discord.Interaction):
