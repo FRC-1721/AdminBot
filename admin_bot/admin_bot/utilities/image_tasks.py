@@ -46,3 +46,32 @@ def keegan_task(input_image: Image.Image) -> Image.Image:
     result_image.paste(foreground, (0, 0), foreground)
 
     return result_image
+
+
+@register_image_task("dylan")
+def dylan_task(input_image: Image.Image) -> Image.Image:
+    """
+    Dylan dosn't like what you put on his phone
+    """
+
+    # Load the foreground overlay (ensure it has an alpha channel)
+    foreground = Image.open("admin_bot/resources/dylan_disappointed/fore.png").convert(
+        "RGBA"
+    )
+
+    # Create a new blank RGBA image with the same size as the foreground
+    result_image = Image.new("RGBA", foreground.size, (0, 0, 0, 0))  # Fully transparent
+
+    # Resize image to fit screen
+    resized_image = input_image.resize((490, 230))
+
+    # Rotate image clockwise
+    rotated_image = resized_image.rotate(-1.4, expand=True)
+
+    # Paste the rotated image onto the result image
+    result_image.paste(rotated_image, (65, 460))
+
+    # Place the foreground on top
+    result_image.paste(foreground, (0, 0), foreground)
+
+    return result_image
