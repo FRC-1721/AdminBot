@@ -125,6 +125,8 @@ class BatteryCog(commands.Cog, name="Batteries"):
     ):
         """Use this command to add a new record to the battery database!"""
 
+        # Discord has modals which are pretty cool ngl, lets try using them?
+
         with self.conn.cursor() as cur:
             # If the comp_ready is not set, just use whatever the last value was defaulting to True.
             if comp_ready == None:
@@ -277,6 +279,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 file=discord.File(self.makeExport(battery_id))
             )
         else:
+            await ctx.response.defer()  # let discord know we're thinking..
             with open("admin_bot/resources/battery_report.tex") as inF:
                 filedata = inF.read()
 
@@ -296,7 +299,7 @@ class BatteryCog(commands.Cog, name="Batteries"):
                 self.makeExport(battery_id)
 
                 subprocess.run(["pdflatex", "--output-directory=/tmp", texName])
-                await ctx.response.send_message(
+                await ctx.followup.send(
                     file=discord.File(f"/tmp/battery_report_{battery_id}.pdf")
                 )
 
