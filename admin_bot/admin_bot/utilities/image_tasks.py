@@ -63,7 +63,7 @@ def dylan_task(input_image: Image.Image) -> Image.Image:
     result_image = Image.new("RGBA", foreground.size, (0, 0, 0, 0))  # Fully transparent
 
     # Resize image to fit screen
-    resized_image = input_image.resize((490, 230))
+    resized_image = input_image.resize((500, 230))
 
     # Rotate image clockwise
     rotated_image = resized_image.rotate(-1.4, expand=True)
