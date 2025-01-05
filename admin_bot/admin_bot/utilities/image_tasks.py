@@ -1,5 +1,6 @@
 from PIL import Image
 from utilities.image_utils import register_image_task
+import numpy
 
 
 @register_image_task("myvote")
@@ -47,3 +48,53 @@ def dylan_task(input_image: Image.Image) -> Image.Image:
     result_image.paste(foreground, (0, 0), foreground)
 
     return result_image
+
+
+@register_image_task("indah")
+def indah_task(input_image: Image.Image) -> Image.Image:
+    """
+    You've upset Indah
+    """
+
+    # Load the foreground overlay (ensure it has an alpha channel)
+    foreground = Image.open("admin_bot/resources/indah_sad.png").convert("RGBA")
+
+    # Perspective Transform, transform based on moving the four corners
+    input_corners = [  # input rectangular image corners
+        (0, 0),
+        (input_image.width, 0),
+        (input_image.width, input_image.height),
+        (0, input_image.height),
+    ]
+    output_corners = [  # four corners of the screen in foreground image
+        (67, 446),
+        (406, 290),
+        (513, 557),
+        (195, 736),
+    ]
+
+    coeffs = find_coeffs(output_corners, input_corners)  # calculate transformation
+
+    transformed_image = input_image.transform(
+        foreground.size, Image.PERSPECTIVE, coeffs, Image.BICUBIC
+    )  # apply transformation
+
+    # Create a new blank RGBA image with the same size as the foreground
+    result_image = Image.new("RGBA", foreground.size, (0, 0, 0, 0))  # Fully transparent
+    result_image.paste(transformed_image, (0, 0))
+    result_image.paste(foreground, (0, 0), foreground)
+
+    return result_image
+
+
+def find_coeffs(pa, pb):  # source: stack overflow
+    matrix = []
+    for p1, p2 in zip(pa, pb):
+        matrix.append([p1[0], p1[1], 1, 0, 0, 0, -p2[0] * p1[0], -p2[0] * p1[1]])
+        matrix.append([0, 0, 0, p1[0], p1[1], 1, -p2[1] * p1[0], -p2[1] * p1[1]])
+
+    A = numpy.matrix(matrix, dtype=float)
+    B = numpy.array(pb).reshape(8)
+
+    res = numpy.dot(numpy.linalg.inv(A.T * A) * A.T, B)
+    return numpy.array(res).reshape(8)
