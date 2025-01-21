@@ -40,13 +40,13 @@ image_tasks = {
 
 for name, task in image_tasks.items():
 
-    def image_task(input_image: Image.Image):
+    def image_task(input_image: Image.Image, task=task):
         template = Image.open(task["image"]).convert("RGBA")
         transformed_image = four_corners(input_image, task["corners"])
         result_image = Image.new(
             "RGBA", template.size, (0, 0, 0, 0)
         )  # Fully transparent
-        if task["type"] == "overlay": # put the input_image on bottom
+        if task["type"] == "overlay":  # put the input_image on bottom
             result_image.paste(transformed_image, (0, 0), transformed_image)
             result_image.paste(template, (0, 0), template)
         else:  # "background" put the input_image on top # also fallback
