@@ -40,7 +40,7 @@ image_tasks = {
 
 for name, task in image_tasks.items():
 
-    def image_task(input_image: Image.Image):
+    def image_task(input_image: Image.Image, task=task):
         template = Image.open(task["image"]).convert("RGBA")
         transformed_image = four_corners(input_image, task["corners"])
         result_image = Image.new(
