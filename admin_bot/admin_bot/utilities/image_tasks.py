@@ -124,3 +124,48 @@ def dylan_task(input_image: Image.Image) -> Image.Image:
     result_image.paste(foreground, (0, 0), foreground)
 
     return result_image
+
+
+@register_image_task("pin")
+def pin_task(input_image: Image.Image) -> Image.Image:
+    """
+    Create a pin template
+    """
+
+    template = Image.open("admin_bot/resources/pintemplate.png").convert("RGBA")
+
+    pins = [
+        (0.621, 0.370),
+        (3.621, 0.370),
+        (2.131, 2.873),
+        (5.131, 2.873),
+        (0.621, 5.377),
+        (3.621, 5.377),
+        (2.131, 7.880),
+        (5.131, 7.880),
+    ]
+    pin_size = int(2.75 * 300)  # 300 dpi
+    pin_mask = Image.open("admin_bot/resources/pinmask.png").convert("RGBA")
+
+    pin_image = Image.new("RGBA", (pin_size, pin_size), (0, 0, 0, 0))
+    w, h = input_image.size
+    if w > h:
+        pin_image.paste(
+            input_image.resize((pin_size, round(h / w * pin_size))),
+            (0, round((pin_size - (h / w * pin_size)) / 2)),
+        )
+    else:
+        pin_image.paste(
+            input_image.resize((round(w / h * pin_size), pin_size)),
+            (round((pin_size - (w / h * pin_size)) / 2), 0),
+        )
+
+    result_image = Image.new("RGB", template.size, (255, 255, 255))
+
+    for pin in pins:
+        result_image.paste(
+            pin_image, tuple(map(lambda x: round(x * 300), pin)), pin_mask
+        )
+
+    result_image.paste(template, (0, 0), template)
+    return result_image
