@@ -97,34 +97,6 @@ def four_corners(image: Image.Image, output_corners):
 # you want to do something other than four corners transform
 
 
-@register_image_task("keegan")
-def keegan_task(input_image: Image.Image) -> Image.Image:
-    """
-    Keegan transformations lol!
-    """
-    # Load the foreground overlay (ensure it has an alpha channel)
-    foreground = Image.open(
-        "admin_bot/resources/what_is_keegan_looking_at/fore.png"
-    ).convert("RGBA")
-
-    # Create a new blank RGBA image with the same size as the foreground
-    result_image = Image.new("RGBA", foreground.size, (0, 0, 0, 0))  # Fully transparent
-
-    # Resize image to fit screen
-    resized_image = input_image.resize((1550, 900))
-
-    # Rotate image counterclockwise by 38.2 degrees
-    rotated_image = resized_image.rotate(38.2, expand=True)
-
-    # Paste the rotated image onto the result image
-    result_image.paste(rotated_image, (240, 780))
-
-    # Place the foreground on top
-    result_image.paste(foreground, (0, 0), foreground)
-
-    return result_image
-
-
 @register_image_task("dylan")
 def dylan_task(input_image: Image.Image) -> Image.Image:
     """
