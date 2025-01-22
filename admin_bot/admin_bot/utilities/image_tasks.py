@@ -134,6 +134,8 @@ def pin_task(input_image: Image.Image) -> Image.Image:
 
     template = Image.open("admin_bot/resources/pintemplate.png").convert("RGBA")
 
+    dpi = 300
+
     pins = [
         (0.621, 0.370),
         (3.621, 0.370),
@@ -144,7 +146,7 @@ def pin_task(input_image: Image.Image) -> Image.Image:
         (2.131, 7.880),
         (5.131, 7.880),
     ]
-    pin_size = int(2.75 * 300)  # 300 dpi
+    pin_size = int(2.75 * dpi)  # 300 dpi
     pin_mask = Image.open("admin_bot/resources/pinmask.png").convert("RGBA")
 
     pin_image = Image.new("RGBA", (pin_size, pin_size), (0, 0, 0, 0))
@@ -164,7 +166,7 @@ def pin_task(input_image: Image.Image) -> Image.Image:
 
     for pin in pins:
         result_image.paste(
-            pin_image, tuple(map(lambda x: round(x * 300), pin)), pin_mask
+            pin_image, tuple(map(lambda x: round(x * dpi), pin)), pin_mask
         )
 
     result_image.paste(template, (0, 0), template)
