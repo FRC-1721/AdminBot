@@ -97,34 +97,6 @@ def four_corners(image: Image.Image, output_corners):
 # you want to do something other than four corners transform
 
 
-@register_image_task("keegan")
-def keegan_task(input_image: Image.Image) -> Image.Image:
-    """
-    Keegan transformations lol!
-    """
-    # Load the foreground overlay (ensure it has an alpha channel)
-    foreground = Image.open(
-        "admin_bot/resources/what_is_keegan_looking_at/fore.png"
-    ).convert("RGBA")
-
-    # Create a new blank RGBA image with the same size as the foreground
-    result_image = Image.new("RGBA", foreground.size, (0, 0, 0, 0))  # Fully transparent
-
-    # Resize image to fit screen
-    resized_image = input_image.resize((1550, 900))
-
-    # Rotate image counterclockwise by 38.2 degrees
-    rotated_image = resized_image.rotate(38.2, expand=True)
-
-    # Paste the rotated image onto the result image
-    result_image.paste(rotated_image, (240, 780))
-
-    # Place the foreground on top
-    result_image.paste(foreground, (0, 0), foreground)
-
-    return result_image
-
-
 @register_image_task("dylan")
 def dylan_task(input_image: Image.Image) -> Image.Image:
     """
@@ -151,4 +123,51 @@ def dylan_task(input_image: Image.Image) -> Image.Image:
     # Place the foreground on top
     result_image.paste(foreground, (0, 0), foreground)
 
+    return result_image
+
+
+@register_image_task("pin")
+def pin_task(input_image: Image.Image) -> Image.Image:
+    """
+    Create a pin template
+    """
+
+    template = Image.open("admin_bot/resources/pintemplate.png").convert("RGBA")
+
+    dpi = 300
+
+    pins = [
+        (0.621, 0.370),
+        (3.621, 0.370),
+        (2.131, 2.873),
+        (5.131, 2.873),
+        (0.621, 5.377),
+        (3.621, 5.377),
+        (2.131, 7.880),
+        (5.131, 7.880),
+    ]
+    pin_size = int(2.75 * dpi)  # 300 dpi
+    pin_mask = Image.open("admin_bot/resources/pinmask.png").convert("RGBA")
+
+    pin_image = Image.new("RGBA", (pin_size, pin_size), (0, 0, 0, 0))
+    w, h = input_image.size
+    if w > h:
+        pin_image.paste(
+            input_image.resize((pin_size, round(h / w * pin_size))),
+            (0, round((pin_size - (h / w * pin_size)) / 2)),
+        )
+    else:
+        pin_image.paste(
+            input_image.resize((round(w / h * pin_size), pin_size)),
+            (round((pin_size - (w / h * pin_size)) / 2), 0),
+        )
+
+    result_image = Image.new("RGB", template.size, (255, 255, 255))
+
+    for pin in pins:
+        result_image.paste(
+            pin_image, tuple(map(lambda x: round(x * dpi), pin)), pin_mask
+        )
+
+    result_image.paste(template, (0, 0), template)
     return result_image
