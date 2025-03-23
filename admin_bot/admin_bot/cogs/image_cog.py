@@ -26,6 +26,7 @@ class ImageCog(commands.Cog):
         Dynamically register context menu commands for image tasks.
         """
         from utilities.image_utils import IMAGE_TASKS  # Import the registered tasks
+        from utilities.image_utils import CHAT_IMAGE_TASKS
 
         for task_name in IMAGE_TASKS:
             # Create a context menu for each task
@@ -38,6 +39,15 @@ class ImageCog(commands.Cog):
             # Add the command to the bot
             self.bot.tree.add_command(context_menu)
 
+        for task_name in CHAT_IMAGE_TASKS:
+            command = app_commands.Command(
+                name=task_name,
+                callback=self.process_image_chat,
+                description=task_name.title(),
+            )
+            command.task_name = task_name
+            self.bot.tree.add_command(command)
+
     async def process_image_context(
         self, interaction: discord.Interaction, message: discord.Message
     ):
@@ -46,6 +56,36 @@ class ImageCog(commands.Cog):
         """
         task_name = interaction.command.task_name
         await self.process_image_task(interaction, task_name, message)
+
+    async def process_image_chat(
+        self, interaction: discord.Interaction, attachment: discord.Attachment
+    ):
+        task_name = interaction.command.task_name
+
+        if not attachment.content_type.startswith("image/"):
+            await interaction.response.send_message(
+                "The attachment is not an image!", ephemeral=True
+            )
+            return
+
+        await interaction.response.defer()  # Acknowledge the interaction
+        image_bytes = await attachment.read()
+
+        try:
+            # Process the image
+            input_image = load_image_from_bytes(image_bytes)
+            output_image = apply_image_task(input_image, task_name)
+            output_bytes = save_image_to_bytes(output_image)
+
+            # Send the result
+            await interaction.followup.send(
+                file=discord.File(io.BytesIO(output_bytes), f"{task_name}.png")
+            )
+        except Exception as e:
+            logging.error(f"Error processing image task '{task_name}': {e}")
+            await interaction.followup.send(
+                "Failed to process the image.", ephemeral=True
+            )
 
     async def process_image_task(
         self,

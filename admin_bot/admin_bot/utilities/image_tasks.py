@@ -1,5 +1,5 @@
 from PIL import Image
-from utilities.image_utils import register_image_task
+from utilities.image_utils import register_image_task, register_chat_image_task
 import numpy
 
 
@@ -171,3 +171,16 @@ def pin_task(input_image: Image.Image) -> Image.Image:
 
     result_image.paste(template, (0, 0), template)
     return result_image
+
+
+# You can only have 5 context menu commands.
+# Use @register_chat_image_task to register an
+# image command as a regular slash command
+
+
+@register_chat_image_task("live")
+def live_task(input_image: Image.Image) -> Image.Image:
+    template = Image.open("admin_bot/resources/reaction.png").convert("RGBA")
+    template.paste(input_image.resize((660, 378)), (10, 113))
+    template.paste(input_image.resize((223, 84)), (140, 16))
+    return template

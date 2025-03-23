@@ -7,6 +7,9 @@ from typing import Callable, Dict
 # Registry for image manipulation tasks
 IMAGE_TASKS: Dict[str, Callable[[Image.Image], Image.Image]] = {}
 
+# Registry for chat command image manipulation tasks
+CHAT_IMAGE_TASKS: Dict[str, Callable[[Image.Image], Image.Image]] = {}
+
 
 def register_image_task(name: str):
     """
@@ -22,6 +25,20 @@ def register_image_task(name: str):
     return decorator
 
 
+def register_chat_image_task(name: str):
+    """
+    Decorator to register an image task.
+
+    :param name: The name of the task.
+    """
+
+    def decorator(func: Callable[[Image.Image], Image.Image]):
+        CHAT_IMAGE_TASKS[name] = func
+        return func
+
+    return decorator
+
+
 def apply_image_task(image: Image.Image, task_name: str) -> Image.Image:
     """
     Apply a registered image task to the given image.
@@ -30,10 +47,13 @@ def apply_image_task(image: Image.Image, task_name: str) -> Image.Image:
     :param task_name: The task to apply.
     :return: The resulting image.
     """
-    if task_name not in IMAGE_TASKS:
-        raise ValueError(f"Task '{task_name}' is not registered.")
+    if task_name in IMAGE_TASKS:
+        return IMAGE_TASKS[task_name](image)
 
-    return IMAGE_TASKS[task_name](image)
+    if task_name in CHAT_IMAGE_TASKS:
+        return CHAT_IMAGE_TASKS[task_name](image)
+
+    raise ValueError(f"Task '{task_name}' is not registered.")
 
 
 def load_image_from_bytes(image_bytes: bytes) -> Image.Image:
